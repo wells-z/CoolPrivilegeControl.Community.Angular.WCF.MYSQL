@@ -1,0 +1,778 @@
+﻿<!--------------------------------------------------------------------------->
+<!--                           INTRODUCTION
+
+ The Code Project article submission template (HTML version)
+
+Using this template will help us post your article sooner. To use, just
+follow the 3 easy steps below:
+
+     1. Fill in the article description details
+     2. Add links to your images and downloads
+     3. Include the main article text
+
+That's all there is to it! All formatting will be done by our submission
+scripts and style sheets.
+
+-->
+<!--------------------------------------------------------------------------->
+<!--                        IGNORE THIS SECTION                            -->
+<!--------------------------------------------------------------------------->
+<!-------------------------------     STEP 1      --------------------------->
+<!--  Fill in the details (CodeProject will reformat this section for you) -->
+<link rel="stylesheet" type="text/css" href="http://www.codeproject.com/App_Themes/Std/CodeProject.css">
+
+<navbar></navbar>
+<div class="container">
+    <ul>
+        <li><a ui-sref="Main.Home.IndexPart1" ui-sref-opts="{reload:true}">Cool Privilege Control System Part 1 -- asp.net MVC</a></li>
+        <li><a ui-sref="Main.Home.IndexPart2" ui-sref-opts="{reload:true}">Cool Privilege Control System Part 2 -- asp.net MVC with WCF</a></li>
+        <li><a ui-sref="Main.Home.IndexPart3" ui-sref-opts="{reload:true}">Cool Privilege Control System Part 3 -- Angular Single-Page Application</a></li>
+    </ul>
+
+    <div class="row">
+        <div class="col-md-2 pull-right">
+            <div class="pull-right" style=" vertical-align: middle !important;" id="TotalVisitedDiv">
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div id="DateTimeDiv"></div>
+        </div>
+
+    </div>
+
+<pre>
+    Title:       Cool Privilege Control System Part 1 -- asp.net MVC
+    Author:      wells cheung
+    Email:       wells-z@hotmail.com
+    Language:    C#
+    Platform:    Window
+    Technology:  Entity Framework, MVC, asp.net, jQuery, MEF, log4net, automapper and so on 
+    Level:       Intermediate
+    Description: Cool Privilege Control System Part 1 -- asp.net MVC
+    Section      Introduction
+    SubSection   Introduction
+    License:     MS-PL
+    </pre>
+
+    <!-------------------------------     STEP 2      --------------------------->
+    <!--  Include download and sample image information.                       -->
+
+    <ul class=download>
+        <li><a href="~/Content/HomePageResources/Program/CoolPrivilegeControl.Community.MYSQL.zip">CoolPrivilegeControl.MYSQL.zip </a></li>
+        <li><a href="~/Content/HomePageResources/Program/CoolPrivilegeControl.Community.MSSQL.zip">CoolPrivilegeControl.MSSQL.zip</a></li>
+    </ul>
+
+    <!-------------------------------     STEP 3      --------------------------->
+    <!--  Add the article text. Please use simple formatting (<h2>, <p> etc)   -->
+
+    <h2>Introduction</h2>
+
+    <p>As we known, Privilege Control is very common mechanism. In real life, people are allocated into different roles. Some of who can maintain sensitive information based on his/her access level, and the other cannot. In computer world, that is the same. Microsoft Window is a famous PC OS and it also has a user management system in it.  Administrator can create user account and assign different privileges to different user account. E.g. Ricky’s role is administrator and Jenny’s role is guest, both of who launch the system based on his/her Login Name and Password, Ricky can control everything of the computer and Jenny does not have any permission except view right. That is based on theirs privilege. Therefore, it is plain to see that Privilege Control is a basic mechanism on the top of other systems. </p>
+
+    <h2>Background</h2>
+
+    <p>As mentioned previous, Privilege Control is a basic mechanism. It should be implementing already. Many guys will have questions “Why do you discuss here? Do you waste our times? “. And the answer I want to say is “No”. As many year experiences, I have participated in developing many projects and most of those have itself privilege control except mini system. Take HR System as an example. HR System has much sensitive information and there are many modules in it. Such as ESS (Employee self-service), Leave module, Payroll module, Attendance module, and so on.  All of those modules should have privilege control. In the past, we used to create different access right control system for different modules. That means if a user named Jenny, she should have more than five accounts for one system. It is not only hard for Jenny to remember all accounts but also hard for administrator maintenance. Furthermore, most of existing systems are not fulfill real case. E.g. Jenny is a sales manager, she can only access people under her level and she cannot access other colleagues in other team. So today I introduce Cool Privilege Control for who has the same questions as I met. Cool Privilege Control I designed is used to centralize functions/users control and resolve access levels problem. It is something like Single Sign On system.  Cool Privilege Control I want to introduce is based on asp.net MVC, but it is not limited on web application only. Since I had split the solution into many tiers. On the whole, there are UI(User Interface MVC), BL(Business Layer) and DAL(Data Access Layer). It is not difficulty to replace UI from MVC to Window Application (WPF). On the other hand, if you are MVC developer, Cool Privilege Control does not only provide you a single sign on solution, but also provide you a MVC extension framework. </p>
+
+    <h2>Feature</h2>
+    <p>1.	Resolve normal access control issue. (I.e. user and user role, function and function type).</p>
+    <p>2.	Resolve user with different organization has different access level problem.</p>
+    <p>3.	Provide powerful audit log, trace log and exception log.</p>
+    <p>4.	Provide common MVC extension framework which make the development more easily and quickly.</p>
+    <p>5.	Support multilingual</p>
+
+    <h2>Look And Feel</h2>
+    <p>
+        First of all, I capture some screens of the application looks like in order to increase study concentration.
+    </p>
+    <h5>Figure 4.1(Login Screen)</h5>
+    <img src="../../Content/HomePageResources/Images/4.1(Login Screen).jpg" alt="Figure 4.1(Login Screen)" />
+    <h5>Figure 4.2(Function Management)</h5>
+    <img src="../../Content/HomePageResources/Images/4.2(Function Management).jpg" alt="4.2(Function Management)" />
+    <h5>Figure 4.3(Edit Login User)</h5>
+    <img src="../../Content/HomePageResources/Images/4.3(Edit Login User).jpg" alt="4.3(Edit Login User)" />
+    <h5>Figure 4.4(System Audit Log Management)</h5>
+    <img src="../../Content/HomePageResources/Images/4.4(System Audit Log Management).jpg" alt="4.4(System Audit Log Management)" />
+    <p>It is a pretty cool, right?  Thanks Bootstrap! That is a beautiful UI toolkit which helps developer cut down lots of work! From now on, we will go a little deep to analyze all of scenarios about access control in real life.</p>
+
+    <h2>Scenarios</h2>
+    <h3>
+        5.1 Scenario 1
+    </h3>
+    <p>System has many functions; each function has many function types (i.e. insert, update, import, export and so on); one function type can be assigned to many functions, That means Function A has import method and Function B also has import method. So function and function type is many to many relationship. It is simple and I descript the entity relationship for this case as below.</p>
+    <h5>
+        Figure 5.1.1 Function and Function Type relationship
+    </h5>
+    <img src="../../Content/HomePageResources/Images/5.1.1 Function and Function Type relationship.jpg" alt="Figure 5.1.1 Function and Function Type relationship" />
+
+    <p style=" color:red;">Note: In real case, function structure maybe so complex. I used “000100010001” format to separate those. For example, function path “0001” is HR Module, it has many functions in it. Such as “00010001” is Staff Info Management, “00010002” is Salary Info Management.  And then Salary Info Management also has many functions in it. Such as “000100020001” is Salary Info Maintenance and “000100020002” is Salary Review. So the function structure will look as below.</p>
+    <h5>
+        Figure 5.1.2 Functions Structure (HR Module)
+    </h5>
+    <img src="../../Content/HomePageResources/Images/5.1.2 Functions Structure (HR Module).jpg" alt="5.1.2 Functions Structure (HR Module)" />
+    <p style=" color:red;">Based on the format “000100020002”, we directly know the top menu which is named as “HR Module” by recursion. And it contains un-limit levels. Each level has 9999 functions. I think 9999 is enough in general case. Certainly, we can extend number length to increase function count for each level, if we use “000010000200002” format instead of “000100020002”,  then we can store 99999 functions for each level. Below figure show the menu looks like.</p>
+    <h5>
+        Figure 5.1.3 Menu (HR Module)
+    </h5>
+    <img src="../../Content/HomePageResources/Images/5.1.3 Menu (HR Module).jpg" alt="5.1.3 Menu (HR Module)" />
+    <h3>
+        5.2 Scenario 2
+    </h3>
+    <p>Login user can be assigned to specific functions or specific roles. If a login user is assigned to multi roles, then the user can access all functions which defined in the roles. That means Role A has privilege on Function A, Role B has privilege on Function B, if both Role A and Role B are assigned to a user named ”Ricky”, then Ricky can access Function A and Function B. Below figure is user-role entity  relationship.</p>
+    <h5>Figure 5.2.1 user-role relationship</h5>
+    <img src="../../Content/HomePageResources/Images/5.2.1 user-role relationship.jpg" alt="5.2.1 user-role relationship" />
+
+    <h3>
+        5.3 Scenario 3
+    </h3>
+    <p>As mentioned before, user would be assigned to one or more organizations, and he/she can only access the users under himself/herself.  To solve these problems, we should create a new entity called “Organization Detail” which helps system store privileges for organization assignment. That maybe not easy to recognize. Take actual case as an example which is easy to be recognized. </p>
+    <p>
+        1)	A user named ”Angus” is Project Manager and Sales Assistant Manager, he has read-only right on function “Function Management”, full privilege on function “Login User Management” with Project Manager Level and read-only right on function “Login User Management” with Sales Assistant Manager Level.
+    </p>
+    <p>
+        2)	User named “Wells” is a member of project team.
+    </p>
+    <p>
+        3)	User named “Michael” is a member of sales team
+    </p>
+    <p style="font-weight:bold;">Expect Result:</p>
+    <p>When Angus login into the system, he can access two functions, one is “Function Management” and the other is “Login User Management”. According to the settings, Angus only has search and view right on “Function Management”. On “Login User Management”, Angus can insert/update/delete colleagues under project team but only has search/view right on colleagues under sale team. </p>
+
+    <p>According to above case, we should set two organization details settings, the one is “ReadOnly” and the other is “Login User Full Access”. Below screens show organization details settings</p>
+
+    <h5>
+        Figure 5.3.1 Function Detail Setting -- ReadOnly
+    </h5>
+    <img src="../../Content/HomePageResources/Images/5.3.1 Function Detail Setting -- ReadOnly.jpg" alt="5.3.1 Function Detail Setting -- ReadOnly" />
+
+    <p style=" color:red;">Description: Organization Details named as “ReadOnly” only has “Search” and “View” on Function Management.</p>
+
+    <h5>Figure 5.3.2 Function Detail Setting -- FullAccessRight</h5>
+    <img src="../../Content/HomePageResources/Images/5.3.2 Function Detail Setting -- Login User Full Privilege.jpg" alt="5.3.2 Function Detail Setting -- FullAccessRight" />
+    <p style=" color:red;">
+        Description: Organization Details that key is “FullAccessRight” share the same right with Admin role .
+    </p>
+
+    <h5>
+        Figure 5.3.3 Login User Settings
+    </h5>
+    <img src="../../Content/HomePageResources/Images/5.3.3 Login User Settings.jpg" alt="5.3.3 Login User Settings" />
+    <p style=" color:red;">
+        Description: Login User named “Angus” is assigned to two organization settings,
+        <br />
+        Project Team – Login User Full Access;<br />
+        Sales Team – ReadOnly;
+    </p>
+    <h5>
+        Figure 5.3.4.1 Organization Structure
+    </h5>
+    <p>
+        <img src="../../Content/HomePageResources/Images/5.3.4.1 Organization Structure.jpg" alt="5.3.4.1 Organization Structure" />
+    </p>
+    <h5>
+        Figure 5.3.4.2 Organization Structure Settings
+    </h5>
+    <p>
+        <img src="../../Content/HomePageResources/Images/5.3.4.2 Organization Structure Settings.jpg" alt="5.3.4.2 Organization Structure Settings" />
+    </p>
+    <p style=" color:red;">
+        Description: Previous organization settings also use “000100010001” format to present the organization structure.
+    </p>
+    <h5>
+        Figure 5.3.5 Login User List (All Users)
+    </h5>
+    <img src="../../Content/HomePageResources/Images/5.3.5 Login User List (All Users).jpg" alt="5.3.5 Login User List (All Users)" />
+    <p style="font-weight:bold;">
+        Below capture screens are showed when Angus login into the system.
+    </p>
+    <h5>
+        Figure 5.3.6 Function Management Screen
+    </h5>
+    <img src="../../Content/HomePageResources/Images/5.3.6 Function Management Screen.jpg" alt="5.3.6 Function Management Screen" />
+    <p style=" color:red;">
+        Description: All Edit/Delete buttons in previous screen are dimed. Because login user named “Angus” only has view/search right on this function.
+    </p>
+    <h5>
+        Figure 5.3.7 Login User Management Screen
+    </h5>
+    <img src="../../Content/HomePageResources/Images/5.3.7 Login User Management Screen.jpg" alt="5.3.7 Login User Management Screen" />
+    <p style=" color:red;">
+        Description: As above screen described, please pay attention to Angus and Michael, both edit button and delete button are dimed in these two records, because Angus login to the system, he cannot maintain whoever in Sale Team Member and himself, but he can maintain the colleagues under Project Team.
+    </p>
+
+    <p style="font-weight:bold;">Below figure show the ER diagram of the scenario</p>
+    <h5>
+        Figure 5.3.6 Entity Relationship of Scenario
+    </h5>
+    <img src="../../Content/HomePageResources/Images/5.3.6 Entity Relationship of Scenario.jpg" alt="5.3.6 Entity Relationship of Scenario" />
+
+    <h2>
+        Settings
+    </h2>
+    <p>
+        For MSSQL/MYSQL database user, I publish two versions to fulfill your case. If you use MSSQL as default, please download “CoolPrivilegeControl.Community.MYSQL.zip”, otherwise, please download “CoolPrivilegeControl.Community.MSSQL.zip”. And I list my development environment for your reference. If your local development environment is low than me, I suggest you should upgrade so that you can run the program successfully. On the other hand, If your local version is equal or above my development environment, maybe no compatibility issue, but I am not sure.
+    </p>
+    <p>1.	Microsoft Visual Studio 2013</p>
+    <p>2.	.NET Framework 4.5.1</p>
+    <p>3.	MSSQL Server 2012 or MYSQL 5.6.26</p>
+    <p>4.	MVC 5.2.3</p>
+    <p>5.	Entity Framwork 6.0</p>
+
+    <p style="color:red; font-weight:bold;">
+        Mandatory Step: After opened solution, please right click solution and select “Enable NuGet Package Restore”.
+    </p>
+    <h5>
+        Figure 6.0.1 Enable NuGet Package Restore
+    </h5>
+    <img src="../../Content/HomePageResources/Images/6.0.1 Enable NuGet Package Restore.jpg" alt="6.0.1 Enable NuGet Package Restore" />
+
+    <h3>
+        6.1 EDIT WEB.CONFIG FILE
+    </h3>
+    <h4>
+        6.1.1 For MYSQL user
+    </h4>
+    <h5>
+        Figure 6.1.1 web.config(MySql Version)
+    </h5>
+    <img src="../../Content/HomePageResources/Images/6.1.1 web.config(MySql Version).jpg" alt="6.1.1 web.config(MySql Version)" />
+    <p>Please pay attention to the appSettings node, change DBSource/DBName/DBPort/LoginName/LoginPWD value based on mysql server settings. </p>
+    <table cellpadding="1" cellspacing="1" style="background-color:black;">
+        <tr>
+            <td style="font-weight:bold;background-color:white;">Property</td>
+            <td style="font-weight:bold;background-color:white;">Description</td>
+        </tr>
+        <tr>
+            <td style="background-color:white;">DBSource:</td>
+            <td style="background-color:white;">IP address of the server host</td>
+        </tr>
+        <tr>
+            <td style="background-color:white;">DBName:</td>
+            <td style="background-color:white;">Database name</td>
+        </tr>
+        <tr>
+            <td style="background-color:white;">DBPort:</td>
+            <td style="background-color:white;">Server TCP/IP port</td>
+        </tr>
+        <tr>
+            <td style="background-color:white;">LoginName:</td>
+            <td style="background-color:white;">DB user name</td>
+        </tr>
+        <tr>
+            <td style="background-color:white;">LoginPWD:</td>
+            <td style="background-color:white;">DB user password</td>
+        </tr>
+        <tr>
+            <td style="background-color:white;">IsDebug:</td>
+            <td style="background-color:white;">If you set true, whatever exception will be show on the page, and vice versa.</td>
+        </tr>
+    </table>
+    <h4>
+        6.1.2 For MSSQL user
+    </h4>
+    <h5>
+        Figure 6.1.2 web.config(MSSql Version)
+    </h5>
+    <img src="../../Content/HomePageResources/Images/6.1.2 web.config(MSSql Version).jpg" alt="6.1.2 web.config(MSSql Version)" />
+
+    <p>As the same as mysql user, change DBSource/DBName/LoginName/LoginPWD value based on mssql server settings, except DBPort. In mssql server, the port number can be specified after the server name or server ip address with comma. E.g. </p>
+
+    <p><span style="background-color:black; color:white;">WELLSCHEUNG\MSSQLSERVER2012,49287</span> 49287 is the port.</p>
+
+    <table cellpadding="1" cellspacing="1" style="background-color:black;">
+        <tr>
+            <td style="font-weight:bold;background-color:white;">Property</td>
+            <td style="font-weight:bold;background-color:white;">Description</td>
+        </tr>
+        <tr>
+            <td style="background-color:white;">DBSource:</td>
+            <td style="background-color:white;">
+                IP address of the server host
+                <br />With Port Format: server name or ip address,port
+            </td>
+        </tr>
+        <tr>
+            <td style="background-color:white;">DBName:</td>
+            <td style="background-color:white;">Database name</td>
+        </tr>
+        <tr>
+            <td style="background-color:white;">LoginName:</td>
+            <td style="background-color:white;">DB user name</td>
+        </tr>
+        <tr>
+            <td style="background-color:white;">LoginPWD:</td>
+            <td style="background-color:white;">DB user password</td>
+        </tr>
+        <tr>
+            <td style="background-color:white;">IsDebug:</td>
+            <td style="background-color:white;">If you set true, whatever exception will be show on the page, and vice versa.</td>
+        </tr>
+    </table>
+
+    <h4>
+        6.1.3 Enable or Disable DB initializer
+    </h4>
+    <p>That is the feature of entity framework code first design pattern. And it is the most useful I ever heard before. When you executed the project, if database instance did not exist in the server and the flag is enabled, entity framework mechanism would help you to initialize it. For more information please refer to MSDN(<a href="https://msdn.microsoft.com/en-us/data/ee712907">https://msdn.microsoft.com/en-us/data/ee712907</a>). If you do not want entity framework to initial database and cover your database, you can set the attribute named “disableDatabaseInitialization” on context element to true.</p>
+    <h5>
+        Figure 6.1.3 disableDatabaseInitialization flag
+    </h5>
+    <img src="../../Content/HomePageResources/Images/6.1.3 disableDatabaseInitialization flag.jpg" alt="6.1.3 disableDatabaseInitialization flag" />
+
+    <p style=" color:red; ">Alternative, you can initialize DB via sql script or database backup. I prepare sql script for mysql user to execute and database backup for mssql user to restore. </p>
+    <p><a href="~/Content/HomePageResources/DBBackup/MySql_DBBackup_20160119.zip">MySql Script</a></p>
+    <p><a href="~/Content/HomePageResources/DBBackup/MSSql_DBBackup_20160119.zip">MSSql Database Backup</a></p>
+
+    <h3>
+        6.2 Edit Log4Net.config file
+    </h3>
+    <p>We used log4net to help us record trace info and error info. About how to use log4net, I though most of you had more experiences than me, so I do not want to spend many times on repeat. I only specified that all functions in the system enable trace log as default (i.e. Include both input and output information). That is an easy way to trace error even if we cannot run visual studio debug when onsite support. </p>
+
+    <p>It is easy to turn off or change another type of info you wanted to capture. There are seven levels type which is pre-set in log4net.</p>
+
+    <p>
+        The following levels are defined in order of increasing priority:
+    </p>
+
+    <ul>
+        <li>ALL</li>
+        <li>DEBUG</li>
+        <li>INFO</li>
+        <li>WARN</li>
+        <li>ERROR</li>
+        <li>FATAL</li>
+        <li>OFF</li>
+    </ul>
+    <p>
+        You can replace the value of the attribute named “level” to what you wanted in log4net.config.
+    </p>
+
+    <h5>Figure 6.2.1 Log4Net.config</h5>
+    <img src="../../Content/HomePageResources/Images/6.2.1 Log4Net.config.jpg" alt="6.2.1 Log4Net.config" />
+
+    <table>
+        <tr>
+            <td><span style="font-weight:bold;">SysLog:</span> 	Log all info of the system.</td>
+        </tr>
+        <tr>
+            <td><span style="font-weight:bold;">ErrorLog:</span>	Only log exception of the system.</td>
+        </tr>
+    </table>
+
+    <p>
+        However, previous setting is a global setting. If you want to disable one or any functions to log information automated. You can mark the function you wanted as “[UnTracerAction]” function.
+        After you do like that all info will not be log.
+    </p>
+
+    <h5>
+        Figure 6.2.2 UnTracerAction Function
+    </h5>
+    <img src="../../Content/HomePageResources/Images/6.2.2 UnTracerAction Function.jpg" alt="6.2.2 UnTracerAction Function" />
+    <p>
+        If you only want to log the main thread enter the function whether or not, except the detail information input or output. You can mark the function you wanted as <span style="font-weight:bold">“[TracerActionWithDetails(EnableTracer=false)]”</span> function.
+    </p>
+    <h5>
+        Figure 6.2.3 [TracerActionWithDetails(EnableTracer=false)] Function
+    </h5>
+    <img src="../../Content/HomePageResources/Images/6.2.3 [TracerActionWithDetails(EnableTracer=false)] Function.jpg" alt="6.2.3 [TracerActionWithDetails(EnableTracer=false)] Function" />
+
+    <p>Below capture screen show the result of previous different settings</p>
+
+    <h5>
+        Figure 6.2.4 The log of tracer action without details
+    </h5>
+    <img src="../../Content/HomePageResources/Images/6.2.4 The log of tracer action without details.jpg" alt="6.2.4 The log of tracer action without details" />
+
+    <h5>
+        Figure 6.2.5 The log of tracer action with details
+    </h5>
+    <img src="../../Content/HomePageResources/Images/6.2.5 The log of tracer action with details.jpg" alt="6.2.5 The log of tracer action with details" />
+
+    <p>
+        After previously settings. System is ready for your use. Press “F5” in Visual Studio and double check if it has any compile errors or not. If any error came out, you can send the error to me for inspection or search solution in google by yourself.
+    </p>
+
+    <p>
+        Next section, I will introduce functions in the system. Include create function type, create function, create login user, create role, create organization, create access level, assign function to specific login user and so on.
+    </p>
+
+    <h2>
+        How To Use
+    </h2>
+
+    <h3>
+        7.1 System Settings
+    </h3>
+
+    <p>
+        1.	Click sub menu “System Info Management” in main menu “Access Management”.
+    </p>
+    <img src="../../Content/HomePageResources/Images/7.1.1.jpg" alt="7.1.1" />
+    <p>
+        2.	Change values according to your requirement.
+    </p>
+    <img src="../../Content/HomePageResources/Images/7.1.2.jpg" alt="7.1.2" />
+
+    <table cellpadding="1" cellspacing="1" style="background-color:black;">
+        <tr>
+            <td style="font-weight:bold;background-color:white;">Key</td>
+            <td style="font-weight:bold;background-color:white;">Description</td>
+        </tr>
+        <tr>
+            <td style="background-color:white;">Session Timeout(Seconds)</td>
+            <td style="background-color:white;">
+                Default value is 10 mins = 600 seconds. Cool Privilege Control maintains session by itself and it is based on asp.net session management mechanism. That means if you change the value to 20 mins or more than 20 mins, any session will only alive in <span style="font-weight:bold;">20 mins</span> without user operation. Because the default value of idle time is 20 mins in asp.net. If you want to set session timeout more than 20 mins, you must set the session timeout of asp.net bigger than session timeout of Cool Privilege Control system. About how to change session timeout in asp.net please refer to <a href="https://msdn.microsoft.com/en-us/library/h6bb9cz9(v=vs.100).aspx">https://msdn.microsoft.com/en-us/library/h6bb9cz9(v=vs.100).aspx</a> .  I used to extend asp.net session timeout to 60 mins.<br />
+
+                <img src="../../Content/HomePageResources/Images/7.1.2.1.jpg" alt="7.1.2.1" />
+            </td>
+        </tr>
+        <tr>
+            <td style="background-color:white;">Page Size</td>
+            <td style="background-color:white;">Page size of each list page.</td>
+        </tr>
+        <tr>
+            <td style="background-color:white;">Maximum Page Numbers Showing in Page Bar</td>
+            <td style="background-color:white;">Maximum Page Numbers Showing in Page Bar<br /><img src="../../Content/HomePageResources/Images/7.1.2.2.jpg" alt="7.1.2.2" /></td>
+        </tr>
+        <tr>
+            <td style="background-color:white;">Date Format</td>
+            <td style="background-color:white;">Default Format: yyyy-MM-dd.  E.g. 2016-01-21</td>
+        </tr>
+        <tr>
+            <td style="background-color:white;">Time Format</td>
+            <td style="background-color:white;">Default Format: HH-mm-ss.      E.g. 22:10:05</td>
+        </tr>
+        <tr>
+            <td style="background-color:white;">Password Policy</td>
+            <td style="background-color:white;">It contains many rules. I think it is enough strong for you to protect password and I don’t want to spend many times to explain each rule here. I trust all of you have ability to understand the rule.</td>
+        </tr>
+    </table>
+
+    <h3>
+        7.2 Maintain Function Type
+    </h3>
+    <p>Cool Privilege Control allows user create function type by himself or herself. View, Search, Create, Edit and Delete are the most frequency function type. Export, Import, Preview and Process are used in many cases. So I preset function type mentioned before to avoid wasteful duplication of effort.</p>
+    <ol>
+        <li>
+            <p>Create Function Type</p>
+            <ol>
+                <li>
+                    <p>Click <span style="font-weight:bold;">Create Function Type</span> button in bottom left of the <span style="font-weight:bold;">Function Type Management</span> page.</p>
+                    <img src="../../Content/HomePageResources/Images/7.2.1.1.jpg" alt="7.2.1.1" />
+                </li>
+                <li>
+                    <p>Type <span style="font-weight:bold;">Function Type</span>. Such as “Generate”.</p>
+                    <img src="../../Content/HomePageResources/Images/7.2.1.2.jpg" alt="7.2.1.2" />
+                </li>
+                <li>
+                    <p>Click <span style="font-weight:bold;">Save</span> button.</p>
+                </li>
+            </ol>
+        </li>
+        <li>
+            <p>Delete Function Type</p>
+
+            <p>Click <span style="font-weight:bold;">Delete</span> button of the record you wanted.</p>
+        </li>
+
+        <li>
+            <p>Edit Function Type</p>
+            <ol>
+                <li>
+                    <p>Click <span style="font-weight:bold;">Edit</span></p>
+                    <img src="../../Content/HomePageResources/Images/7.2.1.3.1.jpg" alt="7.2.1.3.1" />
+                </li>
+                <li>
+                    <p>Change <span style="font-weight:bold;">Function Type</span>.</p>
+                </li>
+                <li>
+                    <p>Click <span style="font-weight:bold;">Save</span> button.</p>
+                </li>
+            </ol>
+        </li>
+    </ol>
+
+    <h3>
+        7.3 Maintain Function
+    </h3>
+    <p>As section 5 described, Cool Privilege Control use “000100010001” format to separate functions. In theory, system support unlimited function level and 9999 functions for each function level.</p>
+
+    <ol>
+        <li>
+            <p>Create Function</p>
+            <ol>
+                <li>
+                    <p>Click <span style="font-weight:bold;">Create Function</span> button in bottom left of the <span style="font-weight:bold;">Function Management</span> page.</p>
+                    <img src="../../Content/HomePageResources/Images/7.3.1.1.jpg" alt="7.3.1.1" />
+                </li>
+                <li>
+                    <p>Type <span style="font-weight:bold;">Function Key</span> and <span style="font-weight:bold;">Function Path</span> select <span style="font-weight:bold;">Function Type</span> which belongs to this function.</p>
+                    <img src="../../Content/HomePageResources/Images/7.3.1.2.jpg" alt="7.3.1.2" />
+                </li>
+                <li>
+                    <p>
+                        Click <span style="font-weight:bold;">Save</span> button.
+                    </p>
+                    <img src="../../Content/HomePageResources/Images/7.3.1.3.jpg" alt="7.3.1.3" />
+                </li>
+            </ol>
+        </li>
+        <li>
+            <p>Delete Function</p>
+            <p>Click <span style="font-weight:bold;">Delete</span> button of the record you wanted.</p>
+        </li>
+        <li>
+            <p>Edit Function</p>
+            <ol>
+                <li>
+                    <p>Click <span style="font-weight:bold;">Edit</span> button of the record you wanted.</p>
+                </li>
+                <li>
+                    <p>Change value and Click <span style="font-weight:bold;">Save</span> button.</p>
+                </li>
+            </ol>
+        </li>
+    </ol>
+
+    <h3>
+        7.4 Maintain Role
+    </h3>
+    <ol>
+        <li>
+            <p>Create Role</p>
+            <ol>
+                <li><p>Click <span style="font-weight:bold;">Create User Role</span> button in bottom left of the <span style="font-weight:bold;">Role Management</span> page.</p></li>
+                <li><p>Type <span style="font-weight:bold;">Role Name</span> E.g. Admin</p></li>
+                <li>
+                    <p>Assign <span style="font-weight:bold;">Function</span> with <span style="font-weight:bold;">Function Type</span> into the new role.</p>
+                    <img src="../../Content/HomePageResources/Images/7.4.1.3.jpg" alt="7.4.1.3" />
+                </li>
+                <li><p>Click <span style="font-weight:bold;">Save</span> button.</p></li>
+            </ol>
+        </li>
+        <li>
+            <p>Delete Role</p>
+            <p>Click <span style="font-weight:bold;">Delete,</span> button of the record you wanted.</p>
+        </li>
+        <li>
+            <p>Edit Role</p>
+            <p>The steps are as the same as above section.</p>
+        </li>
+    </ol>
+
+    <h3>
+        7.5 Maintain Organization
+    </h3>
+    <ol>
+        <li>
+            <p>Create Organization</p>
+            <ol>
+                <li><p>Click <span style="font-weight:bold;">Create Organization</span> button in bottom left of the <span style="font-weight:bold;">Organization Management</span> page.</p></li>
+                <li><p>Type <span style="font-weight:bold;">Organization</span> Key. E.g. CEO</p></li>
+                <li><p>Type <span style="font-weight:bold;">Organization Path</span>. E.g. 0001</p><img src="../../Content/HomePageResources/Images/7.4.1.3.jpg" alt="7.4.1.3" /></li>
+            </ol>
+        </li>
+        <li>
+            <p>Delete Organization(Omitted) </p>
+        </li>
+        <li>
+            <p>Edit Organization(Omitted)</p>
+        </li>
+    </ol>
+
+    <h3>7.6 Maintain Organization Details</h3>
+    <ol>
+        <li>
+            <p>Create Organization Details</p>
+            <ol>
+                <li>
+                    <p>
+                        Click <span style="font-weight:bold;">Create Organization Details</span> button in bottom left of the <span style="font-weight:bold;">Organization Details Management</span> page.
+                    </p>
+                </li>
+                <li>
+                    <p>Type <span style="font-weight:bold;">Organization Details Key</span>.</p>
+                </li>
+                <li>
+                    <p>Select <span style="font-weight:bold;">Organization Details Type</span>.</p>
+                    <p>There are two types of organization details. One type is <span style="font-weight:bold;">“Specific Functions”</span>, the other is <span style="font-weight:bold;">“As Role Settings”</span>. You can assign specific function into this new organization details, or set as role settings.</p>
+                    <h5>
+                        Figure 7.6.1 Specific Function
+                    </h5>
+                    <img src="../../Content/HomePageResources/Images/7.6.1 Specific Function.jpg" alt="7.6.1 Specific Function" />
+                    <h5>
+                        Figure 7.6.2 As Role Settings
+                    </h5>
+                    <img src="../../Content/HomePageResources/Images/7.6.2 As Role Settings.jpg" alt="7.6.2 As Role Settings" />
+                </li>
+                <li>
+                    <p>Click <span style="font-weight:bold;">Save</span> button.</p>
+                </li>
+            </ol>
+        </li>
+        <li>
+            <p>Delete Organization Details (Omitted)</p>
+        </li>
+        <li>
+            <p>Edit Organization Details (Omitted)</p>
+        </li>
+    </ol>
+
+    <h3>7.7 Maintain Login User</h3>
+    <ol>
+        <li>
+            <p>Create Login User</p>
+            <ol>
+                <li>
+                    <p>Click <span style="font-weight:bold;">Create Login User</span> button in bottom left of the <span style="font-weight:bold;">Login User Management</span> page.</p>
+                    <img src="../../Content/HomePageResources/Images/7.7.1.1.jpg" alt="7.7.1.1" />
+                </li>
+                <li><p>Type mandatory fields. Such as Login Name / Password / Confirm Password / Status.</p></li>
+                <li>
+                    <p>Select <span style="font-weight:bold;">Login User Type</span>.</p>
+                    <ol>
+                        <li><p><span style="font-weight:bold;">Specific Functions</span>: Assign specific function to user.</p></li>
+                        <li><p><span style="font-weight:bold;">As Role Settings</span>: Assign re-set role to user.</p></li>
+                        <li>
+                            <p>
+                                <span style="font-weight:bold;">As Organization Settings</span>: Assign organization unit with correlative organization details to user.
+                            </p>
+                            <img src="../../Content/HomePageResources/Images/7.7.1.3.jpg" alt="7.7.1.3" />
+                        </li>
+                        <li><p>Click <span style="font-weight:bold;">Save</span> button.</p></li>
+                    </ol>
+                </li>
+            </ol>
+        </li>
+        <li>
+            <p>Delete Login User (Omitted)</p>
+        </li>
+        <li>
+            <p>Edit Login User (Omitted)</p>
+        </li>
+    </ol>
+
+    <h3>7.8 System Audit Log Management</h3>
+    <p>In this function, you can retrieve all events recorded by system. You also can filter what you want via selection criteria. More, you can <span style="font-weight:bold;">export the log as excel file</span> for inspection.</p>
+    <img src="../../Content/HomePageResources/Images/7.8.jpg" alt="7.8" />
+
+    <h3>
+        7.9 Authorized History Management
+    </h3>
+    <img src="../../Content/HomePageResources/Images/7.9.jpg" alt="7.9" />
+
+    <h3>
+        7.10 Multilingual
+    </h3>
+    <p>
+        As first section mentioned, Cool Privilege Control is based on multi language design pattern. Currently, there are three languages in the system. English, Simplified Chinese and Traditional Chinese. We can extend language package via add resource file. I hope you can help me to add more language package into the system. You can send your resource file to my email(<a href="mailto:wells-z@hotmail.com" target="_top">wells-z@hotmail.com</a> or <a href="mailto:wellscheung@gmail.com" target="_top">wellscheung@gmail.com</a>), I will consolidate all resource files and inject into the system. Following section will talk about how to create localized version of resource files.
+    </p>
+
+    <h4>7.10.1 Create localized version of resource files</h4>
+
+    <ol>
+        <li>
+            <p>Open project named <span style="font-weight:bold;">“CoolPrivilegeControlLangPack”</span>.</p>
+            <img src="../../Content/HomePageResources/Images/7.10.1.1.jpg" alt="7.10.1.1" />
+            <p>We need to create three categories of resource files. There are FunctionRes.resx, lblCommon.resx and MsgRes.resx. </p>
+        </li>
+        <li>
+            <p>In <span style="font-weight:bold;">Solution Explorer</span> right-click the project, point to <span style="font-weight:bold;">Add</span>, and then click <span style="font-weight:bold;">New Item</span>.</p>
+        </li>
+        <li>
+            <p>In the <span style="font-weight:bold;">Add New Item</span> dialog box, select <span style="font-weight:bold;">Resources File</span> and name the file <span style="font-weight:bold;">FunctionRes.de-de.resx</span>. The file name indicates the language, German, and the country, Germany.</p>
+            <p>
+                File name format: <base file name>.<language-country>.resx
+            </p>
+
+            <p>If you do not know country code and language code. Please visit blew link</p>
+            <p><a href="http://www.csharp-examples.net/culture-names/" target="_top">http://www.csharp-examples.net/culture-names/</a></p>
+
+            <p>We have to create three files for each language and each country.</p>
+            <p>
+                <span style="font-weight:bold;">
+                    E.g.<br />
+                    FunctionRes.de-de.resx<br />
+                    lblCommon.de-de.resx<br />
+                    MsgRes.de-de.resx
+                </span>
+            </p>
+            <img src="../../Content/HomePageResources/Images/7.10.1.3.jpg" alt="7.10.1.3" />
+        </li>
+        <li>
+            <p>Open <span style="font-weight:bold;">Resource Designer</span> change <span style="font-weight:bold;">Access Modifier</span> to “No code generation” and copy all key-value pairs from <span style="font-weight:bold;">base resource file</span> to the <span style="font-weight:bold;">new resource file</span>.</p>
+            <img src="../../Content/HomePageResources/Images/7.10.1.4.jpg" alt="7.10.1.4" />
+        </li>
+        <li><p>Translate all sentences in Value column to your local language.</p></li>
+        <li>
+            <p>Save file and repeat the same action to create remain two files.</p>
+            <p>i.e.   <span style="font-weight:bold;">lblCommon.xx-xx.resx</span></p>
+            <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="font-weight:bold;">MsgRes.xx-xx.resx</span></p>
+            <img src="../../Content/HomePageResources/Images/7.10.1.6.jpg" alt="7.10.1.6" />
+        </li>
+        <li>
+            <p>
+                Send the above three files to me (<a href="mailto:wells-z@hotmail.com" target="_top">wells-z@hotmail.com</a> or <a href="mailto:wellscheung@gmail.com" target="_top">wellscheung@gmail.com</a>). And I will consolidate other guys’ resource and publish a new version with your language pack to the site. Thanks.
+            </p>
+        </li>
+    </ol>
+
+    <h2>
+        Testing Site
+    </h2>
+
+    <p>For guys who want to test the system immediately or trace bug. I create a testing site. Please visit <a href="http://www.wellscom.net" target="_top">http://www.wellscom.net</a>. In order to protect our testing site, I have to lock the admin account and functions which function path starts with “0004”. And the site data will restore in midnight of American East. </p>
+
+    <p>I set up many account for you to understand </p>
+
+    <p><span style="font-weight:bold;">Admin -- Administrator</span></p>
+    <p>
+        Login Name: admin<br />
+        Password:123456
+    </p>
+
+    <p><span style="font-weight:bold;">Angus – Project Manager</span></p>
+    <p>
+        Login Name: angus<br />
+        Password:123456
+    </p>
+
+    <p><span style="font-weight:bold;">Wells – Project team developer</span></p>
+    <p>
+        Login Name: wells<br />
+        Password:123456
+    </p>
+
+    <p><span style="font-weight:bold;">Alice – Project team officer</span></p>
+    <p>
+        Login Name: alice<br />
+        Password:123456
+    </p>
+
+    <p><span style="font-weight:bold;">Tim – Sales Manager</span></p>
+    <p>
+        Login Name: tim<br />
+        Password:123456
+    </p>
+
+    <p><span style="font-weight:bold;">Michael – Sales</span></p>
+    <p>
+        Login Name: michael<br />
+        Password:123456
+    </p>
+
+    <h2>Test-driven development</h2>
+    <p>Cool Privilege Control System is using the test-driven development (TDD) approach. For many companys, TDD is a mandatory approach in repetition development cycle. Cool Privilege Control System contains 40 test cases in all Controllers, you can easily test all functions by clicking "Run All" in Test Explorer. Certainly, you can add new test case or add new conditions into the orignial test case based on your requriements. Cool Privilege Control System uses Xunit and Mock. Xunit is a test framework inject into Visual Studio, as the same as MSTest and Nunit. For more infos, you can visit the official site.</p>
+    <h5>
+        Figure 6.0.1 Test Explorer
+    </h5>
+    <img src="../../Content/HomePagePart2Resources/Images/6.0.1 Test Explorer.jpg" alt="6.0.1 Test Explorer" />
+
+    <h2>Finally</h2>
+    <p>I place Donate button in the site and project. If you like <span style="font-weight:bold;">Cool Privilege Control</span>. I hope you can donate us. Your donation will encourage us to continue development and keep the testing site serve. Thanks. After donation, send email to me and I will help you to remove the button.</p>
+
+    <p>Besides, Cool Privilege Control based on many interesting design pattern. Such as MVC, MEF, Entity Framework, jQuery and Bootstrap(UI). I am sorry I cannot introduce all of these design patterns to you in short time. If you have any questions about Cool  Access Control. Feel free and contact me. Thanks for your reading.</p>
+
+    <h2>History</h2>
+
+    <p>2016-01-22 Initial publication</p>
+    <p>2016-02-01 Change project from "Cool Access Control" to "Cool Privilege Control",Fixed bugs and display issue as wells.</p>
+</div>

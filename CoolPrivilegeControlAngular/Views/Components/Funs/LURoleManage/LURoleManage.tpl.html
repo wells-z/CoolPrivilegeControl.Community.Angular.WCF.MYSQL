@@ -1,0 +1,84 @@
+﻿<navbar></navbar>
+<fieldset>
+    <legend>
+        <h5>{{Captions.SearchCriteria}}</h5>
+    </legend>
+    <form name="SearchForm" class="form-horizontal" novalidate>
+        <div class="form-group">
+            <label class="control-label col-md-2" style=" text-align:left;" for="RoleName">{{Captions.RoleName}}</label>
+            <div class="col-md-4">
+                <input type="text" class="form-control" ng-model="EntityRole.RoleName" ng-change="Search()" />
+            </div>
+        </div>
+    </form>
+</fieldset>
+<fieldset>
+    <legend>
+        <h5>{{Captions.List}}</h5>
+    </legend>
+    <div>
+        <div class="row">
+            <div class="col-md-12">
+                <pagingbar currpageindex="CurrPageIndex" totalcount="TotalCount" displaypagenum="DisplayPageNum" pagesize="PageSize"></pagingbar>
+            </div>
+            <div class="col-md-12">
+                &nbsp;
+            </div>
+
+            <div class="col-md-12">
+                <div id="no-more-tables">
+                    <table class="table table-striped fa-border table-hover cf">
+                        <thead class="cf">
+                            <tr>
+                                <th align="center" style="text-align:center;" id="RoleNameTH" ng-click="SortBy('RoleName')">
+                                    {{Captions.RoleName}}<i class="fa fa-fw fa-sort-{{SortDir}}" ng-if="Sort=='RoleName'"></i>
+                                </th>
+                                <th align="center" style="text-align:center;" id="CreateDateTH" ng-click="SortBy('CreateDate')">
+                                    {{Captions.CreateDate}}<i class="fa fa-fw fa-sort-{{SortDir}}" ng-if="Sort=='CreateDate'"></i>
+                                </th>
+                                <th colspan="2" align="center" style="text-align:center;">{{Captions.Operation}}</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="item in RoleList" ng-if="RoleList.length>0" class="animateRepeat">
+                                <td data-title="{{Captions.RoleName}}" align="left" class="vert-align">{{item.RoleName}}</td>
+                                <td data-title="{{Captions.CreateDate}}" align="center" class="vert-align">{{item.CreateDate| date:DateTimeFormat}}</td>
+                                <td data-title="{{Captions.Operation}}" align="center" width="90px" class="vert-align" ng-if="item.AllowEdit">
+                                    <a class="btn btn-default" ui-sref="Main.LURoleManage.Edit({RoleID:item.ID})" ui-sref-opts="{reload:true}"><i class="fa fa-pencil fa-fw"></i> {{Captions.Edit}}</a>
+                                </td>
+
+                                <td data-title="{{Captions.Operation}}" align="center" width="90px" class="vert-align" ng-if="!item.AllowEdit">
+                                    <a class="btn btn-default" ng-disabled="!item.AllowEdit"><i class="fa fa-pencil fa-fw"></i> {{Captions.Edit}}</a>
+                                </td>
+
+                                <td align="center" width="90px" class="vert-align" ng-if="item.AllowDel">
+                                    <a class="btn btn-danger" ng-click="Delete(item.ID)"><i class="fa fa-trash-o fa-fw"></i> {{Captions.Delete}}</a>
+                                </td>
+
+                                <td align="center" width="90px" class="vert-align" ng-if="!item.AllowDel">
+                                    <a class="btn btn-danger" ng-disabled="!item.AllowDel"><i class="fa fa-trash-o fa-fw"></i>{{Captions.Delete}}</a>
+                                </td>
+                            </tr>
+
+                            <tr ng-if="FunList.length==0">
+                                <td colspan="3">{{Captions.E019}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!--Paging-->
+            <div class="col-md-12">
+                <pagingbar currpageindex="CurrPageIndex" totalcount="TotalCount" displaypagenum="DisplayPageNum" pagesize="PageSize"></pagingbar>
+            </div>
+            <div class="col-md-12">
+                &nbsp;
+            </div>
+
+            <div class="col-md-12" ng-if="CheckPrivilege_Create">
+                <a class="btn btn-default" role="button" ui-sref="Main.LURoleManage.Create" ui-sref-opts="{reload:true}">{{Captions.LURoleManage_Create}}</a>
+            </div>
+        </div>
+    </div>
+</fieldset>

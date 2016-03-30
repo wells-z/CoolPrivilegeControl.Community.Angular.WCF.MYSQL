@@ -1,0 +1,745 @@
+﻿<!--------------------------------------------------------------------------->
+<!--                           INTRODUCTION
+
+ The Code Project article submission template (HTML version)
+
+Using this template will help us post your article sooner. To use, just
+follow the 3 easy steps below:
+
+     1. Fill in the article description details
+     2. Add links to your images and downloads
+     3. Include the main article text
+
+That's all there is to it! All formatting will be done by our submission
+scripts and style sheets.
+
+-->
+<!--------------------------------------------------------------------------->
+<!--                        IGNORE THIS SECTION                            -->
+<!--------------------------------------------------------------------------->
+<!-------------------------------     STEP 1      --------------------------->
+<!--  Fill in the details (CodeProject will reformat this section for you) -->
+<link rel="stylesheet" type="text/css" href="http://www.codeproject.com/App_Themes/Std/CodeProject.css">
+<navbar></navbar>
+<div class="container">
+    <ul>
+        <li><a ui-sref="Main.Home.IndexPart1" ui-sref-opts="{reload:true}">Cool Privilege Control System Part 1 -- asp.net MVC</a></li>
+        <li><a ui-sref="Main.Home.IndexPart2" ui-sref-opts="{reload:true}">Cool Privilege Control System Part 2 -- asp.net MVC with WCF</a></li>
+        <li><a ui-sref="Main.Home.IndexPart3" ui-sref-opts="{reload:true}">Cool Privilege Control System Part 3 -- Angular Single-Page Application</a></li>
+    </ul>
+
+    <div class="row">
+        <div class="col-md-2 pull-right">
+            <div class="pull-right" style=" vertical-align: middle !important;" id="TotalVisitedDiv">
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div id="DateTimeDiv"></div>
+        </div>
+
+    </div>
+
+<pre>
+    Title:       Cool Privilege Control System Part 2 -- asp.net MVC with WCF
+    Author:      wells cheung
+    Email:       wells-z@hotmail.com
+    Language:    C#
+    Platform:    Window
+    Technology:  Entity Framework, MVC, asp.net, jQuery, MEF, log4net, automapper, WCF and so on 
+    Level:       Intermediate
+    Description: Cool Privilege Control System Part 2 -- asp.net MVC with WCF
+    Section      Introduction
+    SubSection   Introduction
+    License:     MS-PL
+    </pre>
+
+    <!-------------------------------     STEP 2      --------------------------->
+    <!--  Include download and sample image information.                       -->
+    <!-------------------------------     STEP 3      --------------------------->
+    <!--  Add the article text. Please use simple formatting (<h2>, <p> etc)   -->
+
+    <ul class=download>
+        <li><a href="~/Content/HomePageResources/Program/CoolPrivilegeControl.Community.MYSQL.zip">CoolPrivilegeControl.MYSQL.zip </a></li>
+        <li><a href="~/Content/HomePageResources/Program/CoolPrivilegeControl.Community.MSSQL.zip">CoolPrivilegeControl.MSSQL.zip</a></li>
+    </ul>
+
+    <h2>Introduction</h2>
+
+    <p>Cool Privilege Control is a standalone access right system. It resolves many complex access right problems. such as user with different access level problem,  unlimited function hierarchy and easily add function type. And also contains many common mechanisms, such as support multilingual environment, support three type logs(error log, trace log, audit log). It helps you easily and quickly create asp.net mvc demo project with powerful privilege. For details please see <a href="http://www.codeproject.com/Articles/1074801/Cool-Privilege-Control-System" title="Cool Privilege Control">my last artical</a>. In here I want to take some times to thank who voted 5 and asked questions. Thanks again. Today I want to go more deeply into system extension. What is this and how? Please follow my mind.</p>
+
+    <h2>Background</h2>
+
+    <p>WCF which full name is Windows Communication Foundation. It is a framework for building service-oriented applications. I known some smart guys had guessed. Yeah. you got it! In this artical I will seperate Cool Privilege Control System into two different part. One is MVC project which is responsible for UI maintenance (Send request to Service/Respond received from Service) , the other is WCF project(Hosted by IIS) which is responsible for executing operations (Receive and perform request from caller/Send response to caller). Let's go ahead I will to How and Why use WCF to perform system extension.</p>
+
+    <h2>Design Pattern</h2>
+
+    <p>First of all, I want to describe the mvc design pattern. Yeah. MVC design pattern. I known many guys have more ideas and experiences than me. I don't want to fool who go further than me. But I think the advanced is come from the cons. of original one and new requirements.</p>
+
+    <div class="Caption">
+        Figure 3.1 MVC-Diagram.gif
+    </div>
+    <img src="../../Content/HomePagePart2Resources/Images/3.1 MVC-Diagram.gif" alt="3.1 MVC-Diagram.gif" />
+
+    <p>There are many mvc image in google search engine. Which help me to reduce many times to draw the diagram. Thanks Google.<br /> MVC composed of Controller, View and Model. MVC design pattern can be used in not only web application but also client application(P.S. I prefer use MVVM design pattern in client application development. I mean WPF application). But Cool Privilege Control is a web application, so I will focus on web application MVC. A web request send to the app server. A url router receive the request and select suitable controller to perform the request(P.S. I ignored many steps before url router received the reuqest. such as HttpHandler. Because my topic is not to overwrite MVC design pattern.). <b>Controller</b> is an intermedialy between model and view. It handles the requests, call model methods, bind data and return views. <b>Model</b> contains db operations, business logic. <b>View</b> is a presentation layer, present layout with data.</p>
+
+    <h4>
+        MVC Pros and Cons
+    </h4>
+    <p>
+        <table style="background-color:#ccc;border-spacing:1px; border-collapse:separate;" cellspacing="1" cellpadding="1">
+            <tbody>
+                <tr>
+                    <td style="font-weight:bold;background-color:white;vertical-align:top;">&nbsp;&nbsp;Pros:&nbsp;&nbsp;</td>
+                    <td style="background-color:white;">
+                        <ol>
+                            <li>Easy maintenance. Designer focus on design UI and Developer focus on business logic. That said designer no longer care about the business logic and db operation, on the other hand developer need not care about the UI layer. (P.S. You know, In real case, sometimes we are all in one.).</li>
+                            <li>Easily write unit test for business logic. </li>
+                            <li>Big advantage is remove web form's terrible post back logic which contains huge viewstate.</li>
+                        </ol>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="font-weight:bold;background-color:white; vertical-align:top;">&nbsp;&nbsp;Cons:&nbsp;&nbsp;</td>
+                    <td style="background-color:white;">
+                        <ol>
+                            <li>Cannot share business logic to different UI layer at the same time. such as WPF, Angular js website and other application written in different language. Which is the pros of the SO application(service-oriented application).</li>
+                            <li>Without WS/WCF, in Asp.net mvc project, All complied dll have to be stored in one server. If the hacker crack the server, he would find easy way to access db and do terriable things whatever you never think before.</li>
+                            <li>Without WS/WCF, if you design asp.net mvc application, you use either entity framework to perform db operation or enterprice liberary to perform db operation, Model in MVC is aware the db scheme. I thinks it is dangerous for hacker know about these.</li>
+                        </ol>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </p>
+
+    <p>Note: Above pros and cons is my personal opinions. If there are anything wrong. Please feel free and contact me.</p>
+
+    <div class="Caption">
+        Figure 3.2 MVC without and with WCF service flow
+    </div>
+    <img src="../../Content/HomePagePart2Resources/Images/3.2 MVC without and with WCF service flow.jpg" alt="3.2 MVC without and with WCF service flow.jpg" />
+
+    <p>As pervious diagram discribed, after <b>Controller</b> received the request from <b>URL Router</b>, <b>Controller</b> will call wcf service instead of <b>Model</b> modification method. Then <b>WCF service receive</b> request and call <b>Model</b> modification method. Model perform the action and return <b>View Model</b> to the caller. <b>Controller</b> receive the responded <b>View Model</b> and bind to the <b>View</b>.</p>
+
+    <h4>
+        MVC With WCF Pros and Cons
+    </h4>
+
+    <p>
+        <table style="background-color:#ccc;border-spacing:1px; border-collapse:separate;" cellspacing="1" cellpadding="1">
+            <tbody>
+                <tr>
+                    <td style="font-weight:bold;background-color:white;vertical-align:top;">&nbsp;&nbsp;Pros:&nbsp;&nbsp;</td>
+                    <td style="background-color:white;">
+                        <ol>
+                            <li>More Security. You can set at least one firewall before the service server and limit the caller. (i.e. specify one or two server can call the service server)</li>
+                            <li>Both View and Controller are not aware the Model. They are aware View Model only. Even if the hacker crack the web server which can be visited from outside, they don't know the database scheme and business logic.</li>
+                            <li>
+                                Support multi-UI layer.
+                                <div class="Caption">
+                                    Figure 3.3 Support Multi-UI
+                                </div>
+                                <img src="../../Content/HomePagePart2Resources/Images/3.3 Support Multi-UI.jpg" alt="3.3 Support Multi-UI" />
+                            </li>
+                        </ol>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="font-weight:bold;background-color:white; vertical-align:top;">&nbsp;&nbsp;Cons:&nbsp;&nbsp;</td>
+                    <td style="background-color:white;">
+                        <ol>
+                            <li>Because the Web application and WCF application have not been hold by the same server. The connection between the web application and the WCF application maybe via internal network or internet. It will have network issue. The bandwidth determine the service response time. However, throughout many years development experiences, this issue does not have any impact. maybe one or two second delay. (P.S. Currently, Many new hardware technology reduce the risk. such as SSD,5G and so on.). Furthermore, you can use asynchronous method to prevent the main thread suspension and continute remaining process that help you to reduce the waiting time.</li>
+                            <li>It is easy to know, if you are developing a small project, developing and maintain too many tiers, It will increase the project complexity and maintenance time. On the other hand, If you are developing large system and contains many modules as I met, it will help you to recognize the whole view of system and assign different tier/part to corresponding colleauge.</li>
+                        </ol>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </p>
+
+    <p>
+        After previous sections, as smart as you are, I guess you would like to use WCF to extend yours' products. Below sequence diagram illustrate the flow about "Get HR Info." in ASP.NET MVC, I hope this diagram give you some ideas when you design your complex system with cool privilege control.
+    </p>
+    <div class="Caption">
+        Figure 3.4 Cool Privilege Control With WCF sequence diagram
+    </div>
+    <img src="../../Content/HomePagePart2Resources/Images/3.4 Cool Privilege Control With WCF sequence diagram.jpg" alt="3.4 Cool Privilege Control With WCF sequence diagram.jpg" />
+
+    <p>
+        <b>Description</b>
+    </p>
+
+    <p>
+        <table style="background-color:#ccc;border-spacing:1px; border-collapse:separate;" cellspacing="1" cellpadding="1">
+            <tbody>
+                <tr>
+                    <td style="font-weight:bold;background-color:white; vertical-align:top;">1.</td>
+                    <td style="background-color:white;">Client user sent a request to get Employee Basic Info from HR Module.</td>
+                </tr>
+                <tr>
+                    <td style="font-weight:bold;background-color:white; vertical-align:top;">1.1</td>
+                    <td style="background-color:white;">HR Module redirect browser to login page.</td>
+                </tr>
+                <tr>
+                    <td style="font-weight:bold;background-color:white; vertical-align:top;">1.1.1</td>
+                    <td style="background-color:white;">Reponse login page to client.</td>
+                </tr>
+                <tr>
+                    <td style="font-weight:bold;background-color:white; vertical-align:top;">2.</td>
+                    <td style="background-color:white;">Client user input login name and password, click submit button.</td>
+                </tr>
+                <tr>
+                    <td style="font-weight:bold;background-color:white; vertical-align:top;">2.1</td>
+                    <td style="background-color:white;">MVC controller invoke WCF authenticate method.</td>
+                </tr>
+                <tr>
+                    <td style="font-weight:bold;background-color:white; vertical-align:top;">2.1.1</td>
+                    <td style="background-color:white;">WCF execute validation method.</td>
+                </tr>
+                <tr>
+                    <td style="font-weight:bold;background-color:white; vertical-align:top;">2.1.2</td>
+                    <td style="background-color:white;">WCF Service issue token or return valication error to the caller.</td>
+                </tr>
+                <tr>
+                    <td style="font-weight:bold;background-color:white; vertical-align:top;">2.1.3</td>
+                    <td style="background-color:white;">Client side cache token for advance process.</td>
+                </tr>
+
+                <tr>
+                    <td style="font-weight:bold;background-color:white; vertical-align:top;">3.</td>
+                    <td style="background-color:white;">Client user sent a request with token to get HR Info.</td>
+                </tr>
+                <tr>
+                    <td style="font-weight:bold;background-color:white; vertical-align:top;">3.1</td>
+                    <td style="background-color:white;">HR Module invoke WCF service with function key and token in order to check access right.</td>
+                </tr>
+                <tr>
+                    <td style="font-weight:bold;background-color:white; vertical-align:top;">3.1.1</td>
+                    <td style="background-color:white;">WCF execute validation method.</td>
+                </tr>
+                <tr>
+                    <td style="font-weight:bold;background-color:white; vertical-align:top;">3.1.2</td>
+                    <td style="background-color:white;">If it is successful, return success to HR Module.</td>
+                </tr>
+
+                <tr>
+                    <td style="font-weight:bold;background-color:white; vertical-align:top;">3.1.2.1</td>
+                    <td style="background-color:white;">HR Module return HR Info to client user.</td>
+                </tr>
+                <tr>
+                    <td style="font-weight:bold;background-color:white; vertical-align:top;">3.1.3</td>
+                    <td style="background-color:white;">If it is fail, return fail to HR Module.</td>
+                </tr>
+                <tr>
+                    <td style="font-weight:bold;background-color:white; vertical-align:top;">3.1.3.1</td>
+                    <td style="background-color:white;">HR Module return fail message to client user.</td>
+                </tr>
+        </table>
+    </p>
+
+    <p>There was no doubting that you can replace the UI to different technology. I just give you an example, you can control the flow by yourself via call WCF service.</p>
+
+    <h2>Settings</h2>
+    <p>
+        For MSSQL/MYSQL database user, I publish two versions to fulfill your case. If you use MSSQL as default, please download “CoolPrivilegeControl.Community.WCF.MSSQL.zip”, otherwise, please download “CoolPrivilegeControl.Community.WCF.MYSQL.zip”. And I list my development environment for your reference.
+    </p>
+    <p>1.	Microsoft Visual Studio 2013</p>
+    <p>2.	.NET Framework 4.5.1</p>
+    <p>3.	MSSQL Server 2012 or MYSQL 5.6.26</p>
+    <p>4.	MVC 5.2.3</p>
+    <p>5.	Entity Framwork 6.0</p>
+
+    <p style="color:red; font-weight:bold;">
+        Mandatory Step: After opened solution, please right click solution and select “Enable NuGet Package Restore”.
+    </p>
+    <h5>
+        Figure 4.0 Enable NuGet Package Restore
+    </h5>
+    <img src="../../Content/HomePageResources/Images/6.0.1 Enable NuGet Package Restore.jpg" alt="4.0 Enable NuGet Package Restore" />
+
+    <p style="color:red; font-weight:bold;">
+        Mandatory Step: Please right click solution and click "Properties", set projects "CoolPrivilegeControl" and "CoolPrivilegeServiceHost" as startup projects.
+    </p>
+    <img src="../../Content/HomePagePart2Resources/Images/4.0.1 Set Multiple startup projects.jpg" alt="4.0.1 set multiple startup projects" />
+
+    <h3>
+        4.1 EDIT WEB.CONFIG FILE
+    </h3>
+    <h4>
+        4.1.1 For MYSQL user
+    </h4>
+    <h5>
+        Figure 4.1.1.1 Hosting Service web.config(MySql with WCF Version)
+    </h5>
+    <img src="../../Content/HomePagePart2Resources/Images/4.1.1.1 Hosting Service web.config(MySql with WCF Version).jpg" alt="4.1.1.1 Hosting Service web.config(MySql with WCF Version)" />
+    <p>Please pay attention to the appSettings node, change DBSource/DBName/DBPort/LoginName/LoginPWD value based on mysql server settings. </p>
+    <p>
+        <table style="background-color:#ccc;border-spacing:1px; border-collapse:separate;" cellspacing="1" cellpadding="1">
+            <tbody>
+                <tr>
+                    <td style="font-weight:bold;background-color:white;">Property</td>
+                    <td style="font-weight:bold;background-color:white;">Description</td>
+                </tr>
+                <tr>
+                    <td style="background-color:white;">DBSource:</td>
+                    <td style="background-color:white;">IP address of the server host</td>
+                </tr>
+                <tr>
+                    <td style="background-color:white;">DBName:</td>
+                    <td style="background-color:white;">Database name</td>
+                </tr>
+                <tr>
+                    <td style="background-color:white;">DBPort:</td>
+                    <td style="background-color:white;">Server TCP/IP port</td>
+                </tr>
+                <tr>
+                    <td style="background-color:white;">LoginName:</td>
+                    <td style="background-color:white;">DB user name</td>
+                </tr>
+                <tr>
+                    <td style="background-color:white;">LoginPWD:</td>
+                    <td style="background-color:white;">DB user password</td>
+                </tr>
+                <tr>
+                    <td style="background-color:white;">IsDebug:</td>
+                    <td style="background-color:white;">If you set true, More details tracer info. will be shown.</td>
+                </tr>
+            </tbody>
+        </table>
+    </p>
+    <h5>
+        Figure 4.1.1.2 Asp.net MVC web.config(MySql with WCF Version)
+    </h5>
+    <img src="../../Content/HomePagePart2Resources/Images/4.1.1.2 Asp.net MVC web.config(MySql with WCF Version).jpg" alt="4.1.1.2 Asp.net MVC web.config(MySql with WCF Version)" />
+    <p>
+        <table style="background-color:#ccc;border-spacing:1px; border-collapse:separate;" cellspacing="1" cellpadding="1">
+            <tbody>
+                <tr>
+                    <td style="font-weight:bold;background-color:white;">Property</td>
+                    <td style="font-weight:bold;background-color:white;">Description</td>
+                </tr>
+                <tr>
+                    <td style="background-color:white;">IsDebug:</td>
+                    <td style="background-color:white;">If you set true, whatever exception will be show on the page, and vice versa.</td>
+                </tr>
+            </tbody>
+        </table>
+    </p>
+
+    <h4>
+        4.1.2 For MSSQL user
+    </h4>
+    <h5>
+        Figure 4.1.2.1 Hosting Service web.config(MSSql with WCF Version)
+    </h5>
+    <img src="../../Content/HomePagePart2Resources/Images/4.1.2.1 Hosting Service web.config(MSSql with WCF Version).jpg" alt="4.1.2.1 Hosting Service web.config(MSSql with WCF Version)" />
+
+    <p>As the same as mysql user, change DBSource/DBName/LoginName/LoginPWD value based on mssql server settings, except DBPort. In mssql server, the port number can be specified after the server name or server ip address with comma. E.g. </p>
+
+    <p><span style="background-color:black; color:white;">WELLSCHEUNG\MSSQLSERVER2012,49287</span> 49287 is the port.</p>
+
+    <p>
+        <table style="background-color:#ccc;border-spacing:1px; border-collapse:separate;" cellspacing="1" cellpadding="1">
+            <tbody>
+                <tr>
+                    <td style="font-weight:bold;background-color:white;">Property</td>
+                    <td style="font-weight:bold;background-color:white;">Description</td>
+                </tr>
+                <tr>
+                    <td style="background-color:white;">DBSource:</td>
+                    <td style="background-color:white;">
+                        IP address of the server host
+                        <br />With Port Format: server name or ip address,port
+                    </td>
+                </tr>
+                <tr>
+                    <td style="background-color:white;">DBName:</td>
+                    <td style="background-color:white;">Database name</td>
+                </tr>
+                <tr>
+                    <td style="background-color:white;">LoginName:</td>
+                    <td style="background-color:white;">DB user name</td>
+                </tr>
+                <tr>
+                    <td style="background-color:white;">LoginPWD:</td>
+                    <td style="background-color:white;">DB user password</td>
+                </tr>
+                <tr>
+                    <td style="background-color:white;">IsDebug:</td>
+                    <td style="background-color:white;">If you set true, More details tracer info. will be shown.</td>
+                </tr>
+            </tbody>
+        </table>
+    </p>
+    <p>For UI web.config settings, Please refer to above section 4.1.1.2</p>
+
+    <h4>
+        4.1.3 Enable or Disable DB initializer
+    </h4>
+    <p>That is the feature of entity framework code first design pattern. And it is the most useful I ever heard before. When you executed the project, if database instance did not exist in the server and the flag is enabled, entity framework mechanism would help you to initialize it. For more information please refer to MSDN(<a href="https://msdn.microsoft.com/en-us/data/ee712907">https://msdn.microsoft.com/en-us/data/ee712907</a>). If you do not want entity framework to initial database and cover your database, you can set the attribute named “disableDatabaseInitialization” on context element to true.</p>
+    <h5>
+        Figure 4.1.3 disableDatabaseInitialization flag
+    </h5>
+    <img src="../../Content/HomePageResources/Images/6.1.3 disableDatabaseInitialization flag.jpg" alt="4.1.3 disableDatabaseInitialization flag" />
+
+    <p style=" color:red; ">Alternative, you can initialize DB via sql script or database backup. I prepare sql script for mysql user to execute and database backup for mssql user to restore. </p>
+    <p><a href="~/Content/HomePageResources/DBBackup/MySql_DBBackup_20160119.zip">MySql Script</a></p>
+    <p><a href="~/Content/HomePageResources/DBBackup/MSSql_DBBackup_20160119.zip">MSSql Database Backup</a></p>
+
+    <h3>
+        4.2 Edit Log4Net.config file
+    </h3>
+    <p>We used log4net to help us record trace info and error info. About how to use log4net, I though most of you had more experiences than me, so I do not want to spend many times on repeat. I only specified that all functions in the system enable trace log as default (i.e. Include both input and output information). That is an easy way to trace error even if we cannot run visual studio debug when onsite support. In WCF version, we can config two log4net.config. The one is for asp.net mvc, the other is for wcf service.</p>
+
+    <p>It is easy to turn off or change another type of info you wanted to capture. There are seven levels type which is pre-set in log4net.</p>
+
+    <p>
+        The following levels are defined in order of increasing priority:
+    </p>
+
+    <ul>
+        <li>ALL</li>
+        <li>DEBUG</li>
+        <li>INFO</li>
+        <li>WARN</li>
+        <li>ERROR</li>
+        <li>FATAL</li>
+        <li>OFF</li>
+    </ul>
+    <p>
+        You can replace the value of the attribute named “level” to what you wanted in log4net.config.
+    </p>
+
+    <h5>Figure 4.2.1 Log4Net.config</h5>
+    <img src="../../Content/HomePageResources/Images/6.2.1 Log4Net.config.jpg" alt="4.2.1 Log4Net.config" />
+
+    <table>
+        <tr>
+            <td><span style="font-weight:bold;">SysLog:</span> 	Log all info of the system.</td>
+        </tr>
+        <tr>
+            <td><span style="font-weight:bold;">ErrorLog:</span>	Only log exception of the system.</td>
+        </tr>
+    </table>
+
+    <p>
+        In mvc project, previous setting is a global setting. If you want to disable one or any functions to log information automated. You can mark the function you wanted as “[UnTracerAction]” function.
+        After you do like that all info will not be log.
+    </p>
+
+    <h5>
+        Figure 4.2.2 UnTracerAction Function
+    </h5>
+
+<pre lang="aspnet">
+[HttpPost]
+[ValidateAntiForgeryToken]
+<b>[UnTracerAction]</b>
+public ActionResult Create(FunctionVM functionVM)
+{
+    //Message Box Title -- When Error occured, Message Box would be showed.
+    string str_MsgBoxTitle = MultilingualHelper.GetStringFromResource(languageKey, "FManage_Create");
+</pre>
+
+    <p>
+        If you only want to log the main thread enter the function whether or not, except the detail information input or output. You can mark the function you wanted as <span style="font-weight:bold">“[TracerActionWithDetails(EnableTracer=false)]”</span> function.
+    </p>
+
+<pre lang="aspnet">
+[HttpPost]
+[ValidateAntiForgeryToken]
+<b>[TracerActionWithDetails(EnableTracer=false)]</b>
+public ActionResult Create(FunctionVM functionVM)
+{
+    //Message Box Title -- When Error occured, Message Box would be showed.
+    string str_MsgBoxTitle = MultilingualHelper.GetStringFromResource(languageKey, "FManage_Create");
+</pre>
+
+    <h5>
+        Figure 4.2.4 The log of tracer action without details
+    </h5>
+    <img src="../../Content/HomePagePart2Resources/Images/4.2.4 The log of tracer action without details.jpg" alt="4.2.4 The log of tracer action without details" />
+
+    <h5>
+        Figure 4.2.5 The log of tracer action with details
+    </h5>
+    <img src="../../Content/HomePagePart2Resources/Images/4.2.5 The log of tracer action with details.jpg" alt="4.2.5 The log of tracer action with details" />
+
+    <p>
+        After previously settings. System is ready for your use. Press “F5” in Visual Studio and double check if it has any compile errors or not. If any error came out, you can send the error to me for inspection or search solution in google by yourself.
+    </p>
+
+    <h2>Using the code</h2>
+
+    <p>In coming section, I want to illustrate how to call wcf service in Cool Privilege Control.</p>
+
+    <h4>UI Operation</h4>
+
+    <p>Here is a full view of method Index in FTManageController. which will be called when user enter selection criteria and click search button in Function Type Management.</p>
+
+<pre lang="aspnet">
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Index(FunctionTypeVM selectionCriteria)
+        {
+            //Message Box Title -- When Error occured, Message Box would be showed.
+            string str_MsgBoxTitle = MultilingualHelper.GetStringFromResource(languageKey, "FTManage");
+            //Declare output variable(recordCount && entityList_Result)
+            int recordCount = 0;
+            List<functiontypevm> entityList_Result = new List<functiontypevm>();
+            //Declare wcf output object;
+            FTSerListResult entity_FTSerListResult = null;
+            //Instantiate WebCommonHelper in order to call wcf service
+            WebCommonHelper webCommonHelper = new WebCommonHelper();
+            webCommonHelper.CallWCFHelper<ifuntypemgtser>(this, this.HttpContext, postOffice.FunTypeMgtSerPath, (entity_IFunTypeMgtSer, entity_WCFAuthInfoVM) =>
+            {
+                entity_FTSerListResult = entity_IFunTypeMgtSer.GetListWithPaging(entity_WCFAuthInfoVM, selectionCriteria, 1, PageSize, null, null, CustomFilter(selectionCriteria));
+            });
+            //Assign data to local variable
+            if (entity_FTSerListResult != null)
+            {
+                recordCount = entity_FTSerListResult.Int_TotalRecordCount;
+                entityList_Result = entity_FTSerListResult.EntityList_FunctionTypeVM;
+            }
+            //Set paging bar info (Total Record Count and Page Index)
+            StorePageInfo(recordCount, 1);
+            //Cache selection criteria
+            StoreSelectionCriteria<functiontypevm>(selectionCriteria);
+            //Pass Error To UI
+            string strError = "";
+            if (entity_FTSerListResult.StrList_Error.Count() > 0)
+                strError = string.Join("<br />", entity_FTSerListResult.StrList_Error.ToArray());
+            //Fail
+            if (entity_FTSerListResult.StrList_Error.Count > 0)
+            {
+                MsgInfo errorMsgInfo = new MsgInfo();
+                errorMsgInfo.MsgTitle = str_MsgBoxTitle;
+                errorMsgInfo.MsgDesc = strError;
+                errorMsgInfo.MsgType = MessageType.ValidationError;
+                ViewBag.ActionMessage = errorMsgInfo;
+            }
+            //Success
+            return View(entityList_Result);
+        }
+</pre>
+
+    <p>Step by step code spec</p>
+    <ol>
+        <li>
+            Set message box title.
+            <pre lang="aspnet">
+            //Message Box Title -- When Error occured, Message Box would be showed.
+            string str_MsgBoxTitle = MultilingualHelper.GetStringFromResource(languageKey, "FTManage");
+        </pre>
+        </li>
+        <li>
+            Declare variables recordCount and entityList_Result, which used to receive total record count and Function Type list after service call.
+            <pre lang="aspnet">
+            //Declare output variable(recordCount && entityList_Result)
+            int recordCount = 0;
+            List<functiontypevm> entityList_Result = new List<functiontypevm>();
+        </pre>
+        </li>
+
+        <li>
+            Declare WCF output object
+            <pre lang="aspnet">
+            //Declare wcf output object;
+            FTSerListResult entity_FTSerListResult = null;
+        </pre>
+        </li>
+
+        <li>
+            Instantiate WebCommonHelper and call service.
+            <pre lang="aspnet">
+            //Instantiate WebCommonHelper in order to call wcf service
+            WebCommonHelper webCommonHelper = new WebCommonHelper();
+            webCommonHelper.CallWCFHelper<ifuntypemgtser>(this, this.HttpContext, postOffice.FunTypeMgtSerPath, (entity_IFunTypeMgtSer, entity_WCFAuthInfoVM) =>
+            {
+                entity_FTSerListResult = entity_IFunTypeMgtSer.GetListWithPaging(entity_WCFAuthInfoVM, selectionCriteria, 1, PageSize, null, null, CustomFilter(selectionCriteria));
+            });
+        </pre>
+        </li>
+
+        <li>
+            Assign data to local variableS
+            <pre lang="aspnet">
+            if (entity_FTSerListResult != null)
+            {
+                recordCount = entity_FTSerListResult.Int_TotalRecordCount;
+                entityList_Result = entity_FTSerListResult.EntityList_FunctionTypeVM;
+            }
+        </pre>
+        </li>
+
+        <li>
+            Cache paging info in order to set paging bar.
+            <pre lang="aspnet">
+            //Set paging bar info (Total Record Count and Page Index)
+            StorePageInfo(recordCount, 1);
+        </pre>
+        </li>
+
+        <li>
+            Cache selection criteria.
+            <pre lang="aspnet">
+            //Cache selection criteria
+            StoreSelectionCriteria<functiontypevm>(selectionCriteria);
+        </pre>
+        </li>
+
+        <li>
+            Return error info to UI if error occured or bind entity list to the view.
+            <pre lang="aspnet">
+            //Pass Error To UI
+            string strError = "";
+            if (entity_FTSerListResult.StrList_Error.Count() > 0)
+                strError = string.Join("<br />", entity_FTSerListResult.StrList_Error.ToArray());
+            //Fail
+            if (entity_FTSerListResult.StrList_Error.Count > 0)
+            {
+                MsgInfo errorMsgInfo = new MsgInfo();
+                errorMsgInfo.MsgTitle = str_MsgBoxTitle;
+                errorMsgInfo.MsgDesc = strError;
+                errorMsgInfo.MsgType = MessageType.ValidationError;
+                ViewBag.ActionMessage = errorMsgInfo;
+            }
+            //Success
+            return View(entityList_Result);
+        </pre>
+        </li>
+    </ol>
+
+    <h4>Service Operation</h4>
+    <p>In above code snip, I illustrated the operation of UI controller. In blew code snip, I will show you the process after wcf received a call.</p>
+
+    <p>Here is a full view of wcf method called by above controller</p>
+
+<pre lang="aspnet">
+        public FTSerListResult GetListWithPaging(WCFAuthInfoVM entity_WCFAuthInfoVM, FunctionTypeVM entity_SearchCriteria, int int_CurrentPage, int int_PageSize, string str_SortColumn, string str_SortDir, List<string> str_CustomFilter)
+        {
+            try
+            {
+                //Restore Server Session by token
+                RetrieveServerSideSession(entity_WCFAuthInfoVM);
+                //Flag Success or Fail
+                bool ret = false;
+                //Define error list
+                List<string> strList_Error = new List<string>();
+                //Instantiate  FTSerListResult
+                FTSerListResult returnResult = new FTSerListResult();
+                CoolPrivilegeControlContext dbContext = CoolPrivilegeControlContext.CreateContext();
+                FunctionTypeRespository entityRepos_FT = new FunctionTypeRespository(dbContext, entity_BaseSession.ID);
+                #region [ Check Privilege ]
+                ret = CheckAccPrivilege(entity_BaseSession.ID, entity_WCFAuthInfoVM.RequestFunKey, entity_WCFAuthInfoVM.RequestFunTypeKey, ref strList_Error);
+                #endregion
+                //Initialize FTSerListResult instance 
+                returnResult.StrList_Error = strList_Error;
+                returnResult.Int_TotalRecordCount = 0;
+                returnResult.EntityList_FunctionTypeVM = new List<functiontypevm>();
+                //Success
+                if (ret)
+                {
+                    int recordCount = 0;
+                    List<functiontypevm> vmList = entityRepos_FT.GetEntityListByPage(entity_SearchCriteria, int_CurrentPage, int_PageSize, str_SortColumn, str_SortDir, out recordCount, str_CustomFilter);
+                    //Assign data to FTSerListResult instance 
+                    returnResult.EntityList_FunctionTypeVM = vmList;
+                    returnResult.Int_TotalRecordCount = recordCount;
+                }
+                return returnResult;
+            }
+            catch (Exception ex)
+            {
+                throw new FaultException<wcferrorcontract>(new WCFErrorContract(ex), ex.Message);
+            }
+        }
+</pre>
+
+    <p>Step by step code spec</p>
+    <ol>
+        <li>
+            Restore wcf session by token
+            <pre lang="aspnet">
+            //Restore Server Session by token 
+            RetrieveServerSideSession(entity_WCFAuthInfoVM);
+        </pre>
+        </li>
+        <li>
+            Define a flag and error list
+            <pre lang="aspnet">
+            //Flag Success or Fail 
+            bool ret = false;
+            //Define error list
+            List<string> strList_Error = new List<string>();
+        </pre>
+        </li>
+        <li>
+            Instantiate FTSerListResult object which is used to reply the request.
+            <pre lang="aspnet">
+            //Instantiate  FTSerListResult
+            FTSerListResult returnResult = new FTSerListResult();
+        </pre>
+        </li>
+
+        <li>
+            Instantiate dbcontext object and function type respository that contains data access logic and is used to get data.
+            <pre lang="aspnet">
+            CoolPrivilegeControlContext dbContext = CoolPrivilegeControlContext.CreateContext();
+            FunctionTypeRespository entityRepos_FT = new FunctionTypeRespository(dbContext, entity_BaseSession.ID);
+        </pre>
+        </li>
+
+        <li>
+            Check Privilege based on Function Key, Function Type Key and current user id.
+            <pre lang="aspnet">
+        #region [ Check Privilege ]
+        ret = CheckAccPrivilege(entity_BaseSession.ID, entity_WCFAuthInfoVM.RequestFunKey, entity_WCFAuthInfoVM.RequestFunTypeKey, ref strList_Error);
+        #endregion
+        </pre>
+        </li>
+
+        <li>
+            Initialize FTSerListResult instance
+            <pre lang="aspnet">
+        //Initialize FTSerListResult instance
+        returnResult.StrList_Error = strList_Error;
+        returnResult.Int_TotalRecordCount = 0;
+        returnResult.EntityList_FunctionTypeVM = new List<functiontypevm>();
+        </pre>
+        </li>
+
+        <li>
+            Get data from service and set it to the output object
+            <pre lang="aspnet">
+        //Success
+        if (ret)
+        {
+            int recordCount = 0;
+            List<functiontypevm> vmList = entityRepos_FT.GetEntityListByPage(entity_SearchCriteria, int_CurrentPage, int_PageSize, str_SortColumn, str_SortDir, out recordCount, str_CustomFilter);
+            //Assign data to FTSerListResult instance
+            returnResult.EntityList_FunctionTypeVM = vmList;
+            returnResult.Int_TotalRecordCount = recordCount;
+        }
+        return returnResult;
+        </pre>
+        </li>
+    </ol>
+
+    <h2>Test-driven development</h2>
+    <p>Cool Privilege Control System is using the test-driven development (TDD) approach. For many companys, TDD is a mandatory approach in repetition development cycle. Cool Privilege Control System contains 40 test cases in all Controllers, you can easily test all functions by clicking "Run All" in Test Explorer. Certainly, you can add new test case or add new conditions into the orignial test case based on your requriements. Cool Privilege Control System uses Xunit and Mock. Xunit is a test framework inject into Visual Studio, as the same as MSTest and Nunit. For more infos, you can visit the official site.</p>
+    <h5>
+        Figure 6.0.1 Test Explorer
+    </h5>
+    <img src="../../Content/HomePagePart2Resources/Images/6.0.1 Test Explorer.jpg" alt="6.0.1 Test Explorer" />
+
+    <p>After previous recipes, assume you have basic knowledge of Cool Privilege Control. And it is hard for me to decribe all functions in the system. you can trace the program via set debug point. If you have any question about the project or find any bugs, feel free and contact me. I hope all of you can get ideas from my project which make our's world more and more beautiful.</p>
+
+    <h2>Finally</h2>
+    <p>I place Donate button in the site and project. If you like <span style="font-weight:bold;">Cool Privilege Control</span>. I hope you can donate the project. Your donation will encourage us to continue development and keep the testing site serve. Thanks.</p>
+
+    <p>Besides, Cool Privilege Control based on many interesting design pattern. Such as MVC, MEF, Entity Framework, jQuery and Bootstrap(UI). I am sorry I cannot introduce all of these design patterns to you in short time. Thanks for your reading.</p>
+
+    <h2>History</h2>
+
+    <p>2016-02-21 Initial publication</p>
+</div>

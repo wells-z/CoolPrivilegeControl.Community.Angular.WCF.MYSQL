@@ -1,0 +1,101 @@
+﻿<navbar></navbar>
+<fieldset>
+    <legend>
+        <h5>{{Captions.SearchCriteria}}</h5>
+    </legend>
+    <form name="SearchForm" class="form-horizontal" novalidate>
+        <div class="form-group">
+            <label class="control-label col-md-2" style=" text-align:left;" for="LoginName">{{Captions.LoginName}}</label>
+            <div class="col-md-4">
+                <input type="text" ng-model="EntityAuthHis.LoginName" class="form-control" />
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-md-2" style=" text-align:left;" for="RoleName">{{Captions.OperationType}}</label>
+            <div class="col-md-6">
+                <div class="controls">
+                    <label class="radio-inline">
+                        <input type="radio" ng-model="EntityAuthHis.OperationType" checked="checked" /> {{Captions.All}}
+                    </label>
+                    <label class="radio-inline">
+                        <input type="radio" ng-model="EntityAuthHis.OperationType" value="L" /> {{Captions.Login}}
+                    </label>
+                    <label class="radio-inline">
+                        <input type="radio" ng-model="EntityAuthHis.OperationType" value="O" /> {{Captions.Logout}}
+                    </label>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-12">
+                <input type="submit" value="{{Captions.Search}}" class="btn btn-default" ng-click="Search()">
+            </div>
+        </div>
+    </form>
+</fieldset>
+<fieldset>
+    <legend>
+        <h5>{{Captions.List}}</h5>
+    </legend>
+    <div>
+        <div class="row">
+            <div class="col-md-12">
+                <pagingbar currpageindex="CurrPageIndex" totalcount="TotalCount" displaypagenum="DisplayPageNum" pagesize="PageSize"></pagingbar>
+            </div>
+            <div class="col-md-12">
+                &nbsp;
+            </div>
+
+            <div class="col-md-12">
+                <div id="no-more-tables">
+                    <table class="table table-striped fa-border table-hover cf">
+                        <thead class="cf">
+                            <tr>
+                                <th align="center" style="text-align:center;" id="LoginNameTH" ng-click="SortBy('LoginName')">
+                                    {{Captions.LoginName}}<i class="fa fa-fw fa-sort-{{SortDir}}" ng-if="Sort=='LoginName'"></i>
+                                </th>
+                                <th align="center" style="text-align:center;" id="OperationTypeNameTH" ng-click="SortBy('OperationTypeName')">
+                                    {{Captions.OperationType}}<i class="fa fa-fw fa-sort-{{SortDir}}" ng-if="Sort=='OperationTypeName'"></i>
+                                </th>
+                                <th align="center" style="text-align:center;" id="OperationDatetimeTH" ng-click="SortBy('OperationDatetime')">
+                                    {{Captions.Datetime}}<i class="fa fa-fw fa-sort-{{SortDir}}" ng-if="Sort=='OperationDatetime'"></i>
+                                </th>
+                                <th align="center" style="text-align:center;">{{Captions.Operation}}</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="item in AuthHisList" ng-if="AuthHisList.length>0" class="animateRepeat">
+                                <td data-title="{{Captions.LoginName}}" align="left" class="vert-align">{{item.LoginName}}</td>
+                                <td data-title="{{Captions.OperationType}}" align="center" class="vert-align">{{item.OperationTypeName}}</td>
+                                <td data-title="{{Captions.Datetime}}" align="center" class="vert-align">{{item.OperationDatetime| date:DateTimeFormat}}</td>
+
+                                <td align="center" width="90px" class="vert-align" ng-if="item.AllowDel">
+                                    <a class="btn btn-danger" ng-click="Delete(item.ID)"><i class="fa fa-pencil fa-fw"></i> {{Captions.Delete}}</a>
+                                </td>
+
+                                <td align="center" width="90px" class="vert-align" ng-if="!item.AllowDel">
+                                    <a class="btn btn-danger" ng-disabled="!item.AllowDel"><i class="fa fa-pencil fa-fw"></i>{{Captions.Delete}}</a>
+                                </td>
+                            </tr>
+
+                            <tr ng-if="AuthHisList.length==0">
+                                <td colspan="4">{{Captions.E019}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!--Paging-->
+            <div class="col-md-12">
+                <pagingbar currpageindex="CurrPageIndex" totalcount="TotalCount" displaypagenum="DisplayPageNum" pagesize="PageSize"></pagingbar>
+            </div>
+
+            <div class="col-md-12">
+                &nbsp;
+            </div>
+        </div>
+    </div>
+</fieldset>

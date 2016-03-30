@@ -1,0 +1,417 @@
+﻿<div class="container">
+
+    <nav class="navbar navbar-default" style="margin-bottom: 3px;">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <button class="navbar-toggle collapsed" aria-expanded="false" type="button" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+            </div>
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav" style="margin-top: 10px;">
+
+                    <menubar menuitems="MenuItems" issubmenu="false"></menubar>
+
+                </ul>
+                <ul class="nav navbar-nav navbar-right" style="margin-top: 10px;">
+                    <li><a ng-click="Logout()" style="cursor:pointer;"><i class="glyphicon glyphicon-log-out"></i>&nbsp;{{MultiLang.Logout}}</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!--Menu Bar-->
+
+
+    <div class="row">
+        <div class="col-md-2 pull-right">
+            <div class="pull-right" style=" vertical-align: middle !important;" id="TotalVisitedDiv">
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div id="DateTimeDiv"></div>
+        </div>
+    </div>
+    <!--Nav Bar-->
+    <!--Content-->
+    <div ui-view="Content" class="slide-animation"></div>
+</div>
+
+<script type="text/ng-template" id="MenuRecursive.html">
+    <li ng-class="{'dropdown': menuItem.SubMenus.length > 0&&isLel1Menu,'dropdown-submenu': menuItem.SubMenus.length > 0&&!isLel1Menu}" ng-repeat="menuItem in menuitems">
+        <a ng-if="menuItem.SubMenus.length > 0" class="dropdown-toggle" data-toggle="dropdown">
+            {{menuItem.FunctionName}}
+            <span class="caret" ng-if="isLel1Menu"></span>
+        </a>
+        <a ng-if="menuItem.SubMenus.length == 0" ui-sref="Main.{{menuItem.FunctionKey}}">
+            {{menuItem.FunctionName}}
+        </a>
+        <ul ng-class="{'dropdown-menu':menuItem.SubMenus.length > 0}" ng-if="menuItem.SubMenus.length > 0">
+            <menubar menuitems="menuItem.SubMenus" issubmenu="true"></menubar>
+        </ul>
+    </li>
+</script>
+
+<script type="text/ng-template" id="PagingBar.html">
+    <ul class="pagination" style="margin: 0px 0px auto !important; vertical-align: middle;" contenteditable="false">
+        <li ng-repeat="item in pagingBar.Items" ng-class="{'active':item.IsCurrPage,'disabled':item.Disabled}">
+            <a ng-if="item.IsFirst && !item.Disabled" ng-click="PageChange(item.PageIndex)">{{item.Name}}</a>
+            <a ng-if="item.IsFirst && item.Disabled">{{item.Name}}</a>
+
+            <a ng-if="item.IsPre && !item.Disabled" ng-click="PageChange(item.PageIndex)">{{item.Name}}</a>
+            <a ng-if="item.IsPre && item.Disabled">{{item.Name}}</a>
+
+            <a ng-if="item.IsPages &&!item.IsCurrPage" ng-click="PageChange(item.PageIndex)">{{item.Name}}</a>
+            <a ng-if="item.IsPages && item.IsCurrPage">{{item.Name}}</a>
+
+            <a ng-if="item.IsNext && !item.Disabled" ng-click="PageChange(item.PageIndex)">{{item.Name}}</a>
+            <a ng-if="item.IsNext && item.Disabled">{{item.Name}}</a>
+
+            <a ng-if="item.IsLast && !item.Disabled" ng-click="PageChange(item.PageIndex)">{{item.Name}}</a>
+            <a ng-if="item.IsLast && item.Disabled">{{item.Name}}</a>
+        </li>
+    </ul>
+</script>
+
+<script type="text/ng-template" id="SpecificFunList.html">
+    <div>
+        <div class="col-md-10 col-centered">
+            <fieldset>
+                <legend>
+                    {{funlist.Captions.SpecificFunctions}}
+                </legend>
+            </fieldset>
+        </div>
+        <div class="col-md-10 col-centered">
+            <!--<div class="jumbotron">-->
+            <fieldset>
+                <legend>
+                    <h5>{{funlist.Captions.SearchCriteria}}</h5>
+                </legend>
+            </fieldset>
+
+            <div class="col-md-10 col-centered">
+                <div class="form-group">
+                    <label class="control-label col-md-4" style=" text-align:left;">{{funlist.Captions.FunctionKey}}</label>
+                    <div class="col-md-4">
+                        <input type="text" class="form-control" ng-model="FilterFunctionKey" ng-change="Search()" />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label col-md-4" style=" text-align:left;">{{funlist.Captions.FunctionName}}</label>
+                    <div class="col-md-4">
+                        <input type="text" class="form-control" ng-model="FilterFunctionName" ng-change="Search()" />
+                    </div>
+                </div>
+            </div>
+            <!--</div>-->
+        </div>
+
+        <div class="col-md-10 col-centered">
+            <pagingbar currpageindex="CurrPageIndex" totalcount="TotalCount" displaypagenum="displaypagenum" pagesize="pagesize" ng-if="FunSelList.length>0"></pagingbar>
+        </div>
+
+        <div class="col-md-10 col-centered">
+            &nbsp;
+        </div>
+        <div class="col-md-10 col-centered">
+            <div id="no-more-tables">
+                <table class="table table-striped fa-border table-hover cf">
+                    <thead class="cf">
+                        <tr>
+                            <th align="left" style="text-align:left;" ng-click="SortBy('FKey')">
+                                {{funlist.Captions.FunctionKey}}<i class="fa fa-fw fa-sort-{{SortDir}}" ng-if="Sort=='FKey'"></i>
+                            </th>
+                            <th align="left" style="text-align:left;" ng-click="SortBy('FName')">
+                                {{funlist.Captions.FunctionName}}<i class="fa fa-fw fa-sort-{{SortDir}}" ng-if="Sort=='FName'"></i>
+                            </th>
+                            <th align="center" style="text-align:center;" colspan="2">
+                                {{funlist.Captions.Operation}}
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="item in FunSelList" ng-if="FunSelList.length>0" class="animateRepeat">
+                            <td data-title="{{funlist.Captions.FunctionKey}}" align="left" class="vert-align">
+                                <a ui-sref="Main.FManage.Edit({FID:item.FID})" ui-sref-opts="{reload:true}" ng-if="item.AllowEdit">{{item.FKey}}</a>
+                                <span ng-if="!item.AllowEdit">{{item.FKey}}</span>
+                            </td>
+                            <td data-title="{{funlist.Captions.FunctionName}}" align="left" class="vert-align">
+                                {{item.FName}}
+                            </td>
+                            <td data-title="{{funlist.Captions.Operation}}" align="center" width="90px"><a class="btn btn-default" ng-click="SelectFunDetail(item.FID)"><i class="fa fa-pencil fa-fw"></i> {{funlist.Captions.Edit}}</a></td>
+                            <td align="center" width="90px"><a class="btn btn-danger" ng-click="DelFunDetail(item.FID)"><i class="fa fa-trash-o fa-fw"></i> {{funlist.Captions.Delete}}</a></td>
+                        </tr>
+                        <tr ng-if="FunSelList.length==0">
+                            <td colspan="4">{{funlist.Captions.E019}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="col-md-10 col-centered">
+            <pagingbar currpageindex="CurrPageIndex" totalcount="TotalCount" displaypagenum="displaypagenum" pagesize="pagesize" ng-if="FunSelList.length>0"></pagingbar>
+        </div>
+
+        <div class="col-md-10 col-centered">
+            &nbsp;
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-md-4">{{funlist.Captions.FunctionKey}}</label>
+            <div class="col-md-4">
+                <select class="form-control" ng-options="fun.ID as fun.FunctionPath + ' - ' + fun.FunctionName for fun in funslist" ng-model="SelectedFun" ng-change="SelectFun(SelectedFun)"></select>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-md-4">{{funlist.Captions.FunctionType}}</label>
+            <div class="col-md-4">
+                <table class="table table-striped" contenteditable="false">
+                    <thead>
+                        <tr>
+                            <th align="center" style="text-align:center; width:60px;"><input type="checkbox" ng-click="CheckAllFunType()" ng-model="isCheckAll"></th>
+                            <th align="left" style="text-align:left;">{{funlist.Captions.FunctionType}}</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="funTypeId in SelFunDetailInfo.FTID">
+                            <td align="center" style="text-align:center; width:60px;"><input type="checkbox" ng-model="SelFunDetailInfo.FDSelected[$index]" ng-click="CheckFunType()" /></td>
+                            <td align="left">{{SelFunDetailInfo.FTName[$index]}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-md-4">&nbsp;</label>
+            <div class="col-md-4">
+                <input type="button" value="{{funlist.Captions.Add}}" class="btn btn-default" ng-click="AddFunDetail();" ng-if="!isEditMode" ng-disabled="!(!!SelectedFun)">
+                <input type="button" value="{{funlist.Captions.Save}}" class="btn btn-default" ng-click="EditFunDetail();" ng-if="isEditMode" ng-disabled="!(!!SelectedFun)">
+            </div>
+        </div>
+
+    </div>
+</script>
+
+<script type="text/ng-template" id="RoleList.html">
+    <div>
+        <div class="col-md-10 col-centered">
+            <fieldset>
+                <legend>
+                    {{rolelist.Captions.RoleSettings}}
+                </legend>
+            </fieldset>
+        </div>
+        <div class="col-md-10 col-centered">
+            <!--<div class="jumbotron">-->
+            <fieldset>
+                <legend>
+                    <h5>{{rolelist.Captions.SearchCriteria}}</h5>
+                </legend>
+            </fieldset>
+
+            <div class="col-md-10 col-centered">
+                <div class="form-group">
+                    <label class="control-label col-md-4" style=" text-align:left;">{{rolelist.Captions.RoleName}}</label>
+                    <div class="col-md-4">
+                        <input type="text" class="form-control" ng-model="FilterRoleName" ng-change="Search()" />
+                    </div>
+                </div>
+            </div>
+            <!--</div>-->
+        </div>
+
+        <div class="col-md-10 col-centered">
+            <pagingbar currpageindex="CurrPageIndex" totalcount="TotalCount" displaypagenum="displaypagenum" pagesize="pagesize" ng-if="RoleSelList.length>0"></pagingbar>
+        </div>
+
+        <div class="col-md-10 col-centered">
+            &nbsp;
+        </div>
+        <div class="col-md-10 col-centered">
+            <div id="no-more-tables">
+                <table class="table table-striped fa-border table-hover cf">
+                    <thead class="cf">
+                        <tr>
+                            <th align="left" style="text-align:left;" ng-click="SortBy('RoleName')">
+                                {{rolelist.Captions.RoleName}}<i class="fa fa-fw fa-sort-{{SortDir}}" ng-if="Sort=='RoleName'"></i>
+                            </th>
+                            <th align="center" style="text-align:center;" colspan="2">
+                                {{rolelist.Captions.Operation}}
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="item in RoleSelList" ng-if="RoleSelList.length>0" class="animateRepeat">
+                            <td data-title="{{rolelist.Captions.RoleName}}" align="left" class="vert-align">
+                                <a ui-sref="Main.LURoleManage.Edit({RoleID:item.ID})" ui-sref-opts="{reload:true}" ng-if="item.AllowEdit">{{item.RoleName}}</a>
+                                <span ng-if="!item.AllowEdit">{{item.RoleName}}</span>
+                            </td>
+                            <td data-title="{{rolelist.Captions.Operation}}" align="center" width="90px"><a class="btn btn-default" ng-click="SelectRoleDetail(item.ID)"><i class="fa fa-pencil fa-fw"></i> {{rolelist.Captions.Edit}}</a></td>
+                            <td align="center" width="90px"><a class="btn btn-danger" ng-click="DelRoleDetail(item.ID)"><i class="fa fa-trash-o fa-fw"></i> {{rolelist.Captions.Delete}}</a></td>
+                        </tr>
+                        <tr ng-if="RoleSelList.length==0">
+                            <td colspan="3">{{rolelist.Captions.E019}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="col-md-10 col-centered">
+            <pagingbar currpageindex="CurrPageIndex" totalcount="TotalCount" displaypagenum="displaypagenum" pagesize="pagesize" ng-if="RoleSelList.length>0"></pagingbar>
+        </div>
+
+        <div class="col-md-10 col-centered">
+            &nbsp;
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-md-4">{{rolelist.Captions.RoleName}}</label>
+            <div class="col-md-4">
+                <select class="form-control" ng-options="role.ID as role.RoleName for role in roleslist" ng-model="SelectedRole"></select>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-md-4">&nbsp;</label>
+            <div class="col-md-4">
+                <input type="button" value="{{rolelist.Captions.Add}}" class="btn btn-default" ng-click="AddRoleDetail();" ng-if="!isEditMode" ng-disabled="!(!!SelectedRole)">
+                <input type="button" value="{{rolelist.Captions.Save}}" class="btn btn-default" ng-click="EditRoleDetail();" ng-if="isEditMode" ng-disabled="!(!!SelectedRole)">
+            </div>
+        </div>
+
+    </div>
+</script>
+
+<script type="text/ng-template" id="OrgList.html">
+    <div>
+        <div class="col-md-10 col-centered">
+            <fieldset>
+                <legend>
+                    {{orglist.Captions.OrgSettings}}
+                </legend>
+            </fieldset>
+        </div>
+        <div class="col-md-10 col-centered">
+            <!--<div class="jumbotron">-->
+            <fieldset>
+                <legend>
+                    <h5>{{orglist.Captions.SearchCriteria}}</h5>
+                </legend>
+            </fieldset>
+
+            <div class="col-md-10 col-centered">
+                <div class="form-group">
+                    <label class="control-label col-md-4" style=" text-align:left;">{{orglist.Captions.OrganizationKey}}</label>
+                    <div class="col-md-4">
+                        <input type="text" class="form-control" ng-model="FilterOrganizationKey" ng-change="Search()" />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label col-md-4" style=" text-align:left;">{{orglist.Captions.OrgDetailsKey}}</label>
+                    <div class="col-md-4">
+                        <input type="text" class="form-control" ng-model="FilterOrgDetailsKey" ng-change="Search()" />
+                    </div>
+                </div>
+            </div>
+            <!--</div>-->
+        </div>
+
+        <div class="col-md-10 col-centered">
+            <pagingbar currpageindex="CurrPageIndex" totalcount="TotalCount" displaypagenum="displaypagenum" pagesize="pagesize" ng-if="OrgSelList.length>0"></pagingbar>
+        </div>
+
+        <div class="col-md-10 col-centered">
+            &nbsp;
+        </div>
+        <div class="col-md-10 col-centered">
+            <div id="no-more-tables">
+                <table class="table table-striped fa-border table-hover cf">
+                    <thead class="cf">
+                        <tr>
+                            <th align="left" style="text-align:left;" ng-click="SortBy('Org_Key')">
+                                {{orglist.Captions.OrganizationKey}}<i class="fa fa-fw fa-sort-{{SortDir}}" ng-if="Sort=='Org_Key'"></i>
+                            </th>
+                            <th align="left" style="text-align:left;" ng-click="SortBy('OrgDetail_Key')">
+                                {{orglist.Captions.OrgDetailsKey}}<i class="fa fa-fw fa-sort-{{SortDir}}" ng-if="Sort=='OrgDetail_Key'"></i>
+                            </th>
+                            <th align="center" style="text-align:center;" colspan="2">
+                                {{orglist.Captions.Operation}}
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="item in OrgSelList" ng-if="OrgSelList.length>0" class="animateRepeat">
+                            <td data-title="{{orglist.Captions.OrganizationKey}}" align="left" class="vert-align">
+                                <a ui-sref="Main.LUOrganizationManage.Edit({OrgID:item.Org_ID})" ui-sref-opts="{reload:true}" ng-if="item.Org_AllowEdit">{{item.Org_Key}} - {{item.Org_Name}}</a>
+                                <span ng-if="!item.Org_AllowEdit">{{item.Org_Key}} - {{item.Org_Name}}</span>
+                            </td>
+                            <td data-title="{{orglist.Captions.OrgDetailsKey}}" align="left" class="vert-align">
+                                <a ui-sref="Main.LUOrgDetailsManage.Edit({OrgDetailID:item.OrgDetail_ID})" ui-sref-opts="{reload:true}" ng-if="item.OrgDetail_AllowEdit">{{item.OrgDetail_Key}}</a>
+                                <span ng-if="!item.OrgDetail_AllowEdit">{{item.OrgDetail_Key}}</span>
+                            </td>
+                            <td data-title="{{orglist.Captions.Operation}}" align="center" width="90px"><a class="btn btn-default" ng-click="SelectOrgDetail(item)"><i class="fa fa-pencil fa-fw"></i> {{orglist.Captions.Edit}}</a></td>
+                            <td align="center" width="90px"><a class="btn btn-danger" ng-click="DelOrgDetail(item)"><i class="fa fa-trash-o fa-fw"></i> {{orglist.Captions.Delete}}</a></td>
+                        </tr>
+                        <tr ng-if="OrgSelList.length==0">
+                            <td colspan="4">{{orglist.Captions.E019}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="col-md-10 col-centered">
+            <pagingbar currpageindex="CurrPageIndex" totalcount="TotalCount" displaypagenum="displaypagenum" pagesize="pagesize" ng-if="OrgSelList.length>0"></pagingbar>
+        </div>
+
+        <div class="col-md-10 col-centered">
+            &nbsp;
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-md-4">{{orglist.Captions.OrganizationKey}}</label>
+            <div class="col-md-4">
+                <select class="form-control" ng-options="org.ID as org.OrganizationKey+ ' - '+org.OrganizationName for org in orgslist" ng-model="SelectedOrg"></select>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-md-4">{{orglist.Captions.OrgDetailsKey}}</label>
+            <div class="col-md-4">
+                <select class="form-control" ng-options="orgdetail.ID as orgdetail.OrgDetailsKey for orgdetail in orgdetaillist" ng-model="SelectedOrgDetailKey"></select>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-md-4">&nbsp;</label>
+            <div class="col-md-4">
+                <input type="button" value="{{orglist.Captions.Add}}" class="btn btn-default" ng-click="AddOrgDetail();" ng-if="!isEditMode" ng-disabled="!(!!SelectedOrg && !!SelectedOrgDetailKey)">
+                <input type="button" value="{{orglist.Captions.Save}}" class="btn btn-default" ng-click="EditOrgDetail();" ng-if="isEditMode" ng-disabled="!(!!SelectedOrg && !!SelectedOrgDetailKey)">
+            </div>
+        </div>
+
+    </div>
+</script>
+
+<script type="text/ng-template" id="NavBar.html">
+    <div>
+        <div class="col-md-10 col-centered text-center">
+            <h4>{{pagetitle}}</h4>
+        </div>
+        <h4>
+            <small>
+                <ol class="breadcrumb">
+                    <li ng-repeat="item in LinkList"><a ui-sref="Main.{{item.Link}}" ui-sref-opts="{reload:true}">{{item.Text}}</a></li>
+                </ol>
+            </small>
+        </h4>
+    </div>
+</script>

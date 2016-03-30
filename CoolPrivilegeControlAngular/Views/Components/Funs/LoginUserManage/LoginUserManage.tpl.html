@@ -1,0 +1,136 @@
+﻿<navbar></navbar>
+<fieldset>
+    <legend>
+        <h5>{{Captions.SearchCriteria}}</h5>
+    </legend>
+    <form name="SearchForm" class="form-horizontal" novalidate>
+        <div class="form-group">
+            <label class="control-label col-md-2" style=" text-align:left;">{{Captions.LoginName}}</label>
+            <div class="col-md-4">
+                <input type="text" class="form-control" ng-model="EntityLoginUser.LoginName" ng-change="Search()" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-md-2" style=" text-align:left;">{{Captions.UserType}}</label>
+            <div class="col-md-6">
+                <div class="controls">
+                    <label class="radio-inline">
+                        <input type="radio" ng-model="EntityLoginUser.UserType" checked="checked" ng-change="Search()" /> {{Captions.All}}
+                    </label>
+                    <label class="radio-inline">
+                        <input type="radio" ng-model="EntityLoginUser.UserType" value="1" ng-change="Search()" /> {{Captions.SpecificFunctions}}
+                    </label>
+                    <label class="radio-inline">
+                        <input type="radio" ng-model="EntityLoginUser.UserType" value="2" ng-change="Search()" /> {{Captions.AsRoleSetting}}
+                    </label>
+                    <label class="radio-inline">
+                        <input type="radio" ng-model="EntityLoginUser.UserType" value="3" ng-change="Search()" /> {{Captions.AsOrgSetting}}
+                    </label>
+                </div>
+            </div>
+        </div>
+        <div class="form-group" ng-if="EntityLoginUser.UserType==2">
+            <label class="control-label col-md-2" style=" text-align:left;">{{Captions.RoleName}}</label>
+            <div class="col-md-4">
+                <input type="text" class="form-control" ng-model="EntityLoginUser.StrRoles" ng-change="Search()" />
+            </div>
+        </div>
+        <div class="form-group" ng-if="EntityLoginUser.UserType==3">
+            <label class="control-label col-md-2" style=" text-align:left;">{{Captions.OrganizationKey}}</label>
+            <div class="col-md-4">
+                <input type="text" class="form-control" ng-model="EntityLoginUser.StrOrgs" ng-change="Search()" />
+            </div>
+        </div>
+    </form>
+</fieldset>
+<fieldset>
+    <legend>
+        <h5>{{Captions.List}}</h5>
+    </legend>
+    <div>
+        <div class="row">
+            <div class="col-md-12">
+                <pagingbar currpageindex="CurrPageIndex" totalcount="TotalCount" displaypagenum="DisplayPageNum" pagesize="PageSize"></pagingbar>
+            </div>
+            <div class="col-md-12">
+                &nbsp;
+            </div>
+
+            <div class="col-md-12">
+                <div id="no-more-tables">
+                    <table class="table table-striped fa-border table-hover cf">
+                        <thead class="cf">
+                            <tr>
+                                <th align="center" style="text-align:left;" id="LoginNameTH" ng-click="SortBy('LoginName')">
+                                    {{Captions.LoginName}}<i class="fa fa-fw fa-sort-{{SortDir}}" ng-if="Sort=='LoginName'"></i>
+                                </th>
+                                <th align="center" style="text-align:center;" id="RoleNameTH" ng-click="SortBy('RoleName')">
+                                    {{Captions.RoleName}}<i class="fa fa-fw fa-sort-{{SortDir}}" ng-if="Sort=='RoleName'"></i>
+                                </th>
+                                <th align="center" style="text-align:left;" id="OrganizationKeyTH" ng-click="SortBy('OrganizationKey')">
+                                    {{Captions.OrganizationKey}}<i class="fa fa-fw fa-sort-{{SortDir}}" ng-if="Sort=='OrganizationKey'"></i>
+                                </th>
+                                <th align="center" style="text-align:left;" id="CreateDateTH" ng-click="SortBy('CreateDate')">
+                                    {{Captions.CreateDate}}<i class="fa fa-fw fa-sort-{{SortDir}}" ng-if="Sort=='CreateDate'"></i>
+                                </th>
+                                <th align="center" style="text-align:left;" id="LastLoginDTTH" ng-click="SortBy('LastLoginDT')">
+                                    {{Captions.LastLoginDT}}<i class="fa fa-fw fa-sort-{{SortDir}}" ng-if="Sort=='LastLoginDT'"></i>
+                                </th>
+                                <th colspan="2" align="center" style="text-align:center;">{{Captions.Operation}}</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="item in LoginUserList" ng-if="LoginUserList.length>0" class="animateRepeat">
+                                <td data-title="{{Captions.LoginName}}" align="left" class="vert-align">{{item.LoginName}}</td>
+                                <td data-title="{{Captions.RoleName}}" align="center" class="vert-align">
+                                    <span ng-repeat="role in item.EntityList_Role">
+                                        <a ui-sref="Main.LURoleManage.Edit({RoleID:role.ID})" ng-disabled="!item.AllowEdit">{{role.RoleName}}</a>&nbsp;|&nbsp;
+                                    </span>
+                                </td>
+                                <td data-title="{{Captions.OrganizationKey}}" align="left" class="vert-align">
+                                    <span ng-repeat="org in item.EntityList_Org">
+                                        <a ui-sref="Main.LUOrganizationManage.Edit({OrgID:org.ID})" ng-disabled="!item.AllowEdit">{{org.OrganizationKey}}</a>&nbsp;|&nbsp;
+                                    </span>
+                                </td>
+                                <td data-title="{{Captions.CreateDate}}" align="left" class="vert-align">{{item.CreateDate| date:DateTimeFormat}}</td>
+                                <td data-title="{{Captions.LastLoginDT}}" align="left" class="vert-align">{{item.LastLoginDT| date:DateTimeFormat}}</td>
+
+                                <td data-title="{{Captions.Operation}}" align="center" width="90px" class="vert-align" ng-if="item.AllowEdit">
+                                    <a class="btn btn-default" ui-sref="Main.LoginUserManage.Edit({LUID:item.ID})" ui-sref-opts="{reload:true}"><i class="fa fa-pencil fa-fw"></i> {{Captions.Edit}}</a>
+                                </td>
+
+                                <td data-title="{{Captions.Operation}}" align="center" width="90px" class="vert-align" ng-if="!item.AllowEdit">
+                                    <a class="btn btn-default" ng-disabled="!item.AllowEdit"><i class="fa fa-pencil fa-fw"></i> {{Captions.Edit}}</a>
+                                </td>
+
+                                <td align="center" width="90px" class="vert-align" ng-if="item.AllowDel">
+                                    <a class="btn btn-danger" ng-click="Delete(item.ID)"><i class="fa fa-trash-o fa-fw"></i> {{Captions.Delete}}</a>
+                                </td>
+
+                                <td align="center" width="90px" class="vert-align" ng-if="!item.AllowDel">
+                                    <a class="btn btn-danger" ng-disabled="!item.AllowDel"><i class="fa fa-trash-o fa-fw"></i>{{Captions.Delete}}</a>
+                                </td>
+                            </tr>
+
+                            <tr ng-if="LoginUserList.length==0">
+                                <td colspan="6">{{Captions.E019}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!--Paging-->
+            <div class="col-md-12">
+                <pagingbar currpageindex="CurrPageIndex" totalcount="TotalCount" displaypagenum="DisplayPageNum" pagesize="PageSize"></pagingbar>
+            </div>
+            <div class="col-md-12">
+                &nbsp;
+            </div>
+
+            <div class="col-md-12" ng-if="CheckPrivilege_Create">
+                <a class="btn btn-default" role="button" ui-sref="Main.LoginUserManage.Create" ui-sref-opts="{reload:true}">{{Captions.LoginUserManage_Create}}</a>
+            </div>
+        </div>
+    </div>
+</fieldset>

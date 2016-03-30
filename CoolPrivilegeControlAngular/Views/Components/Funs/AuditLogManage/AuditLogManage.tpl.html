@@ -1,0 +1,142 @@
+﻿<navbar></navbar>
+<fieldset>
+    <legend>
+        <h5>{{Captions.SearchCriteria}}</h5>
+    </legend>
+    <form name="SearchForm" class="form-horizontal" novalidate>
+        <div class="form-group">
+            <label class="control-label col-md-2" style=" text-align:left;" for="LoginName">{{Captions.Operator}}</label>
+            <div class="col-md-4">
+                <input type="text" ng-model="EntityAuditLog.Operator" class="form-control" />
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-md-2" style=" text-align:left;" for="RoleName">{{Captions.OperationType}}</label>
+            <div class="col-md-6">
+                <div class="controls">
+                    <label class="radio-inline">
+                        <input type="radio" ng-model="EntityAuditLog.AL_EventType" checked="checked" /> {{Captions.All}}
+                    </label>
+                    <label class="radio-inline">
+                        <input type="radio" ng-model="EntityAuditLog.AL_EventType" value="Create" /> {{Captions.Create}}
+                    </label>
+                    <label class="radio-inline">
+                        <input type="radio" ng-model="EntityAuditLog.AL_EventType" value="Edit" /> {{Captions.Edit}}
+                    </label>
+                    <label class="radio-inline">
+                        <input type="radio" ng-model="EntityAuditLog.AL_EventType" value="Delete" /> {{Captions.Delete}}
+                    </label>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-md-2" style=" text-align:left;" for="DateFrom">{{Captions.Operation}} {{Captions.Date}} {{Captions.From}}</label>
+            <div class="col-md-2">
+                <div class='input-group date' id='DateFromDiv'>
+                    <input type='text' class="form-control" id="DateFrom" name="DateFrom" />
+                    <span class="input-group-addon">
+                        <span class="fa fa-calendar">
+                        </span>
+                    </span>
+                </div>
+            </div>
+            <label class="control-label col-md-1" style=" text-align: center;" for="DateTo">{{Captions.To}}</label>
+            <div class="col-md-2">
+                <div class='input-group date' id='DateToDiv'>
+                    <input type='text' class="form-control" id="DateTo" name="DateTo" />
+                    <span class="input-group-addon">
+                        <span class="fa fa-calendar">
+                        </span>
+                    </span>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-12">
+                <input type="submit" value="{{Captions.Search}}" class="btn btn-default" ng-click="Search()">
+            </div>
+        </div>
+    </form>
+</fieldset>
+<fieldset>
+    <legend>
+        <h5>{{Captions.List}}</h5>
+    </legend>
+    <div>
+        <div class="row">
+            <div class="col-md-12">
+                <pagingbar currpageindex="CurrPageIndex" totalcount="TotalCount" displaypagenum="DisplayPageNum" pagesize="PageSize"></pagingbar>
+            </div>
+            <div class="col-md-12">
+                &nbsp;
+            </div>
+
+            <div class="col-md-12">
+                <div id="no-more-tables">
+                    <table class="table table-striped fa-border table-hover cf">
+                        <thead class="cf">
+                            <tr>
+                                <th align="center" style="text-align:center;" id="OperatorTH" ng-click="SortBy('Operator')">
+                                    {{Captions.Operator}}<i class="fa fa-fw fa-sort-{{SortDir}}" ng-if="Sort=='Operator'"></i>
+                                </th>
+                                <th align="center" style="text-align:center;" id="AL_CreateDateTH" ng-click="SortBy('AL_CreateDate')">
+                                    {{Captions.Date}}<i class="fa fa-fw fa-sort-{{SortDir}}" ng-if="Sort=='AL_CreateDate'"></i>
+                                </th>
+                                <th align="center" style="text-align:center;" id="AL_TableNameTH" ng-click="SortBy('AL_TableName')">
+                                    {{Captions.TableName}}<i class="fa fa-fw fa-sort-{{SortDir}}" ng-if="Sort=='AL_TableName'"></i>
+                                </th>
+                                <th align="center" style="text-align:center;" id="AL_EventTypeTH" ng-click="SortBy('AL_EventType')">
+                                    {{Captions.OperationType}}<i class="fa fa-fw fa-sort-{{SortDir}}" ng-if="Sort=='AL_EventType'"></i>
+                                </th>
+                                <th align="center" style="text-align:center;" id="OriginalValueTH" ng-click="SortBy('OriginalValue')">
+                                    {{Captions.OriginalValue}}<i class="fa fa-fw fa-sort-{{SortDir}}" ng-if="Sort=='OriginalValue'"></i>
+                                </th>
+                                <th align="center" style="text-align:center;" id="NewValueTH" ng-click="SortBy('NewValue')">
+                                    {{Captions.NewValue}}<i class="fa fa-fw fa-sort-{{SortDir}}" ng-if="Sort=='NewValue'"></i>
+                                </th>
+                                <th align="center" style="text-align:center;" id="RecordKeyTH" ng-click="SortBy('RecordKey')">
+                                    {{Captions.RecordKey}}<i class="fa fa-fw fa-sort-{{SortDir}}" ng-if="Sort=='RecordKey'"></i>
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="item in AuditLogList" ng-if="AuditLogList.length>0" class="animateRepeat">
+                                <td data-title="{{Captions.Operator}}" align="left" class="vert-align">{{item.Operator}}</td>
+                                <td data-title="{{Captions.Date}}" align="center" class="vert-align">{{item.AL_CreateDate| date:DateTimeFormat}}</td>
+                                <td data-title="{{Captions.TableName}}" align="center" class="vert-align">{{item.AL_TableName}}</td>
+                                <td data-title="{{Captions.OperationType}}" align="center" class="vert-align">{{item.AL_EventType}}</td>
+                                <td data-title="{{Captions.OriginalValue}}" align="center" class="vert-align">
+                                    <a ng-click="ClickToViewOrgValue(item.AL_OriginalValue)" style="cursor:pointer;" ng-if="!angular.isUndefined(item.AL_OriginalValue)&&item.AL_OriginalValue!=null">{{Captions.ClickToViewDetails}}</a>
+                                </td>
+                                <td data-title="{{Captions.NewValue}}" align="center" class="vert-align">
+                                    <a ng-click="ClickToViewNewValue(item.AL_NewValue)" style="cursor:pointer;" ng-if="!angular.isUndefined(item.AL_NewValue)&&item.AL_NewValue!=null">{{Captions.ClickToViewDetails}}</a>
+                                </td>
+                                <td data-title="{{Captions.RecordKey}}" align="center" class="vert-align">{{item.AL_RecordKey}}</td>
+                            </tr>
+
+                            <tr ng-if="AuditLogList.length==0">
+                                <td colspan="7">{{Captions.E019}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!--Paging-->
+            <div class="col-md-12">
+                <pagingbar currpageindex="CurrPageIndex" totalcount="TotalCount" displaypagenum="DisplayPageNum" pagesize="PageSize"></pagingbar>
+            </div>
+
+            <div class="col-md-12">
+                &nbsp;
+            </div>
+
+            <!--<div class="col-md-12" ng-if="CheckPrivilege_Create">
+                <a class="btn btn-default" role="button" ui-sref="Main.FManage.Create" ui-sref-opts="{reload:true}">{{Captions.FManage_Create}}</a>
+            </div>-->
+        </div>
+    </div>
+</fieldset>

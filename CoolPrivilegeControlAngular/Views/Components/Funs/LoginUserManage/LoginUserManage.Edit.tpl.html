@@ -1,0 +1,68 @@
+﻿<navbar></navbar>
+<form name="CreateForm" class="form-horizontal" novalidate>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="form-group required" ng-class="{ 'has-error' : !CreateForm.LoginName.$pristine && CreateForm.LoginName.$invalid }">
+                <label class="control-label col-md-4">{{Captions.LoginName}}</label>
+                <div class="col-md-4">
+                    <input type="text" name="LoginName" class="form-control" ng-model="EntityLoginUser.LoginName" requried-validate fieldcaption="{{Captions.LoginName}}" />
+                </div>
+            </div>
+            <div class="form-group required" ng-class="{ 'has-error' : !CreateForm.NewPwd.$pristine && CreateForm.NewPwd.$invalid }">
+                <label class="control-label col-md-4">{{Captions.LoginPwd}}</label>
+                <div class="col-md-4">
+                    <input type="button" ng-if="!isChangePwd" value="{{Captions.Reset}}" class="btn btn-default" ng-click="ClickChangePwd()">
+                    <input type="password" ng-if="isChangePwd" name="NewPwd" class="form-control" ng-model="EntityLoginUser.NewPwd" requried-validate fieldcaption="{{Captions.LoginPwd}}" />
+                </div>
+            </div>
+            <div class="form-group required" ng-if="isChangePwd" ng-class="{ 'has-error' : !CreateForm.ConfirmNewPwd.$pristine && CreateForm.ConfirmNewPwd.$invalid }">
+                <label class="control-label col-md-4">{{Captions.LoginConfirmPwd}}</label>
+                <div class="col-md-4">
+                    <input type="password" name="ConfirmNewPwd" class="form-control" ng-model="EntityLoginUser.ConfirmNewPwd" requried-validate fieldcaption="{{Captions.LoginConfirmPwd}}" />
+                </div>
+            </div>
+            <div class="form-group required" ng-class="{ 'has-error' : !CreateForm.Status.$pristine && CreateForm.Status.$invalid }">
+                <label class="control-label col-md-4">{{Captions.Status}}</label>
+                <div class="col-md-6">
+                    <label class="radio-inline">
+                        <input type="radio" name="Status" ng-model="EntityLoginUser.Status" value="1" /> {{Captions.Active}}
+                    </label>
+                    <label class="radio-inline">
+                        <input type="radio" name="Status" ng-model="EntityLoginUser.Status" value="2" /> {{Captions.InActive}}
+                    </label>
+                    <label class="radio-inline">
+                        <input type="radio" name="Status" ng-model="EntityLoginUser.Status" value="3" /> {{Captions.Suspend}}
+                    </label>
+                </div>
+            </div>
+            <div class="form-group required">
+                <label class="control-label col-md-4">{{Captions.UserType}}</label>
+                <div class="controls col-md-6">
+                    <label class="radio-inline" ng-if="UserType!=3">
+                        <input type="radio" name="UserType" ng-model="EntityLoginUser.UserType" value="1" /> {{Captions.SpecificFunctions}}
+                    </label>
+                    <label class="radio-inline" ng-if="UserType!=3">
+                        <input type="radio" name="UserType" ng-model="EntityLoginUser.UserType" value="2" /> {{Captions.AsRoleSetting}}
+                    </label>
+                    <label class="radio-inline">
+                        <input type="radio" name="UserType" ng-model="EntityLoginUser.UserType" value="3" /> {{Captions.AsOrgSetting}}
+                    </label>
+                </div>
+            </div>
+        </div>
+    </div>
+    <funlistdirective funslist="FunsList" displaypagenum="DisplayPageNum" pagesize="PageSize" spefundetaillist="SpeFunDetailList" msgboxtitle="msgBoxTitle" ng-show="EntityLoginUser.UserType==1"></funlistdirective>
+
+    <rolelistdirective roleslist="RolesList" displaypagenum="DisplayPageNum" pagesize="PageSize" speroledetaillist="SpeRoleDetailList" msgboxtitle="msgBoxTitle" ng-show="EntityLoginUser.UserType==2"></rolelistdirective>
+
+    <orglistdirective orgslist="OrgList" orgdetaillist="OrgDetailList" displaypagenum="DisplayPageNum" pagesize="PageSize" orgsettinglist="OrgSettingList" msgboxtitle="msgBoxTitle" ng-show="EntityLoginUser.UserType==3"></orglistdirective>
+    <br />
+    <div class="row">
+        <div class="col-md-1">
+            <input type="submit" value="{{Captions.Save}}" class="btn btn-primary" ng-click="Edit()" ng-disabled="!(!!EntityLoginUser.LoginName &&!!EntityLoginUser.Status &&!!EntityLoginUser.UserType)">
+        </div>
+        <div class="col-md-1">
+            <a class="btn btn-default" role="button" ui-sref="Main.LoginUserManage" ui-sref-opts="{reload:true}">{{Captions.BacktoList}}</a>
+        </div>
+    </div>
+</form>

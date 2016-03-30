@@ -1,0 +1,46 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2013
+VisualStudioVersion = 12.0.40629.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CoolPrivilegeServiceHost", "CoolPrivilegeServiceHost\CoolPrivilegeServiceHost.csproj", "{D4CB3699-500B-4C80-8640-E42D168781DF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CoolPrivilegeControlLangPack", "CoolPrivilegeControlLangPack\CoolPrivilegeControlLangPack.csproj", "{8CC9EDFF-23EE-4209-9683-3BD06046DDAC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CoolPrivilegeControlSerFactory", "CoolPrivilegeControlSerFactory\CoolPrivilegeControlSerFactory.csproj", "{2B2A8E12-184F-4773-A258-B197F6153B9C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CoolPrivilegeControlService", "CoolPrivilegeControlService\CoolPrivilegeControlService.csproj", "{08A727BF-5E60-46C4-BD38-6A9128BB669F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CoolPrivilegeControlAngular", "CoolPrivilegeControlAngular\CoolPrivilegeControlAngular.csproj", "{4F43B1A8-D7AB-4C83-B9D3-540D7CF346CB}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{D4CB3699-500B-4C80-8640-E42D168781DF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D4CB3699-500B-4C80-8640-E42D168781DF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D4CB3699-500B-4C80-8640-E42D168781DF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D4CB3699-500B-4C80-8640-E42D168781DF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8CC9EDFF-23EE-4209-9683-3BD06046DDAC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8CC9EDFF-23EE-4209-9683-3BD06046DDAC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8CC9EDFF-23EE-4209-9683-3BD06046DDAC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8CC9EDFF-23EE-4209-9683-3BD06046DDAC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2B2A8E12-184F-4773-A258-B197F6153B9C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2B2A8E12-184F-4773-A258-B197F6153B9C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2B2A8E12-184F-4773-A258-B197F6153B9C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2B2A8E12-184F-4773-A258-B197F6153B9C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{08A727BF-5E60-46C4-BD38-6A9128BB669F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{08A727BF-5E60-46C4-BD38-6A9128BB669F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{08A727BF-5E60-46C4-BD38-6A9128BB669F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{08A727BF-5E60-46C4-BD38-6A9128BB669F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4F43B1A8-D7AB-4C83-B9D3-540D7CF346CB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4F43B1A8-D7AB-4C83-B9D3-540D7CF346CB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4F43B1A8-D7AB-4C83-B9D3-540D7CF346CB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4F43B1A8-D7AB-4C83-B9D3-540D7CF346CB}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

@@ -1,0 +1,99 @@
+﻿<navbar></navbar>
+<fieldset>
+    <legend>
+        <h5>{{Captions.SearchCriteria}}</h5>
+    </legend>
+    <form name="SearchForm" class="form-horizontal" novalidate>
+        <div class="form-group">
+            <label class="control-label col-md-2" style=" text-align:left;">{{Captions.OrganizationPath}}</label>
+            <div class="col-md-4">
+                <input type="text" class="form-control" ng-model="EntityOrg.OrganizationPath" ng-change="Search()" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-md-2" style=" text-align:left;">{{Captions.OrganizationKey}}</label>
+            <div class="col-md-4">
+                <input type="text" class="form-control" ng-model="EntityOrg.OrganizationKey" ng-change="Search()" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-md-2" style=" text-align:left;">{{Captions.OrganizationName}}</label>
+            <div class="col-md-4">
+                <input type="text" class="form-control" ng-model="EntityOrg.OrganizationName" ng-change="Search()" />
+            </div>
+        </div>
+    </form>
+</fieldset>
+<fieldset>
+    <legend>
+        <h5>{{Captions.List}}</h5>
+    </legend>
+    <div>
+        <div class="row">
+            <div class="col-md-12">
+                <pagingbar currpageindex="CurrPageIndex" totalcount="TotalCount" displaypagenum="DisplayPageNum" pagesize="PageSize"></pagingbar>
+            </div>
+            <div class="col-md-12">
+                &nbsp;
+            </div>
+
+            <div class="col-md-12">
+                <div id="no-more-tables">
+                    <table class="table table-striped fa-border table-hover cf">
+                        <thead class="cf">
+                            <tr>
+                                <th align="center" style="text-align:left;" id="OrganizationPathTH" ng-click="SortBy('OrganizationPath')">
+                                    {{Captions.OrganizationPath}}<i class="fa fa-fw fa-sort-{{SortDir}}" ng-if="Sort=='OrganizationPath'"></i>
+                                </th>
+                                <th align="center" style="text-align:center;" id="OrganizationKeyTH" ng-click="SortBy('OrganizationKey')">
+                                    {{Captions.OrganizationKey}}<i class="fa fa-fw fa-sort-{{SortDir}}" ng-if="Sort=='OrganizationKey'"></i>
+                                </th>
+                                <th align="center" style="text-align:left;" id="OrganizationNameTH" ng-click="SortBy('OrganizationName')">
+                                    {{Captions.OrganizationName}}<i class="fa fa-fw fa-sort-{{SortDir}}" ng-if="Sort=='OrganizationName'"></i>
+                                </th>
+                                <th colspan="2" align="center" style="text-align:center;">{{Captions.Operation}}</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="item in OrgList" ng-if="OrgList.length>0" class="animateRepeat">
+                                <td data-title="{{Captions.OrganizationPath}}" align="left" class="vert-align">{{item.OrganizationPath}}</td>
+                                <td data-title="{{Captions.OrganizationKey}}" align="center" class="vert-align">{{item.OrganizationKey}}</td>
+                                <td data-title="{{Captions.OrganizationName}}" align="left" class="vert-align">{{item.OrganizationName}}</td>
+                                <td data-title="{{Captions.Operation}}" align="center" width="90px" class="vert-align" ng-if="item.AllowEdit">
+                                    <a class="btn btn-default" ui-sref="Main.LUOrganizationManage.Edit({OrgID:item.ID})" ui-sref-opts="{reload:true}"><i class="fa fa-pencil fa-fw"></i> {{Captions.Edit}}</a>
+                                </td>
+
+                                <td data-title="{{Captions.Operation}}" align="center" width="90px" class="vert-align" ng-if="!item.AllowEdit">
+                                    <a class="btn btn-default" ng-disabled="!item.AllowEdit"><i class="fa fa-pencil fa-fw"></i> {{Captions.Edit}}</a>
+                                </td>
+                                <td align="center" width="90px" class="vert-align" ng-if="item.AllowDel">
+                                    <a class="btn btn-danger" ng-click="Delete(item.ID)"><i class="fa fa-trash-o fa-fw"></i> {{Captions.Delete}}</a>
+                                </td>
+
+                                <td align="center" width="90px" class="vert-align" ng-if="!item.AllowDel">
+                                    <a class="btn btn-danger" ng-disabled="!item.AllowDel"><i class="fa fa-trash-o fa-fw"></i>{{Captions.Delete}}</a>
+                                </td>
+                            </tr>
+
+                            <tr ng-if="OrgList.length==0">
+                                <td colspan="3">{{Captions.E019}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!--Paging-->
+            <div class="col-md-12">
+                <pagingbar currpageindex="CurrPageIndex" totalcount="TotalCount" displaypagenum="DisplayPageNum" pagesize="PageSize"></pagingbar>
+            </div>
+            <div class="col-md-12">
+                &nbsp;
+            </div>
+
+            <div class="col-md-12" ng-if="CheckPrivilege_Create">
+                <a class="btn btn-default" role="button" ui-sref="Main.LUOrganizationManage.Create" ui-sref-opts="{reload:true}">{{Captions.LUOrganizationManage_Create}}</a>
+            </div>
+        </div>
+    </div>
+</fieldset>

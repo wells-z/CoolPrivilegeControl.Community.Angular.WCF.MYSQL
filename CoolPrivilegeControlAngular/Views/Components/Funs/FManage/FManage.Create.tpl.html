@@ -1,0 +1,70 @@
+﻿<navbar></navbar>
+<form name="CreateForm" class="form-horizontal" novalidate>
+    <div class="row">
+
+        <div class="col-md-12">
+            <div class="form-group required" ng-class="{ 'has-error' : !CreateForm.FunctionPath.$pristine && CreateForm.FunctionPath.$invalid }">
+                <label class="control-label col-md-4">{{Captions.FunctionPath}}</label>
+                <div class="col-md-4">
+                    <input type="text" name="FunctionPath" class="form-control input-md" placeholder="{{Captions.FunctionPath}}" ng-model="EntityF.FunctionPath" requried-validate fieldcaption="{{Captions.FunctionPath}}" />
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="form-group required" ng-class="{ 'has-error' : !CreateForm.FunctionKey.$pristine && CreateForm.FunctionKey.$invalid }">
+                <label class="control-label col-md-4">{{Captions.FunctionKey}}</label>
+                <div class="col-md-4">
+                    <input type="text" name="FunctionKey" class="form-control input-md" placeholder="{{Captions.FunctionKey}}" ng-model="EntityF.FunctionKey" requried-validate fieldcaption="{{Captions.FunctionKey}}" />
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="form-group">
+                <label class="control-label col-md-4">{{Captions.FunctionUrl}}</label>
+                <div class="col-md-4">
+                    <input type="text" class="form-control input-md" ng-model="EntityF.FunctionUrl" placeholder="{{Captions.FunctionUrl}}" />
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="form-group">
+                <label class="control-label col-md-4">{{Captions.FunctionType}}</label>
+                <div class="col-md-4">
+                    <div class="col-md-7">
+                        <table class="table table-striped" contenteditable="false">
+                            <thead>
+                                <tr>
+                                    <th align="center" style="text-align:center; width:60px;"><input type="checkbox" value="" id="CheckAll" ng-click="CheckAll()" ng-model="isCheckAll"></th>
+                                    <th align="left" style="text-align:left;">{{Captions.FunctionType}}</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="item in SelectedTypeList">
+                                    <td align="center" style="text-align:center; width:60px;"><input type="hidden" ng-model="item.ID"><input type="checkbox" ng-model="item.Selected" ng-click="CheckFunType()"></td>
+                                    <td align="left">
+                                        <a ui-sref="Main.FTManage.Edit({FTID:item.ID})" ng-if="item.AllowEdit">{{item.FunctionType}}</a>
+                                        <span ng-if="!item.AllowEdit">{{item.FunctionType}}</span>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-1">
+            <input type="submit" value="{{Captions.Save}}" class="btn btn-primary" ng-click="Create()" ng-disabled="!(!!EntityF.FunctionPath&& !!EntityF.FunctionKey)">
+        </div>
+        <div class="col-md-1">
+            <a class="btn btn-default" role="button" ui-sref="Main.FTManage" ui-sref-opts="{reload:true}">{{Captions.BacktoList}}</a>
+        </div>
+    </div>
+</form>

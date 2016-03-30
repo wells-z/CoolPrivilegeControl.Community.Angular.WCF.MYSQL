@@ -1,0 +1,48 @@
+﻿<navbar></navbar>
+<form name="EditForm" class="form-horizontal" novalidate>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="form-group required" ng-class="{ 'has-error' : !EditForm.OrganizationPath.$pristine && EditForm.OrganizationPath.$invalid }">
+                <label class="control-label col-md-4">{{Captions.OrganizationPath}}</label>
+                <div class="col-md-4">
+                    <input type="text" name="OrganizationPath" class="form-control input-md" placeholder="{{Captions.OrganizationPath}}" ng-model="EntityOrg.OrganizationPath" requried-validate fieldcaption="{{Captions.OrganizationPath}}" />
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-12">
+            <div class="form-group required" ng-class="{ 'has-error' : !EditForm.OrganizationKey.$pristine && EditForm.OrganizationKey.$invalid }">
+                <label class="control-label col-md-4">{{Captions.OrganizationPath}}</label>
+                <div class="col-md-4">
+                    <input type="text" name="OrganizationKey" class="form-control input-md" placeholder="{{Captions.OrganizationKey}}" ng-model="EntityOrg.OrganizationKey" requried-validate fieldcaption="{{Captions.OrganizationKey}}" />
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-12">
+            <div class="form-group required" ng-class="{ 'has-error' : !EditForm.OrganizationStatus.$pristine && EditForm.OrganizationStatus.$invalid }">
+                <label class="control-label col-md-4">{{Captions.OrganizationStatus}}</label>
+                <div class="controls col-md-4">
+                    <label class="radio-inline">
+                        <input type="radio" name="OrganizationStatus" ng-model="EntityOrg.OrganizationStatus" value="1" /> {{Captions.Active}}
+                    </label>
+                    <label class="radio-inline">
+                        <input type="radio" name="OrganizationStatus" ng-model="EntityOrg.OrganizationStatus" value="0" /> {{Captions.InActive}}
+                    </label>
+                </div>
+            </div>
+        </div>
+    </div>
+    <br />
+    <div class="row">
+        <div class="col-md-1">
+            <input type="submit" value="{{Captions.Save}}" class="btn btn-primary" ng-click="Edit()" ng-disabled="!(!!EntityOrg.OrganizationPath &&!!EntityOrg.OrganizationKey && !!EntityOrg.OrganizationStatus && EntityOrg.AllowEdit)">
+        </div>
+        <div class="col-md-1">
+            <a class="btn btn-danger" role="button" ng-click="Delete(EntityOrg.ID)" ng-disabled="!EntityOrg.AllowDel">{{Captions.Delete}}</a>
+        </div>
+        <div class="col-md-1">
+            <a class="btn btn-default" role="button" ui-sref="Main.LUOrganizationManage" ui-sref-opts="{reload:true}">{{Captions.BacktoList}}</a>
+        </div>
+    </div>
+</form>

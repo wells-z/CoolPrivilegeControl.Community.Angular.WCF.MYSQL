@@ -1,0 +1,25 @@
+﻿<navbar></navbar>
+<form name="EditForm" class="form-horizontal" novalidate>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="form-group required" ng-class="{ 'has-error' : !EditForm.FunctionType.$pristine && EditForm.FunctionType.$invalid }">
+                <label class="control-label col-md-4">{{Captions.FunctionType}}</label>
+                <div class="col-md-4">
+                    <input type="text" name="FunctionType" class="form-control" ng-model="EntityFT.FunctionType" requried-validate fieldcaption="{{Captions.FunctionType}}" />
+                </div>
+            </div>
+        </div>
+    </div>
+    <br />
+    <div class="row">
+        <div class="col-md-1">
+            <input type="submit" value="{{Captions.Save}}" class="btn btn-primary" ng-click="Edit()" ng-disabled="!(!!EntityFT.FunctionType && EntityFT.AllowEdit)">
+        </div>
+        <div class="col-md-1">
+            <a class="btn btn-danger" role="button" ng-click="Delete(EntityFT.ID)" ng-disabled="!EntityFT.AllowDel">{{Captions.Delete}}</a>
+        </div>
+        <div class="col-md-1">
+            <a class="btn btn-default" role="button" ui-sref="Main.FTManage" ui-sref-opts="{reload:true}">{{Captions.BacktoList}}</a>
+        </div>
+    </div>
+</form>

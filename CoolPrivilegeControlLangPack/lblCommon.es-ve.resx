@@ -1,0 +1,378 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="AccessPrivilege" xml:space="preserve">
+    <value>Privilegio de acceso</value>
+  </data>
+  <data name="Active" xml:space="preserve">
+    <value>Activo</value>
+  </data>
+  <data name="Add" xml:space="preserve">
+    <value>Agregar</value>
+  </data>
+  <data name="All" xml:space="preserve">
+    <value>Todo</value>
+  </data>
+  <data name="AsOrgSetting" xml:space="preserve">
+    <value>Tipo Configuracion de Organizacion</value>
+  </data>
+  <data name="AsRoleSetting" xml:space="preserve">
+    <value>Tipo Configuracion de Rol</value>
+  </data>
+  <data name="BacktoList" xml:space="preserve">
+    <value>Vuelve a La Lista</value>
+  </data>
+  <data name="ClickToViewDetails" xml:space="preserve">
+    <value>Click para ver detalle</value>
+  </data>
+  <data name="ConfirmNewPwd" xml:space="preserve">
+    <value>Confirmar Nueva Contraseña</value>
+  </data>
+  <data name="Create" xml:space="preserve">
+    <value>Crear</value>
+  </data>
+  <data name="CreateDate" xml:space="preserve">
+    <value>Crear Fecha</value>
+  </data>
+  <data name="Date" xml:space="preserve">
+    <value>Fecha</value>
+  </data>
+  <data name="DateFormat" xml:space="preserve">
+    <value>Formato Fecha</value>
+  </data>
+  <data name="Datetime" xml:space="preserve">
+    <value>Fecha/Hora</value>
+  </data>
+  <data name="Delete" xml:space="preserve">
+    <value>Eliminar</value>
+  </data>
+  <data name="DisplayPageNum" xml:space="preserve">
+    <value>Nro Max que debe aparecer en la pagina</value>
+  </data>
+  <data name="Edit" xml:space="preserve">
+    <value>Editar</value>
+  </data>
+  <data name="First" xml:space="preserve">
+    <value>Primero</value>
+  </data>
+  <data name="From" xml:space="preserve">
+    <value>Desde</value>
+  </data>
+  <data name="FunctionKey" xml:space="preserve">
+    <value>Funcion LLave</value>
+  </data>
+  <data name="FunctionName" xml:space="preserve">
+    <value>Funcion Nombre</value>
+  </data>
+  <data name="FunctionPath" xml:space="preserve">
+    <value>Funcion Direccion</value>
+  </data>
+  <data name="FunctionType" xml:space="preserve">
+    <value>Funcion Tipo</value>
+  </data>
+  <data name="FunctionUrl" xml:space="preserve">
+    <value>Url</value>
+  </data>
+  <data name="Generate" xml:space="preserve">
+    <value>Generar</value>
+  </data>
+  <data name="Home" xml:space="preserve">
+    <value>Principal</value>
+  </data>
+  <data name="InActive" xml:space="preserve">
+    <value>Inactivo</value>
+  </data>
+  <data name="Key" xml:space="preserve">
+    <value>Llave</value>
+  </data>
+  <data name="Language" xml:space="preserve">
+    <value>Lenguaje</value>
+  </data>
+  <data name="Last" xml:space="preserve">
+    <value>Ultimo</value>
+  </data>
+  <data name="LastLoginDT" xml:space="preserve">
+    <value>Ultima Fecha de Ingreso</value>
+  </data>
+  <data name="Login" xml:space="preserve">
+    <value>Usuario</value>
+  </data>
+  <data name="LoginConfirmPwd" xml:space="preserve">
+    <value>Confirmar Contraseña</value>
+  </data>
+  <data name="LoginName" xml:space="preserve">
+    <value>Nombre de Usuario</value>
+  </data>
+  <data name="LoginPwd" xml:space="preserve">
+    <value>Contraseña</value>
+  </data>
+  <data name="LoginScreenTitle" xml:space="preserve">
+    <value>Usuario -- Transformacion Manpa</value>
+  </data>
+  <data name="Logout" xml:space="preserve">
+    <value>Cerrar sesion </value>
+  </data>
+  <data name="MaximumLoginAttempts" xml:space="preserve">
+    <value>Nro Max de intentos de ingreso</value>
+  </data>
+  <data name="NewPwd" xml:space="preserve">
+    <value>Nueva Contraseña</value>
+  </data>
+  <data name="NewValue" xml:space="preserve">
+    <value>Nuevo Valor</value>
+  </data>
+  <data name="Next" xml:space="preserve">
+    <value>Siguiente</value>
+  </data>
+  <data name="No" xml:space="preserve">
+    <value>No</value>
+  </data>
+  <data name="Operation" xml:space="preserve">
+    <value>Operacion</value>
+  </data>
+  <data name="OperationType" xml:space="preserve">
+    <value>Tipo de Operacion</value>
+  </data>
+  <data name="Operator" xml:space="preserve">
+    <value>Operador</value>
+  </data>
+  <data name="OrganizationKey" xml:space="preserve">
+    <value>Llave de Orgnizacion</value>
+  </data>
+  <data name="OrganizationName" xml:space="preserve">
+    <value>Nombre Organizacion</value>
+  </data>
+  <data name="OrganizationPath" xml:space="preserve">
+    <value>Direccion Organizacion</value>
+  </data>
+  <data name="OrganizationStatus" xml:space="preserve">
+    <value>Estatus Organizacion</value>
+  </data>
+  <data name="OrganizationType" xml:space="preserve">
+    <value>Tipo Organizacion</value>
+  </data>
+  <data name="OrgDetailsKey" xml:space="preserve">
+    <value>Llave detalle organizacion</value>
+  </data>
+  <data name="OrgDetailsSettings" xml:space="preserve">
+    <value>Configuracion detalle organizacion </value>
+  </data>
+  <data name="OrgDetailsType" xml:space="preserve">
+    <value>Tipo detalle organizacion </value>
+  </data>
+  <data name="OrgSettings" xml:space="preserve">
+    <value>Configuracion de organizacion </value>
+  </data>
+  <data name="OriginalValue" xml:space="preserve">
+    <value>Valor original</value>
+  </data>
+  <data name="OriPwd" xml:space="preserve">
+    <value>Contraseña original </value>
+  </data>
+  <data name="PageSize" xml:space="preserve">
+    <value>Tamaño pagina</value>
+  </data>
+  <data name="Password_ExpireDays" xml:space="preserve">
+    <value>Dias de caducidad contraseña</value>
+  </data>
+  <data name="Password_IncludeDiffCase" xml:space="preserve">
+    <value>Inclusion de dos letras mayusculas y minusculas</value>
+  </data>
+  <data name="Password_IncludeNumDigit" xml:space="preserve">
+    <value>Inclusion de uno o mas digitos numericos</value>
+  </data>
+  <data name="Password_IncludeSpecialChar" xml:space="preserve">
+    <value>Inclusion de caracteres especiales, por ejemplo, @, #, $, Etc.</value>
+  </data>
+  <data name="Password_Length" xml:space="preserve">
+    <value>Longitud Contraseña</value>
+  </data>
+  <data name="Password_Policy" xml:space="preserve">
+    <value>Politica Contraseña</value>
+  </data>
+  <data name="Password_ReuseNum" xml:space="preserve">
+    <value>Nro contraseñas anteriores no pueden ser reutilizados</value>
+  </data>
+  <data name="PleaseSelect" xml:space="preserve">
+    <value>Por Favor Seleccionar</value>
+  </data>
+  <data name="Prev" xml:space="preserve">
+    <value>Prev</value>
+  </data>
+  <data name="RecordKey" xml:space="preserve">
+    <value>Anterior</value>
+  </data>
+  <data name="Reset" xml:space="preserve">
+    <value>Reiniciar</value>
+  </data>
+  <data name="RoleName" xml:space="preserve">
+    <value>Nombre Rol</value>
+  </data>
+  <data name="RoleSettings" xml:space="preserve">
+    <value>Configuracion Rol</value>
+  </data>
+  <data name="Save" xml:space="preserve">
+    <value>Guardar</value>
+  </data>
+  <data name="Search" xml:space="preserve">
+    <value>Buscar</value>
+  </data>
+  <data name="SearchCriteria" xml:space="preserve">
+    <value>Criterio Busqueda</value>
+  </data>
+  <data name="SessionTimeoutSeconds" xml:space="preserve">
+    <value>Sesion Tiempo de espera (segundos)</value>
+  </data>
+  <data name="SpecificFunctions" xml:space="preserve">
+    <value>Funciones Especificas</value>
+  </data>
+  <data name="Suspend" xml:space="preserve">
+    <value>Suspendido</value>
+  </data>
+  <data name="TableName" xml:space="preserve">
+    <value>Nombre Tabla</value>
+  </data>
+  <data name="TimeFormat" xml:space="preserve">
+    <value>Formato Tiempo</value>
+  </data>
+  <data name="To" xml:space="preserve">
+    <value>Para</value>
+  </data>
+  <data name="Type" xml:space="preserve">
+    <value>Tipo</value>
+  </data>
+  <data name="UserType" xml:space="preserve">
+    <value>Tipo Usuario</value>
+  </data>
+  <data name="Value" xml:space="preserve">
+    <value>Valor</value>
+  </data>
+  <data name="Yes" xml:space="preserve">
+    <value>Si</value>
+  </data>
+  <data name="List" xml:space="preserve">
+    <value>Lista</value>
+  </data>
+  <data name="Status" xml:space="preserve">
+    <value>Estado</value>
+  </data>
+  <data name="ResetPWDTitle" xml:space="preserve">
+    <value>Reset Password</value>
+  </data>
+</root>

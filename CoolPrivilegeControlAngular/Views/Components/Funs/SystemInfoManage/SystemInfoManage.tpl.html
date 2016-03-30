@@ -1,0 +1,145 @@
+﻿<navbar></navbar>
+<div class="form-horizontal">
+    <div class="form-group">
+        <label class="control-label col-md-3" style=" text-align:left;" for="SessionTimeoutSeconds">{{Captions.SessionTimeoutSeconds}}</label>
+        <div class="col-md-2">
+            <div class="input-group spinner" data-trigger="spinner">
+                <input type="text" class="form-control" name="SessionTimeoutSeconds" id="SessionTimeoutSeconds" ng-model="SystemInfo.SessionTimeoutSeconds" data-rule="quantity" data-max="3600" data-min="5" placeholder="{{Captions.SessionTimeoutSeconds}}">
+                <div class="input-group-addon">
+                    <a href="javascript:;" class="spin-up" data-spin="up"><i class="fa fa-sort-up"></i></a>
+                    <a href="javascript:;" class="spin-down" data-spin="down"><i class="fa fa-sort-down"></i></a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label class="control-label col-md-1" style=" text-align:left;" for="PageSize">{{Captions.PageSize}}</label>
+        <div class="col-md-2">
+            <div class="input-group spinner" data-trigger="spinner">
+                <input type="text" class="form-control" name="PageSize" id="PageSize" ng-model="SystemInfo.PageSize" data-rule="q data-rule=" quantity" data-min="1" placeholder="{{Captions.PageSize}}">
+                <div class="input-group-addon">
+                    <a href="javascript:;" class="spin-up" data-spin="up"><i class="fa fa-sort-up"></i></a>
+                    <a href="javascript:;" class="spin-down" data-spin="down"><i class="fa fa-sort-down"></i></a>
+                </div>
+            </div>
+        </div>
+        <label class="control-label col-md-4" style=" text-align:left;" for="DisplayPageNum">{{Captions.DisplayPageNum}}</label>
+        <div class="col-md-2">
+            <div class="input-group spinner" data-trigger="spinner">
+                <input type="text" class="form-control" name="DisplayPageNum" id="DisplayPageNum" ng-model="SystemInfo.DisplayPageNum" data-rule="quantity" data-min="5" placeholder="{{Captions.DisplayPageNum}}">
+                <div class="input-group-addon">
+                    <a href="javascript:;" class="spin-up" data-spin="up"><i class="fa fa-sort-up"></i></a>
+                    <a href="javascript:;" class="spin-down" data-spin="down"><i class="fa fa-sort-down"></i></a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label class="control-label col-md-2" style=" text-align:left;" for="DateFormat">{{Captions.DateFormat}}</label>
+        <div class="col-md-2">
+            <input type="text" class="form-control" ng-model="SystemInfo.DateFormat" placeholder="{{Captions.DateFormat}}" />
+        </div>
+        <label class="control-label col-md-2" style=" text-align:left;" for="TimeFormat">{{Captions.TimeFormat}}</label>
+        <div class="col-md-2">
+            <input type="text" class="form-control" ng-model="SystemInfo.TimeFormat" placeholder="{{Captions.TimeFormat}}" />
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="control-label col-md-3" style=" text-align:left;">
+            {{Captions.Password_Policy}}:
+        </label>
+    </div>
+
+    <div class="form-group">
+        <label class="control-label col-md-3" style=" text-align:left;" for="Password_MaximumCount">{{Captions.MaximumLoginAttempts}}</label>
+        <div class="col-md-2">
+            <div class="input-group spinner" data-trigger="spinner">
+                <input type="text" class="form-control" name="Password_MaximumCount" id="Password_MaximumCount" ng-model="SystemInfo.Password_MaximumCount" data-rule="quantity" data-min="3" placeholder="{{Captions.MaximumLoginAttempts}}">
+                <div class="input-group-addon">
+                    <a href="javascript:;" class="spin-up" data-spin="up"><i class="fa fa-sort-up"></i></a>
+                    <a href="javascript:;" class="spin-down" data-spin="down"><i class="fa fa-sort-down"></i></a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label class="control-label col-md-2" style=" text-align:left;" for="Password_LengthMin">{{Captions.Password_Length}}&nbsp;&nbsp;&nbsp;{{Captions.From}}</label>
+        <div class="col-md-2">
+            <div class="input-group spinner" data-trigger="spinner">
+                <input type="text" class="form-control" name="Password_LengthMin" id="Password_LengthMin" ng-model="SystemInfo.Password_LengthMin" data-rule="quantity" data-min="8" data-max="50" placeholder="{{Captions.Password_Length}}">
+                <div class="input-group-addon">
+                    <a href="javascript:;" class="spin-up" data-spin="up"><i class="fa fa-sort-up"></i></a>
+                    <a href="javascript:;" class="spin-down" data-spin="down"><i class="fa fa-sort-down"></i></a>
+                </div>
+            </div>
+        </div>
+        <label class="control-label col-md-1" style=" text-align:center;" for="Password_LengthMax">{{Captions.To}}</label>
+        <div class="col-md-2">
+            <div class="input-group spinner" data-trigger="spinner">
+                <input type="text" class="form-control" name="Password_LengthMax" id="Password_LengthMax" ng-model="SystemInfo.Password_LengthMax" data-rule="quantity" data-min="8" data-max="50" placeholder="{{Captions.To}}">
+                <div class="input-group-addon">
+                    <a href="javascript:;" class="spin-up" data-spin="up"><i class="fa fa-sort-up"></i></a>
+                    <a href="javascript:;" class="spin-down" data-spin="down"><i class="fa fa-sort-down"></i></a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="control-label col-md-4" style=" text-align:left;" for="Password_ReuseNum">{{Captions.Password_ReuseNum}}</label>
+        <div class="col-md-2">
+            <div class="input-group spinner" data-trigger="spinner">
+                <input type="text" class="form-control" name="Password_ReuseNum" id="Password_ReuseNum" ng-model="SystemInfo.Password_ReuseNum" data-rule="quantity" data-min="1" data-max="10" placeholder="{{Captions.Password_ReuseNum}}">
+                <div class="input-group-addon">
+                    <a href="javascript:;" class="spin-up" data-spin="up"><i class="fa fa-sort-up"></i></a>
+                    <a href="javascript:;" class="spin-down" data-spin="down"><i class="fa fa-sort-down"></i></a>
+                </div>
+            </div>
+        </div>
+        <label class="control-label col-md-2" style=" text-align:left;" for="Password_ExpireDays">{{Captions.Password_ExpireDays}}</label>
+        <div class="col-md-2">
+            <div class="input-group spinner" data-trigger="spinner">
+                <input type="text" class="form-control" name="Password_ExpireDays" id="Password_ExpireDays" ng-model="SystemInfo.Password_ExpireDays" data-rule="quantity" data-min="60" data-max="3650" placeholder="{{Captions.Password_ExpireDays}}">
+                <div class="input-group-addon">
+                    <a href="javascript:;" class="spin-up" data-spin="up"><i class="fa fa-sort-up"></i></a>
+                    <a href="javascript:;" class="spin-down" data-spin="down"><i class="fa fa-sort-down"></i></a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="form-group">
+        <div class="col-md-12" style="padding-left:35px;">
+            <label class="checkbox">
+                <input type="checkbox" ng-model="SystemInfo.Password_IncludeDiffCase" />{{Captions.Password_IncludeDiffCase}}
+                <!--@Html.CheckBoxFor(model => model.Password_IncludeDiffCase, new { htmlAttributes = new { @class = "form-control" } }) @Html.MultilingualHtml("Password_IncludeDiffCase")-->
+            </label>
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="col-md-12" style="padding-left:35px;">
+            <label class="checkbox">
+                <input type="checkbox" ng-model="SystemInfo.Password_IncludeNumDigit" />{{Captions.Password_IncludeNumDigit}}
+                <!--@Html.CheckBoxFor(model => model.Password_IncludeNumDigit, new { htmlAttributes = new { @class = "form-control" } }) @Html.MultilingualHtml("Password_IncludeNumDigit")-->
+            </label>
+        </div>
+
+    </div>
+    <div class="form-group">
+        <div class="col-md-12" style="padding-left:35px;">
+            <label class="checkbox">
+                <input type="checkbox" ng-model="SystemInfo.Password_IncludeSpecialChar" />{{Captions.Password_IncludeSpecialChar}}
+                <!--@Html.CheckBoxFor(model => model.Password_IncludeSpecialChar, new { htmlAttributes = new { @class = "form-control" } }) @Html.MultilingualHtml("Password_IncludeSpecialChar")-->
+            </label>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-2">
+            <input type="submit" value="{{Captions.Save}}" class="btn btn-primary" ng-click="Save()">
+        </div>
+    </div>
+</div>

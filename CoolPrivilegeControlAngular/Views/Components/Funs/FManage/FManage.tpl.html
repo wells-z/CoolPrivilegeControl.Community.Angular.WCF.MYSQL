@@ -1,0 +1,105 @@
+﻿<navbar></navbar>
+<fieldset>
+    <legend>
+        <h5>{{Captions.SearchCriteria}}</h5>
+    </legend>
+    <form name="SearchForm" class="form-horizontal" novalidate>
+        <div class="form-group">
+            <label class="control-label col-md-2" style=" text-align:left;" for="FunctionType">{{Captions.FunctionPath}}</label>
+            <div class="col-md-4">
+                <input type="text" class="form-control" ng-model="EntityF.FunctionPath" ng-change="Search()" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-md-2" style=" text-align:left;" for="FunctionType">{{Captions.FunctionKey}}</label>
+            <div class="col-md-4">
+                <input type="text" class="form-control" ng-model="EntityF.FunctionKey" ng-change="Search()" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-md-2" style=" text-align:left;" for="FunctionType">{{Captions.FunctionName}}</label>
+            <div class="col-md-4">
+                <input type="text" class="form-control" ng-model="EntityF.FunctionName" ng-change="Search()" />
+            </div>
+        </div>
+    </form>
+</fieldset>
+<fieldset>
+    <legend>
+        <h5>{{Captions.List}}</h5>
+    </legend>
+    <div>
+        <div class="row">
+            <div class="col-md-12">
+                <pagingbar currpageindex="CurrPageIndex" totalcount="TotalCount" displaypagenum="DisplayPageNum" pagesize="PageSize"></pagingbar>
+            </div>
+            <div class="col-md-12">
+                &nbsp;
+            </div>
+
+            <div class="col-md-12">
+                <div id="no-more-tables">
+                    <table class="table table-striped fa-border table-hover cf">
+                        <thead class="cf">
+                            <tr>
+                                <th align="center" style="text-align:center;" id="FunctionPathTH" ng-click="SortBy('FunctionPath')">
+                                    {{Captions.FunctionPath}}<i class="fa fa-fw fa-sort-{{SortDir}}" ng-if="Sort=='FunctionPath'"></i>
+                                </th>
+                                <th align="center" style="text-align:center;" id="FunctionKeyTH" ng-click="SortBy('FunctionKey')">
+                                    {{Captions.FunctionKey}}<i class="fa fa-fw fa-sort-{{SortDir}}" ng-if="Sort=='FunctionKey'"></i>
+                                </th>
+                                <th align="center" style="text-align:center;" id="FunctionNameTH" ng-click="SortBy('FunctionName')">
+                                    {{Captions.FunctionName}}<i class="fa fa-fw fa-sort-{{SortDir}}" ng-if="Sort=='FunctionName'"></i>
+                                </th>
+                                <th align="center" style="text-align:center;" id="UrlTH" ng-click="SortBy('Url')">
+                                    {{Captions.FunctionUrl}}<i class="fa fa-fw fa-sort-{{SortDir}}" ng-if="Sort=='Url'"></i>
+                                </th>
+                                <th colspan="2" align="center" style="text-align:center;">{{Captions.Operation}}</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="item in FunList" ng-if="FunList.length>0" class="animateRepeat">
+                                <td data-title="{{Captions.FunctionPath}}" align="left" class="vert-align">{{item.FunctionPath}}</td>
+                                <td data-title="{{Captions.FunctionKey}}" align="left" class="vert-align">{{item.FunctionKey}}</td>
+                                <td data-title="{{Captions.FunctionName}}" align="left" class="vert-align">{{item.FunctionName}}</td>
+                                <td data-title="{{Captions.FunctionUrl}}" align="left" class="vert-align">{{item.Url}}&nbsp;</td>
+                                <td data-title="{{Captions.Operation}}" al align="center" width="90px" class="vert-align" ng-if="item.AllowEdit">
+                                    <a class="btn btn-default" ui-sref="Main.FManage.Edit({FID:item.ID})" ui-sref-opts="{reload:true}"><i class="fa fa-pencil fa-fw"></i> {{Captions.Edit}}</a>
+                                </td>
+
+                                <td data-title="{{Captions.Operation}}" al align="center" width="90px" class="vert-align" ng-if="!item.AllowEdit">
+                                    <a class="btn btn-default" ng-disabled="!item.AllowEdit"><i class="fa fa-pencil fa-fw"></i> {{Captions.Edit}}</a>
+                                </td>
+
+                                <td align="center" width="90px" class="vert-align" ng-if="item.AllowDel">
+                                    <a class="btn btn-danger" ng-click="Delete(item.ID)"><i class="fa fa-trash-o fa-fw"></i> {{Captions.Delete}}</a>
+                                </td>
+
+                                <td align="center" width="90px" class="vert-align" ng-if="!item.AllowDel">
+                                    <a class="btn btn-danger" ng-disabled="!item.AllowDel"><i class="fa fa-trash-o fa-fw"></i>{{Captions.Delete}}</a>
+                                </td>
+                            </tr>
+
+                            <tr ng-if="FunList.length==0">
+                                <td colspan="3">{{Captions.E019}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!--Paging-->
+            <div class="col-md-12">
+                <pagingbar currpageindex="CurrPageIndex" totalcount="TotalCount" displaypagenum="DisplayPageNum" pagesize="PageSize"></pagingbar>
+            </div>
+
+            <div class="col-md-12">
+                &nbsp;
+            </div>
+
+            <div class="col-md-12" ng-if="CheckPrivilege_Create">
+                <a class="btn btn-default" role="button" ui-sref="Main.FManage.Create" ui-sref-opts="{reload:true}">{{Captions.FManage_Create}}</a>
+            </div>
+        </div>
+    </div>
+</fieldset>

@@ -1,0 +1,95 @@
+﻿<div class="container">
+    <div class="row center-block" style="text-align:center;background-color: black; height:5px; margin-top:3px;">
+        <img src="~/Content/imgs/_blank.bmp" style="height:0px;  width:0px;display:none;" />
+    </div>
+
+    <div class="row center-block" style="text-align:center; background-color: rgb(22, 51, 97);">
+        <span style="color:#FFF;">{{LoginBoxCaptions.LoginBoxTitle}}</span>
+    </div>
+    <div class="row center-block" style="margin-top:15px;">
+        <form name="loginForm" class="form-horizontal" novalidate>
+            <div class="col-xs-12 col-md-12">
+                <div class="form-group has-feedback has-feedback-left" ng-class="{ 'has-error' : !loginForm.LoginName.$pristine && loginForm.LoginName.$invalid }">
+                    <label class="control-label col-xs-12 col-sm-3 col-sm-offset-1">{{LoginBoxCaptions.LoginNameCaption}}</label>
+                    <div class="col-xs-12 col-sm-6">
+                        <input type="text" name="LoginName" class="form-control input-md" placeholder="{{LoginBoxCaptions.LoginNameCaption}}" ng-model="LoginUserModel.LoginName" requried-validate fieldcaption="{{LoginBoxCaptions.LoginNameCaption}}" />
+                        <i class="form-control-feedback glyphicon glyphicon-user "></i>
+                    </div>
+                </div>
+                <div class="form-group has-feedback has-feedback-left" ng-class="{ 'has-error' : !loginForm.password.$pristine && loginForm.password.$invalid }">
+                    <label class="control-label col-xs-12 col-sm-3 col-sm-offset-1">{{LoginBoxCaptions.LoginPwdCaption}}</label>
+                    <div class="col-xs-12 col-sm-6">
+                        <input type="password" name="password" class="form-control input-md" placeholder="{{LoginBoxCaptions.LoginPwdCaption}}" ng-model="LoginUserModel.LoginPwd" requried-validate fieldcaption="{{LoginBoxCaptions.LoginPwdCaption}}" />
+                        <i class="form-control-feedback glyphicon glyphicon-asterisk "></i>
+                    </div>
+                </div>
+
+                <div class="form-group has-feedback has-feedback-left">
+                    <label class="control-label col-xs-12 col-sm-3 col-sm-offset-1">{{LoginBoxCaptions.LanguageCaption}}</label>
+                    <div class="col-xs-12 col-sm-6">
+                        <!--item as item.label for item in items track by item.id-->
+                        <select class="form-control" ng-options='LangPack.Name for LangPack in LangPacks.Options track by LangPack.Key' ng-model="LangPacks.SelectedKey" ng-change="ChangeLang(LangPacks.SelectedKey.Key)"></select>
+                    </div>
+                </div>
+
+                <div class="form-group has-feedback has-feedback-left">
+                    <div class="col-xs-3 col-xs-offset-4 col-sm-3 col-sm-offset-4">
+                        <i class="form-control-feedback glyphicon glyphicon-log-in white"></i>
+                        <input ng-disabled="!(!!LoginUserModel.LoginName &&!!LoginUserModel.LoginPwd && IsEnable_DoLogin)" type="submit" class="btn btn-primary" ng-click="DoLogin()" value="{{LoginBoxCaptions.LoginBtnCaption}}" />
+                    </div>
+
+                    <div class="col-xs-2 col-md-2">
+                    </div>
+                </div>
+
+            </div>
+        </form>
+    </div>
+    <div class="row center-block" style="text-align:center;background-color: black; height:5px;">
+        <img src="~/Content/imgs/_blank.bmp" style="height:0px; width:0px; display:none;" />
+    </div>
+    <div class="row center-block" style="text-align:center;">
+        <span style=" color:red;">
+            This site is best viewed at 1920 x 1080 resolution.
+        </span>
+    </div>
+
+    <div class="row center-block" style="width:360px; text-align:left;text-shadow:0px 0px 3px #585858; color:#003;list-style-position: outside;">
+        For testing:
+    </div>
+
+    <div class="row center-block" style="width:360px;">
+        <div class="col-xs-6 col-md-6" style="text-shadow:0px 0px 3px #585858; color:#f00;list-style-position: outside;">
+            {{LoginBoxCaptions.LoginNameCaption}}:
+        </div>
+        <div class="col-xs-6 col-md-6" style="text-shadow: 0px 0px 3px #585858; color:green;list-style-position: outside;text-align:left;">
+            admin
+        </div>
+    </div>
+    <div class="row center-block" style="width:360px;">
+        <div class="col-xs-6 col-md-6" style="text-shadow:0px 0px 3px #585858; color:#f00;list-style-position: outside;">
+            {{LoginBoxCaptions.LoginPwdCaption}}:
+        </div>
+        <div class="col-xs-6 col-md-6" style="text-shadow: 0px 0px 3px #585858; color:green;list-style-position: outside;text-align:left;">
+            123456
+        </div>
+    </div>
+    <p class="row center-block" style="text-align: center;">
+        <a style="font-weight: bold;" href="http://www.wellscom.net/Download/CoolAccessControlSpec.zip">Download This System</a>
+    </p>
+
+    <div class="row center-block" style="text-align:center;">
+        <div class="col-xs-12 col-md-4">
+            <form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">
+                <input type="hidden" name="cmd" value="_s-xclick">
+                <input type="hidden" name="hosted_button_id" value="P6C6VGJBJUFXJ">
+                <input type="image" src="https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif" border="0" name="submit" alt="PayPal - The safer, easier way to pay online!">
+                <img alt="" border="0" src="https://www.paypalobjects.com/en_US/i/scr/pixel.gif" width="1" height="1">
+            </form>
+        </div>
+        <div class="col-xs-12 col-md-8" style="text-shadow:0px 0px 3px #585858; color:#003;list-style-position: outside; padding-top:3px;">
+            Click "Donate" button and support Cool Privilege Control system. Your donation will encourage us to continue development. Thanks.
+        </div>
+    </div>
+
+</div>

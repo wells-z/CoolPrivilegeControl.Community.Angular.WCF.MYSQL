@@ -1,0 +1,38 @@
+﻿<navbar></navbar>
+<form name="CreateForm" class="form-horizontal" novalidate>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="form-group required" ng-class="{ 'has-error' : !CreateForm.OrgDetailsKey.$pristine && CreateForm.OrgDetailsKey.$invalid }">
+                <label class="control-label col-md-4">{{Captions.OrgDetailsKey}}</label>
+                <div class="col-md-4">
+                    <input type="text" name="OrgDetailsKey" class="form-control" ng-model="EntityOrgDetail.OrgDetailsKey" requried-validate fieldcaption="{{Captions.OrgDetailsKey}}" />
+                </div>
+            </div>
+        </div>
+        <div class="col-md-12">
+            <div class="form-group required" ng-class="{ 'has-error' : !CreateForm.OrgDetailsType.$pristine && CreateForm.OrgDetailsType.$invalid }">
+                <label class="control-label col-md-4">{{Captions.OrgDetailsType}}</label>
+                <div class="controls col-md-4">
+                    <label class="radio-inline">
+                        <input type="radio" name="OrgDetailsType" ng-model="EntityOrgDetail.OrgDetailsType" value="1" checked="checked" /> {{Captions.SpecificFunctions}}
+                    </label>
+                    <label class="radio-inline">
+                        <input type="radio" name="OrgDetailsType" ng-model="EntityOrgDetail.OrgDetailsType" value="2" /> {{Captions.AsRoleSetting}}
+                    </label>
+                </div>
+            </div>
+        </div>
+    </div>
+    <funlistdirective funslist="FunsList" displaypagenum="DisplayPageNum" pagesize="PageSize" spefundetaillist="SpeFunDetailList" msgboxtitle="msgBoxTitle" ng-show="EntityOrgDetail.OrgDetailsType==1"></funlistdirective>
+
+    <rolelistdirective roleslist="RolesList" displaypagenum="DisplayPageNum" pagesize="PageSize" speroledetaillist="SpeRoleDetailList" msgboxtitle="msgBoxTitle" ng-show="EntityOrgDetail.OrgDetailsType==2"></rolelistdirective>
+    <br />
+    <div class="row">
+        <div class="col-md-1">
+            <input type="submit" value="{{Captions.Save}}" class="btn btn-primary" ng-click="Create()" ng-disabled="!(!!EntityOrgDetail.OrgDetailsKey)">
+        </div>
+        <div class="col-md-1">
+            <a class="btn btn-default" role="button" ui-sref="Main.LUOrgDetailsManage" ui-sref-opts="{reload:true}">{{Captions.BacktoList}}</a>
+        </div>
+    </div>
+</form>

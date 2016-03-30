@@ -1,0 +1,20 @@
+﻿<div class="container">
+    <div class="row center-block col-xs-12 col-md-12">
+        <div class="jumbotron">
+            <h2>Session Expired</h2>
+            <div class="alert alert-error">
+                You connection to the system has expired. You must login again.
+            </div>
+            <p>
+                <div col-xs-12 col-md-12>
+                    <b>Path:</b>
+                    {{SessionTimeout.Path}}<br />
+                </div>
+            </p>
+            <!--<div style="overflow:scroll">
+                <pre>{{SessionTimeout.Msgs}}</pre>
+            </div>-->
+            <h4>Please click <a class="btn btn-default" ng-click="GoToLoginPage();">here</a> to go back to the login page.</h4>
+        </div>
+    </div>
+</div>

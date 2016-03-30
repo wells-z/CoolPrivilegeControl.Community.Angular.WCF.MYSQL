@@ -1,0 +1,25 @@
+﻿<div class="container">
+    <div class="row center-block col-xs-12 col-md-12">
+        <div class="jumbotron">
+            <h2>Oops! Error Encountered</h2>
+            <div class="alert alert-error">
+                An unexpected error has occurred.
+            </div>
+            <p>
+                <div col-xs-12 col-md-12>
+                    <b>Message:</b>
+                    {{ExceptionMsg.Msgs}}<br />
+                </div>
+            </p>
+            <p>
+                <div col-xs-12 col-md-12>
+                    <b>Trace Info.:</b>
+                    <div style="overflow:scroll">
+                        <pre>{{ExceptionMsg.Stack}}</pre>
+                    </div>
+                </div>
+            </p>
+            <h4>Please click <a class="btn btn-default" ng-click="GoToLoginPage();">here</a> to go back to the login page.</h4>
+        </div>
+    </div>
+</div>

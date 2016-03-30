@@ -1,0 +1,37 @@
+﻿<div class="container" ng-cloak>
+    <div class="row center-block" style="margin-top:15px;">
+        <div class="col-md-10">
+            <form name="resetForm" class="form-horizontal" novalidate>
+                <div class="form-group has-feedback has-feedback-left" ng-class="{ 'has-error' : !resetForm.OriPwd.$pristine && resetForm.OriPwd.$invalid }">
+                    <label class="control-label col-md-4">{{ResetBoxCaptions.OriPwdCaption}}</label>
+                    <div class="col-md-6">
+                        <input type="password" name="OriPwd" class="form-control input-md" placeholder="{{ResetBoxCaptions.OriPwdCaption}}" ng-model="LoginUserModel.OriPwd" requried-validate fieldcaption="{{ResetBoxCaptions.OriPwdCaption}}" />
+                        <i class="form-control-feedback glyphicon glyphicon-asterisk "></i>
+                    </div>
+                </div>
+
+                <div class="form-group has-feedback has-feedback-left" ng-class="{ 'has-error' : !resetForm.NewPwd.$pristine && resetForm.NewPwd.$invalid }">
+                    <label class="control-label col-md-4">{{ResetBoxCaptions.NewPwdCaption}}</label>
+                    <div class="col-md-6">
+                        <input type="password" name="NewPwd" class="form-control input-md" placeholder="{{ResetBoxCaptions.NewPwdCaption}}" ng-model="LoginUserModel.NewPwd" requried-validate fieldcaption="{{ResetBoxCaptions.NewPwdCaption}}" />
+                        <i class="form-control-feedback glyphicon glyphicon-asterisk "></i>
+                    </div>
+                </div>
+
+                <div class="form-group has-feedback has-feedback-left" ng-class="{ 'has-error' : !resetForm.ConfirmNewPwd.$pristine && resetForm.ConfirmNewPwd.$invalid }">
+                    <label class="control-label col-md-4">{{ResetBoxCaptions.ConfirmNewPwdCaption}}</label>
+                    <div class="col-md-6">
+                        <input type="password" name="ConfirmNewPwd" class="form-control input-md" placeholder="{{ResetBoxCaptions.ConfirmNewPwdCaption}}" ng-model="LoginUserModel.ConfirmNewPwd" requried-validate fieldcaption="{{ResetBoxCaptions.ConfirmNewPwdCaption}}" />
+                        <i class="form-control-feedback glyphicon glyphicon-asterisk "></i>
+                    </div>
+                </div>
+
+                <div class="form-group has-feedback has-feedback-left">
+                    <div class="col-md-4 col-md-offset-4">
+                        <input ng-disabled="!(!!LoginUserModel.OriPwd &&!!LoginUserModel.NewPwd&&!!LoginUserModel.ConfirmNewPwd && IsEnable_Reset)" type="submit" class="btn btn-primary" ng-click="Reset()" value="{{ResetBoxCaptions.SaveBtnCaption}}" />
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
