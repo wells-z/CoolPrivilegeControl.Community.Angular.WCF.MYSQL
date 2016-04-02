@@ -62,6 +62,9 @@
             <input type="submit" value="{{Captions.Save}}" class="btn btn-primary" ng-click="Edit()" ng-disabled="!(!!EntityLoginUser.LoginName &&!!EntityLoginUser.Status &&!!EntityLoginUser.UserType)">
         </div>
         <div class="col-md-1">
+            <a class="btn btn-danger" role="button" ng-click="Delete(EntityLoginUser.ID)" ng-disabled="!EntityLoginUser.AllowDel">{{Captions.Delete}}</a>
+        </div>
+        <div class="col-md-1">
             <a class="btn btn-default" role="button" ui-sref="Main.LoginUserManage" ui-sref-opts="{reload:true}">{{Captions.BacktoList}}</a>
         </div>
     </div>

@@ -17,10 +17,10 @@
                     <label class="radio-inline">
                         <input type="radio" ng-model="EntityLoginUser.UserType" checked="checked" ng-change="Search()" /> {{Captions.All}}
                     </label>
-                    <label class="radio-inline">
+                    <label class="radio-inline" ng-if="UserType!=3">
                         <input type="radio" ng-model="EntityLoginUser.UserType" value="1" ng-change="Search()" /> {{Captions.SpecificFunctions}}
                     </label>
-                    <label class="radio-inline">
+                    <label class="radio-inline" ng-if="UserType!=3">
                         <input type="radio" ng-model="EntityLoginUser.UserType" value="2" ng-change="Search()" /> {{Captions.AsRoleSetting}}
                     </label>
                     <label class="radio-inline">

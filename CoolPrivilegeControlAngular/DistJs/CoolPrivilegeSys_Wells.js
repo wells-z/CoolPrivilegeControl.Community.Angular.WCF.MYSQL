@@ -33,7 +33,11 @@
             .state('CPCS', {
                 url: '/',
                 resolve: {
-                    Setup: ['$q', '$state', '$location', '$cookies', 'StaticContentModel', 'SystemInfoVM', 'WCFAuthInfoVM', 'SystemInfoRestfulSer', '$sessionStorage', function ($q, $state, $location, $cookies, StaticContentModel, SystemInfoVM, WCFAuthInfoVM, SystemInfoRestfulSer, $sessionStorage) {
+                    Setup: ['$q', '$state', '$location', '$cookies', 'StaticContentModel', 'SystemInfoVM', 'WCFAuthInfoVM', 'SystemInfoRestfulSer', '$sessionStorage', 'MsgBoxModel', function ($q, $state, $location, $cookies, StaticContentModel, SystemInfoVM, WCFAuthInfoVM, SystemInfoRestfulSer, $sessionStorage, MsgBoxModel) {
+                        var msgBox = new MsgBoxModel();
+                        msgBox.OpenLoadingDialog();
+                        msgBoxTemp = msgBox;
+
                         var promise_Global = $q.defer();
                         //Get Languar Pack
                         var promise_GetLanguagePack = new function () {
@@ -64,6 +68,7 @@
                         //Wait serice response and navigate to login page
                         $q.all([promise_GetLanguagePack, promise_GetSysInfo]).then(function () {
                             promise_Global.resolve();
+                            msgBoxTemp.CloseLoadingDialog();
                             $state.go('LoginModule.Login');
                         });
                         return promise_Global.promise;
@@ -132,6 +137,9 @@
         $rootScope.$stateParams = $stateParams;
 
         $rootScope.$on(ExceptionType.SessionTimeout, function (ev, args) {
+            if (!angular.isUndefined(msgBoxTemp) && msgBoxTemp != null) {
+                msgBox.CloseLoadingDialog();
+            }
             if (!angular.isUndefined($sessionStorage.SessionTimeoutInfo) && $sessionStorage.SessionTimeoutInfo != null) {
                 delete $sessionStorage.SessionTimeoutInfo;
             }
@@ -143,6 +151,9 @@
         });
 
         $rootScope.$on(ExceptionType.AccessDenied, function (ev, args) {
+            if (!angular.isUndefined(msgBoxTemp) && msgBoxTemp != null) {
+                msgBox.CloseLoadingDialog();
+            }
             if (!angular.isUndefined($sessionStorage.AccessDeniedInfo) && $sessionStorage.AccessDeniedInfo != null) {
                 delete $sessionStorage.AccessDeniedInfo;
             }
@@ -160,6 +171,9 @@
         });
 
         $rootScope.$on(ExceptionType.RestServiceError, function (ev, args) {
+            if (!angular.isUndefined(msgBoxTemp) && msgBoxTemp != null) {
+                msgBox.CloseLoadingDialog();
+            }
             if (!angular.isUndefined($sessionStorage.RestServiceErrorInfo) && $sessionStorage.RestServiceErrorInfo != null) {
                 delete $sessionStorage.RestServiceErrorInfo;
             }
@@ -170,6 +184,9 @@
         });
 
         $rootScope.$on(ExceptionType.Others, function (ev, args) {
+            if (!angular.isUndefined(msgBoxTemp) && msgBoxTemp != null) {
+                msgBox.CloseLoadingDialog();
+            }
             if (!angular.isUndefined($sessionStorage.ExceptionInfo) && $sessionStorage.ExceptionInfo != null) {
                 delete $sessionStorage.ExceptionInfo;
             }
@@ -180,6 +197,9 @@
         });
 
         $rootScope.$on(ExceptionType.PageNotFound, function (ev, args) {
+            if (!angular.isUndefined(msgBoxTemp) && msgBoxTemp != null) {
+                msgBox.CloseLoadingDialog();
+            }
             if (!angular.isUndefined($sessionStorage.PageNotFoundInfo) && $sessionStorage.PageNotFoundInfo != null) {
                 delete $sessionStorage.PageNotFoundInfo;
             }
@@ -202,7 +222,11 @@
     var config = function (CustomStateProvider) {
 
         CustomStateProvider.AddState(Path.FunsPath, "AuditLogManage", "", {
-            initData: ['WCFAuthInfoVM', 'AuditLogMgtSerClient', function (WCFAuthInfoVM, AuditLogMgtSerClient) {
+            initData: ['WCFAuthInfoVM', 'AuditLogMgtSerClient', 'MsgBoxModel', function (WCFAuthInfoVM, AuditLogMgtSerClient, MsgBoxModel) {
+                var msgBox = new MsgBoxModel();
+                msgBox.OpenLoadingDialog();
+                msgBoxTemp = msgBox;
+
                 var wcfAuthInfoVM = new WCFAuthInfoVM();
                 wcfAuthInfoVM.initData();
 
@@ -241,6 +265,8 @@
         }
 
         function init() {
+            var msgBox = msgBoxTemp;
+
             if (!angular.isUndefined($sessionStorage.MultiLingualRes) && $sessionStorage.MultiLingualRes != null) {
                 $scope.Captions = {
                     // Search and List Screen Resources
@@ -334,6 +360,7 @@
 
                     var strMsgs = wcfReturnResult.GetErrMsgs();
 
+                    msgBox.CloseLoadingDialog();
                     if (!wcfReturnResult.HasMsgs()) {
                         for (var i = 0; i < wcfReturnResult.EntityList_AuditLogVM.length; ++i) {
                             if (!angular.isUndefined(wcfReturnResult.EntityList_AuditLogVM[i].AL_CreateDate) && wcfReturnResult.EntityList_AuditLogVM[i].AL_CreateDate != null)
@@ -350,16 +377,22 @@
                         throw new ExcetionInst(ExceptionType.ValidationError, $location.path(), pageTitle, result.GetErrMsgs());
                     }
                 }, function (resp) {
+                    msgBox.CloseLoadingDialog();
                     var wcfErrorContract = new WCFErrorContract(resp.data);
                     throw new ExcetionInst(ExceptionType.RestServiceError, $location.path(), pageTitle, wcfErrorContract.StrMsg, wcfErrorContract.StrTraceMsg);
                 });
             }
             else {
+                msgBox.CloseLoadingDialog();
                 throw new ExcetionInst(ExceptionType.ValidationError, $location.path(), pageTitle, strMsgs);
             }
         };
 
         $scope.Search = function () {
+            var msgBox = new MsgBoxModel();
+            msgBox.OpenLoadingDialog();
+            msgBoxTemp = msgBox;
+
             var wcfAuthInfoVM = new WCFAuthInfoVM();
             wcfAuthInfoVM.initData();
 
@@ -388,6 +421,7 @@
 
                 var strMsgs = wcfReturnResult.GetErrMsgs();
 
+                msgBox.CloseLoadingDialog();
                 if (!wcfReturnResult.HasMsgs()) {
                     for (var i = 0; i < wcfReturnResult.EntityList_AuditLogVM.length; ++i) {
                         if (!angular.isUndefined(wcfReturnResult.EntityList_AuditLogVM[i].AL_CreateDate) && wcfReturnResult.EntityList_AuditLogVM[i].AL_CreateDate != null)
@@ -405,6 +439,7 @@
                     throw new ExcetionInst(ExceptionType.ValidationError, $location.path(), pageTitle, result.GetErrMsgs());
                 }
             }, function (resp) {
+                msgBox.CloseLoadingDialog();
                 var wcfErrorContract = new WCFErrorContract(resp.data);
                 throw new ExcetionInst(ExceptionType.RestServiceError, $location.path(), pageTitle, wcfErrorContract.StrMsg, wcfErrorContract.StrTraceMsg);
             });
@@ -412,6 +447,10 @@
 
         //Sort By
         $scope.SortBy = function (sortCol) {
+            var msgBox = new MsgBoxModel();
+            msgBox.OpenLoadingDialog();
+            msgBoxTemp = msgBox;
+
             $scope.reverse = true;
             if ($scope.Sort == sortCol) {
                 $scope.SortDir = $scope.SortDir == "desc" ? "asc" : "desc";
@@ -440,7 +479,7 @@
                 var wcfReturnResult = new WCFReturnResult(resp[0].data);
 
                 var strMsgs = wcfReturnResult.GetErrMsgs();
-
+                msgBox.CloseLoadingDialog();
                 if (!wcfReturnResult.HasMsgs()) {
                     for (var i = 0; i < wcfReturnResult.EntityList_AuditLogVM.length; ++i) {
                         if (!angular.isUndefined(wcfReturnResult.EntityList_AuditLogVM[i].AL_CreateDate) && wcfReturnResult.EntityList_AuditLogVM[i].AL_CreateDate != null)
@@ -456,6 +495,7 @@
                     throw new ExcetionInst(ExceptionType.ValidationError, $location.path(), pageTitle, result.GetErrMsgs());
                 }
             }, function (resp) {
+                msgBox.CloseLoadingDialog();
                 var wcfErrorContract = new WCFErrorContract(resp.data);
                 throw new ExcetionInst(ExceptionType.RestServiceError, $location.path(), pageTitle, wcfErrorContract.StrMsg, wcfErrorContract.StrTraceMsg);
             });
@@ -463,6 +503,10 @@
 
         //PageIndexChange
         $scope.PageIndexChange = function (CurrPageIndex) {
+            var msgBox = new MsgBoxModel();
+            msgBox.OpenLoadingDialog();
+            msgBoxTemp = msgBox;
+
             var wcfAuthInfoVM = new WCFAuthInfoVM();
             wcfAuthInfoVM.initData();
 
@@ -482,7 +526,7 @@
                 var wcfReturnResult = new WCFReturnResult(resp[0].data);
 
                 var strMsgs = wcfReturnResult.GetErrMsgs();
-
+                msgBox.CloseLoadingDialog();
                 if (!wcfReturnResult.HasMsgs()) {
                     for (var i = 0; i < wcfReturnResult.EntityList_AuditLogVM.length; ++i) {
                         if (!angular.isUndefined(wcfReturnResult.EntityList_AuditLogVM[i].AL_CreateDate) && wcfReturnResult.EntityList_AuditLogVM[i].AL_CreateDate != null)
@@ -500,6 +544,7 @@
                     throw new ExcetionInst(ExceptionType.ValidationError, $location.path(), pageTitle, result.GetErrMsgs());
                 }
             }, function (resp) {
+                msgBox.CloseLoadingDialog();
                 var wcfErrorContract = new WCFErrorContract(resp.data);
                 throw new ExcetionInst(ExceptionType.RestServiceError, $location.path(), pageTitle, wcfErrorContract.StrMsg, wcfErrorContract.StrTraceMsg);
             });
@@ -576,7 +621,10 @@
     var config = function (CustomStateProvider) {
 
         CustomStateProvider.AddState(Path.FunsPath, "AuthorizedHistoryManage", "", {
-            initData: ['WCFAuthInfoVM', 'AuthHisSerClient', function (WCFAuthInfoVM, AuthHisSerClient) {
+            initData: ['WCFAuthInfoVM', 'AuthHisSerClient', 'MsgBoxModel', function (WCFAuthInfoVM, AuthHisSerClient, MsgBoxModel) {
+                var msgBox = new MsgBoxModel();
+                msgBox.OpenLoadingDialog();
+                msgBoxTemp = msgBox;
                 var wcfAuthInfoVM = new WCFAuthInfoVM();
                 wcfAuthInfoVM.initData();
 
@@ -615,6 +663,8 @@
         }
 
         function init() {
+            var msgBox = msgBoxTemp;
+
             if (!angular.isUndefined($sessionStorage.MultiLingualRes) && $sessionStorage.MultiLingualRes != null) {
                 $scope.Captions = {
                     // Search and List Screen Resources
@@ -689,7 +739,7 @@
                     var wcfReturnResult = new WCFReturnResult(resp[0].data);
 
                     var strMsgs = wcfReturnResult.GetErrMsgs();
-
+                    msgBox.CloseLoadingDialog();
                     if (!wcfReturnResult.HasMsgs()) {
                         for (var i = 0; i < wcfReturnResult.EntityList_AuthorizedHistoryVM.length; ++i) {
                             if (!angular.isUndefined(wcfReturnResult.EntityList_AuthorizedHistoryVM[i].OperationDatetime) && wcfReturnResult.EntityList_AuthorizedHistoryVM[i].OperationDatetime != null)
@@ -706,16 +756,22 @@
                         throw new ExcetionInst(ExceptionType.ValidationError, $location.path(), pageTitle, result.GetErrMsgs());
                     }
                 }, function (resp) {
+                    msgBox.CloseLoadingDialog();
                     var wcfErrorContract = new WCFErrorContract(resp.data);
                     throw new ExcetionInst(ExceptionType.RestServiceError, $location.path(), pageTitle, wcfErrorContract.StrMsg, wcfErrorContract.StrTraceMsg);
                 });
             }
             else {
+                msgBox.CloseLoadingDialog();
                 throw new ExcetionInst(ExceptionType.ValidationError, $location.path(), pageTitle, strMsgs);
             }
         };
 
         $scope.Search = function () {
+            var msgBox = new MsgBoxModel();
+            msgBox.OpenLoadingDialog();
+            msgBoxTemp = msgBox;
+
             var wcfAuthInfoVM = new WCFAuthInfoVM();
             wcfAuthInfoVM.initData();
 
@@ -735,7 +791,7 @@
                 var wcfReturnResult = new WCFReturnResult(resp[0].data);
 
                 var strMsgs = wcfReturnResult.GetErrMsgs();
-
+                msgBox.CloseLoadingDialog();
                 if (!wcfReturnResult.HasMsgs()) {
                     for (var i = 0; i < wcfReturnResult.EntityList_AuthorizedHistoryVM.length; ++i) {
                         if (!angular.isUndefined(wcfReturnResult.EntityList_AuthorizedHistoryVM[i].OperationDatetime) && wcfReturnResult.EntityList_AuthorizedHistoryVM[i].OperationDatetime != null)
@@ -753,6 +809,7 @@
                     throw new ExcetionInst(ExceptionType.ValidationError, $location.path(), pageTitle, result.GetErrMsgs());
                 }
             }, function (resp) {
+                msgBox.CloseLoadingDialog();
                 var wcfErrorContract = new WCFErrorContract(resp.data);
                 throw new ExcetionInst(ExceptionType.RestServiceError, $location.path(), pageTitle, wcfErrorContract.StrMsg, wcfErrorContract.StrTraceMsg);
             });
@@ -760,6 +817,10 @@
 
         //Sort By
         $scope.SortBy = function (sortCol) {
+            var msgBox = new MsgBoxModel();
+            msgBox.OpenLoadingDialog();
+            msgBoxTemp = msgBox;
+
             $scope.reverse = true;
             if ($scope.Sort == sortCol) {
                 $scope.SortDir = $scope.SortDir == "desc" ? "asc" : "desc";
@@ -788,7 +849,7 @@
                 var wcfReturnResult = new WCFReturnResult(resp[0].data);
 
                 var strMsgs = wcfReturnResult.GetErrMsgs();
-
+                msgBox.CloseLoadingDialog();
                 if (!wcfReturnResult.HasMsgs()) {
                     for (var i = 0; i < wcfReturnResult.EntityList_AuthorizedHistoryVM.length; ++i) {
                         if (!angular.isUndefined(wcfReturnResult.EntityList_AuthorizedHistoryVM[i].OperationDatetime) && wcfReturnResult.EntityList_AuthorizedHistoryVM[i].OperationDatetime != null)
@@ -804,6 +865,7 @@
                     throw new ExcetionInst(ExceptionType.ValidationError, $location.path(), pageTitle, result.GetErrMsgs());
                 }
             }, function (resp) {
+                msgBox.CloseLoadingDialog();
                 var wcfErrorContract = new WCFErrorContract(resp.data);
                 throw new ExcetionInst(ExceptionType.RestServiceError, $location.path(), pageTitle, wcfErrorContract.StrMsg, wcfErrorContract.StrTraceMsg);
             });
@@ -811,6 +873,10 @@
 
         //PageIndexChange
         $scope.PageIndexChange = function (CurrPageIndex) {
+            var msgBox = new MsgBoxModel();
+            msgBox.OpenLoadingDialog();
+            msgBoxTemp = msgBox;
+
             var wcfAuthInfoVM = new WCFAuthInfoVM();
             wcfAuthInfoVM.initData();
 
@@ -830,7 +896,7 @@
                 var wcfReturnResult = new WCFReturnResult(resp[0].data);
 
                 var strMsgs = wcfReturnResult.GetErrMsgs();
-
+                msgBox.CloseLoadingDialog();
                 if (!wcfReturnResult.HasMsgs()) {
                     for (var i = 0; i < wcfReturnResult.EntityList_AuthorizedHistoryVM.length; ++i) {
                         if (!angular.isUndefined(wcfReturnResult.EntityList_AuthorizedHistoryVM[i].OperationDatetime) && wcfReturnResult.EntityList_AuthorizedHistoryVM[i].OperationDatetime != null)
@@ -848,6 +914,7 @@
                     throw new ExcetionInst(ExceptionType.ValidationError, $location.path(), pageTitle, result.GetErrMsgs());
                 }
             }, function (resp) {
+                msgBox.CloseLoadingDialog();
                 var wcfErrorContract = new WCFErrorContract(resp.data);
                 throw new ExcetionInst(ExceptionType.RestServiceError, $location.path(), pageTitle, wcfErrorContract.StrMsg, wcfErrorContract.StrTraceMsg);
             });
@@ -856,8 +923,8 @@
         //Delete
         $scope.Delete = function (AuthHisID) {
             var msgBox = new MsgBoxModel();
-
             msgBox.OpenLoadingDialog();
+            msgBoxTemp = msgBox;
 
             var wcfAuthInfoVM = new WCFAuthInfoVM();
             wcfAuthInfoVM.initData();
@@ -900,9 +967,10 @@
 (function () {
     'use strict';
 
-    var injectParams = ['$scope', '$state', '$sessionStorage'];
+    var injectParams = ['$scope', '$state', '$sessionStorage', 'MsgBoxModel'];
 
-    var ErrorController = function ($scope, $state, $sessionStorage) {
+    var ErrorController = function ($scope, $state, $sessionStorage, MsgBoxModel) {
+
         $scope.ExceptionMsg = $sessionStorage.ExceptionInfo;
         $scope.SessionTimeout = $sessionStorage.SessionTimeoutInfo;
         $scope.PageNotFound = $sessionStorage.PageNotFoundInfo;
@@ -939,7 +1007,10 @@
     var config = function (CustomStateProvider) {
 
         CustomStateProvider.AddState(Path.FunsPath, "FManage", "", {
-            initData: ['WCFAuthInfoVM', 'FunMgtSerClient', function (WCFAuthInfoVM, FunMgtSerClient) {
+            initData: ['WCFAuthInfoVM', 'FunMgtSerClient', 'MsgBoxModel', function (WCFAuthInfoVM, FunMgtSerClient, MsgBoxModel) {
+                var msgBox = new MsgBoxModel();
+                msgBox.OpenLoadingDialog();
+                msgBoxTemp = msgBox;
                 var wcfAuthInfoVM = new WCFAuthInfoVM();
                 wcfAuthInfoVM.initData();
 
@@ -970,7 +1041,7 @@
 
 
         CustomStateProvider.AddState(Path.FunsPath, "FManage", "Create", {
-            initData: ['WCFAuthInfoVM', 'FunTypeMgtSerClient', function (WCFAuthInfoVM, FunMgtSerClient) {
+            initData: ['WCFAuthInfoVM', 'FunMgtSerClient', function (WCFAuthInfoVM, FunMgtSerClient) {
                 var wcfAuthInfoVM = new WCFAuthInfoVM();
                 wcfAuthInfoVM.initData();
 
@@ -1017,6 +1088,8 @@
         }
 
         function init() {
+            var msgBox = msgBoxTemp;
+
             if (!angular.isUndefined($sessionStorage.MultiLingualRes) && $sessionStorage.MultiLingualRes != null) {
                 $scope.Captions = {
                     // Search and List Screen Resources
@@ -1077,6 +1150,7 @@
                         $scope.EntityF = wcfReturnResult.Entity_FunctionVM;
                     }
                     else {
+                        msgBox.CloseLoadingDialog();
                         throw new ExcetionInst(ExceptionType.ValidationError, $location.path(), pageTitle, strMsgs);
                     }
 
@@ -1101,6 +1175,7 @@
                         });
                     }
                 }
+                msgBox.CloseLoadingDialog();
             }
             else if ($state.includes("Main.FManage.Create")) {
                 var wcfReturnResult = new WCFReturnResult(FunMgtSerClient.GetEmptyFVM_Result());
@@ -1124,6 +1199,7 @@
                         $scope.SelectedTypeList.push(model);
                     });
                 }
+                msgBox.CloseLoadingDialog();
             }
             else {
                 $scope.DisplayPageNum = $scope.SystemInfo.DisplayPageNum;
@@ -1175,6 +1251,7 @@
 
                         var strMsgs = wcfReturnResult.GetErrMsgs();
 
+                        msgBox.CloseLoadingDialog();
                         if (!wcfReturnResult.HasMsgs()) {
                             $scope.EntityList_FunctionVM = wcfReturnResult.EntityList_FunctionVM;
 
@@ -1192,11 +1269,13 @@
                             throw new ExcetionInst(ExceptionType.ValidationError, $location.path(), pageTitle, result.GetErrMsgs());
                         }
                     }, function (resp) {
+                        msgBox.CloseLoadingDialog();
                         var wcfErrorContract = new WCFErrorContract(resp.data);
                         throw new ExcetionInst(ExceptionType.RestServiceError, $location.path(), pageTitle, wcfErrorContract.StrMsg, wcfErrorContract.StrTraceMsg);
                     });
                 }
                 else {
+                    msgBox.CloseLoadingDialog();
                     throw new ExcetionInst(ExceptionType.ValidationError, $location.path(), pageTitle, strMsgs);
                 }
             }
@@ -1241,8 +1320,8 @@
             pageTitle = $sessionStorage.MultiLingualRes.FManage_Delete;
 
             var msgBox = new MsgBoxModel();
-
             msgBox.OpenLoadingDialog();
+            msgBoxTemp = msgBox;
 
             var wcfAuthInfoVM = new WCFAuthInfoVM();
             wcfAuthInfoVM.initData();
@@ -1274,6 +1353,7 @@
                     }
                 }
             }, function (resp) {
+                msgBox.CloseLoadingDialog();
                 var wcfErrorContract = new WCFErrorContract(resp.data);
                 throw new ExcetionInst(ExceptionType.RestServiceError, $location.path(), pageTitle, wcfErrorContract.StrMsg, wcfErrorContract.StrTraceMsg);
             });
@@ -1283,6 +1363,7 @@
         $scope.Edit = function () {
             var msgBox = new MsgBoxModel();
             msgBox.OpenLoadingDialog();
+            msgBoxTemp = msgBox;
 
             var wcfAuthInfoVM = new WCFAuthInfoVM();
             wcfAuthInfoVM.initData();
@@ -1312,6 +1393,7 @@
                     }
                 }
             }, function (resp) {
+                msgBox.CloseLoadingDialog();
                 var wcfErrorContract = new WCFErrorContract(resp.data);
                 throw new ExcetionInst(ExceptionType.RestServiceError, $location.path(), pageTitle, wcfErrorContract.StrMsg, wcfErrorContract.StrTraceMsg);
             });
@@ -1321,6 +1403,7 @@
         $scope.Create = function () {
             var msgBox = new MsgBoxModel();
             msgBox.OpenLoadingDialog();
+            msgBoxTemp = msgBox;
 
             var wcfAuthInfoVM = new WCFAuthInfoVM();
             wcfAuthInfoVM.initData();
@@ -1350,6 +1433,7 @@
                     }
                 }
             }, function (resp) {
+                msgBox.CloseLoadingDialog();
                 var wcfErrorContract = new WCFErrorContract(resp.data);
                 throw new ExcetionInst(ExceptionType.RestServiceError, $location.path(), pageTitle, wcfErrorContract.StrMsg, wcfErrorContract.StrTraceMsg);
             });
@@ -1410,7 +1494,11 @@
     var config = function (CustomStateProvider) {
 
         CustomStateProvider.AddState(Path.FunsPath, "FTManage", "", {
-            initData: ['WCFAuthInfoVM', 'FunTypeMgtSerClient', function (WCFAuthInfoVM, FunTypeMgtSerClient) {
+            initData: ['WCFAuthInfoVM', 'FunTypeMgtSerClient', 'MsgBoxModel', function (WCFAuthInfoVM, FunTypeMgtSerClient, MsgBoxModel) {
+                var msgBox = new MsgBoxModel();
+                msgBox.OpenLoadingDialog();
+                msgBoxTemp = msgBox;
+
                 var wcfAuthInfoVM = new WCFAuthInfoVM();
                 wcfAuthInfoVM.initData();
 
@@ -1476,6 +1564,8 @@
         }
 
         function init() {
+            var msgBox = msgBoxTemp;
+
             if (!angular.isUndefined($sessionStorage.MultiLingualRes) && $sessionStorage.MultiLingualRes != null) {
                 $scope.Captions = {
                     // Search and List Screen Resources
@@ -1528,9 +1618,11 @@
                         $scope.EntityFT = wcfReturnResult.Entity_FunctionTypeVM;
                     }
                     else {
+                        msgBox.CloseLoadingDialog();
                         throw new ExcetionInst(ExceptionType.ValidationError, $location.path(), pageTitle, strMsgs);
                     }
                 }
+                msgBox.CloseLoadingDialog();
             }
             else if ($state.includes("Main.FTManage.Create")) {
                 var wcfReturnResult = new WCFReturnResult(FunTypeMgtSerClient.GetEmptyFTVM_Result());
@@ -1540,8 +1632,10 @@
                     $scope.EntityFT = wcfReturnResult.Entity_FunctionTypeVM;
                 }
                 else {
+                    msgBox.CloseLoadingDialog();
                     throw new ExcetionInst(ExceptionType.ValidationError, $location.path(), pageTitle, strMsgs);
                 }
+                msgBox.CloseLoadingDialog();
             }
             else {
                 $scope.DisplayPageNum = $scope.SystemInfo.DisplayPageNum;
@@ -1593,6 +1687,7 @@
 
                         var strMsgs = wcfReturnResult.GetErrMsgs();
 
+                        msgBox.CloseLoadingDialog();
                         if (!wcfReturnResult.HasMsgs()) {
                             $scope.EntityList_FunctionTypeVM = wcfReturnResult.EntityList_FunctionTypeVM;
 
@@ -1608,11 +1703,13 @@
                             throw new ExcetionInst(ExceptionType.ValidationError, $location.path(), pageTitle, result.GetErrMsgs());
                         }
                     }, function (resp) {
+                        msgBox.CloseLoadingDialog();
                         var wcfErrorContract = new WCFErrorContract(resp.data);
                         throw new ExcetionInst(ExceptionType.RestServiceError, $location.path(), pageTitle, wcfErrorContract.StrMsg, wcfErrorContract.StrTraceMsg);
                     });
                 }
                 else {
+                    msgBox.CloseLoadingDialog();
                     throw new ExcetionInst(ExceptionType.ValidationError, $location.path(), pageTitle, strMsgs);
                 }
             }
@@ -1634,8 +1731,8 @@
         $scope.Delete = function (FTID) {
             pageTitle = $sessionStorage.MultiLingualRes.FTManage_Delete;
             var msgBox = new MsgBoxModel();
-
             msgBox.OpenLoadingDialog();
+            msgBoxTemp = msgBox;
 
             var wcfAuthInfoVM = new WCFAuthInfoVM();
             wcfAuthInfoVM.initData();
@@ -1667,6 +1764,7 @@
                     }
                 }
             }, function (resp) {
+                msgBox.CloseLoadingDialog();
                 var wcfErrorContract = new WCFErrorContract(resp.data);
                 throw new ExcetionInst(ExceptionType.RestServiceError, $location.path(), pageTitle, wcfErrorContract.StrMsg, wcfErrorContract.StrTraceMsg);
             });
@@ -1676,6 +1774,7 @@
         $scope.Edit = function () {
             var msgBox = new MsgBoxModel();
             msgBox.OpenLoadingDialog();
+            msgBoxTemp = msgBox;
 
             var wcfAuthInfoVM = new WCFAuthInfoVM();
             wcfAuthInfoVM.initData();
@@ -1703,6 +1802,7 @@
                     }
                 }
             }, function (resp) {
+                msgBox.CloseLoadingDialog();
                 var wcfErrorContract = new WCFErrorContract(resp.data);
                 throw new ExcetionInst(ExceptionType.RestServiceError, $location.path(), pageTitle, wcfErrorContract.StrMsg, wcfErrorContract.StrTraceMsg);
             });
@@ -1712,6 +1812,7 @@
         $scope.Create = function () {
             var msgBox = new MsgBoxModel();
             msgBox.OpenLoadingDialog();
+            msgBoxTemp = msgBox;
 
             var wcfAuthInfoVM = new WCFAuthInfoVM();
             wcfAuthInfoVM.initData();
@@ -1739,6 +1840,7 @@
                     }
                 }
             }, function (resp) {
+                msgBox.CloseLoadingDialog();
                 var wcfErrorContract = new WCFErrorContract(resp.data);
                 throw new ExcetionInst(ExceptionType.RestServiceError, $location.path(), pageTitle, wcfErrorContract.StrMsg, wcfErrorContract.StrTraceMsg);
             });
@@ -1867,7 +1969,11 @@
     var config = function (CustomStateProvider) {
 
         CustomStateProvider.AddState(Path.FunsPath, "LUOrgDetailsManage", "", {
-            initData: ['WCFAuthInfoVM', 'OrgDetailMgtSerClient', function (WCFAuthInfoVM, OrgDetailMgtSerClient) {
+            initData: ['WCFAuthInfoVM', 'OrgDetailMgtSerClient', 'MsgBoxModel', function (WCFAuthInfoVM, OrgDetailMgtSerClient, MsgBoxModel) {
+                var msgBox = new MsgBoxModel();
+                msgBox.OpenLoadingDialog();
+                msgBoxTemp = msgBox;
+
                 var wcfAuthInfoVM = new WCFAuthInfoVM();
                 wcfAuthInfoVM.initData();
 
@@ -1978,6 +2084,8 @@
         }
 
         function init() {
+            var msgBox = msgBoxTemp;
+
             if (!angular.isUndefined($sessionStorage.MultiLingualRes) && $sessionStorage.MultiLingualRes != null) {
                 $scope.Captions = {
                     // Search and List Screen Resources
@@ -2067,6 +2175,7 @@
 
                     $scope.msgBoxTitle = pageTitle;
                 }
+                msgBox.CloseLoadingDialog();
             }
             else if ($state.includes("Main.LUOrgDetailsManage.Create")) {
                 var wcfReturnResult = new WCFReturnResult(OrgDetailMgtSerClient.GetEmptyOrgDetailVM_Result());
@@ -2091,6 +2200,8 @@
                 $scope.SpeRoleDetailList = [];
 
                 $scope.msgBoxTitle = pageTitle;
+
+                msgBox.CloseLoadingDialog();
             }
             else {
                 $scope.DisplayPageNum = $scope.SystemInfo.DisplayPageNum;
@@ -2142,6 +2253,7 @@
 
                         var strMsgs = wcfReturnResult.GetErrMsgs();
 
+                        msgBox.CloseLoadingDialog();
                         if (!wcfReturnResult.HasMsgs()) {
 
                             $scope.EntityList_LUserOrgDetailsVM = wcfReturnResult.EntityList_LUserOrgDetailsVM;
@@ -2161,11 +2273,13 @@
                             throw new ExcetionInst(ExceptionType.ValidationError, $location.path(), pageTitle, result.GetErrMsgs());
                         }
                     }, function (resp) {
+                        msgBox.CloseLoadingDialog();
                         var wcfErrorContract = new WCFErrorContract(resp.data);
                         throw new ExcetionInst(ExceptionType.RestServiceError, $location.path(), pageTitle, wcfErrorContract.StrMsg, wcfErrorContract.StrTraceMsg);
                     });
                 }
                 else {
+                    msgBox.CloseLoadingDialog();
                     throw new ExcetionInst(ExceptionType.ValidationError, $location.path(), pageTitle, strMsgs);
                 }
             }
@@ -2189,9 +2303,10 @@
         //Delete
         $scope.Delete = function (OrgDetailID) {
             pageTitle = $sessionStorage.MultiLingualRes.LUOrgDetailsManage_Delete;
-            var msgBox = new MsgBoxModel();
 
+            var msgBox = new MsgBoxModel();
             msgBox.OpenLoadingDialog();
+            msgBoxTemp = msgBox;
 
             var wcfAuthInfoVM = new WCFAuthInfoVM();
             wcfAuthInfoVM.initData();
@@ -2223,6 +2338,7 @@
                     }
                 }
             }, function (resp) {
+                msgBox.CloseLoadingDialog();
                 var wcfErrorContract = new WCFErrorContract(resp.data);
                 throw new ExcetionInst(ExceptionType.RestServiceError, $location.path(), pageTitle, wcfErrorContract.StrMsg, wcfErrorContract.StrTraceMsg);
             });
@@ -2232,6 +2348,7 @@
         $scope.Edit = function () {
             var msgBox = new MsgBoxModel();
             msgBox.OpenLoadingDialog();
+            msgBoxTemp = msgBox;
 
             var wcfAuthInfoVM = new WCFAuthInfoVM();
             wcfAuthInfoVM.initData();
@@ -2266,6 +2383,7 @@
                     }
                 }
             }, function (resp) {
+                msgBox.CloseLoadingDialog();
                 var wcfErrorContract = new WCFErrorContract(resp.data);
                 throw new ExcetionInst(ExceptionType.RestServiceError, $location.path(), pageTitle, wcfErrorContract.StrMsg, wcfErrorContract.StrTraceMsg);
             });
@@ -2275,6 +2393,7 @@
         $scope.Create = function () {
             var msgBox = new MsgBoxModel();
             msgBox.OpenLoadingDialog();
+            msgBoxTemp = msgBox;
 
             var wcfAuthInfoVM = new WCFAuthInfoVM();
             wcfAuthInfoVM.initData();
@@ -2309,6 +2428,7 @@
                     }
                 }
             }, function (resp) {
+                msgBox.CloseLoadingDialog();
                 var wcfErrorContract = new WCFErrorContract(resp.data);
                 throw new ExcetionInst(ExceptionType.RestServiceError, $location.path(), pageTitle, wcfErrorContract.StrMsg, wcfErrorContract.StrTraceMsg);
             });
@@ -2371,7 +2491,11 @@
     var config = function (CustomStateProvider) {
 
         CustomStateProvider.AddState(Path.FunsPath, "LUOrganizationManage", "", {
-            initData: ['WCFAuthInfoVM', 'OrgMgtSerClient', function (WCFAuthInfoVM, OrgMgtSerClient) {
+            initData: ['WCFAuthInfoVM', 'OrgMgtSerClient', 'MsgBoxModel', function (WCFAuthInfoVM, OrgMgtSerClient, MsgBoxModel) {
+                var msgBox = new MsgBoxModel();
+                msgBox.OpenLoadingDialog();
+                msgBoxTemp = msgBox;
+
                 var wcfAuthInfoVM = new WCFAuthInfoVM();
                 wcfAuthInfoVM.initData();
 
@@ -2436,6 +2560,8 @@
         }
 
         function init() {
+            var msgBox = msgBoxTemp;
+
             if (!angular.isUndefined($sessionStorage.MultiLingualRes) && $sessionStorage.MultiLingualRes != null) {
                 $scope.Captions = {
                     // Search and List Screen Resources
@@ -2504,6 +2630,7 @@
 
                     $scope.msgBoxTitle = pageTitle;
                 }
+                msgBox.CloseLoadingDialog();
             }
             else if ($state.includes("Main.LUOrganizationManage.Create")) {
                 var wcfReturnResult = new WCFReturnResult(OrgMgtSerClient.GetEmptyOrgVM_Result());
@@ -2520,6 +2647,7 @@
                 $scope.PageSize = $scope.SystemInfo.PageSize;
 
                 $scope.msgBoxTitle = pageTitle;
+                msgBox.CloseLoadingDialog();
             }
             else {
                 $scope.DisplayPageNum = $scope.SystemInfo.DisplayPageNum;
@@ -2571,6 +2699,7 @@
 
                         var strMsgs = wcfReturnResult.GetErrMsgs();
 
+                        msgBox.CloseLoadingDialog();
                         if (!wcfReturnResult.HasMsgs()) {
                             $scope.EntityList_LUserOrganizationVM = wcfReturnResult.EntityList_LUserOrganizationVM;
 
@@ -2588,11 +2717,13 @@
                             throw new ExcetionInst(ExceptionType.ValidationError, $location.path(), pageTitle, result.GetErrMsgs());
                         }
                     }, function (resp) {
+                        msgBox.CloseLoadingDialog();
                         var wcfErrorContract = new WCFErrorContract(resp.data);
                         throw new ExcetionInst(ExceptionType.RestServiceError, $location.path(), pageTitle, wcfErrorContract.StrMsg, wcfErrorContract.StrTraceMsg);
                     });
                 }
                 else {
+                    msgBox.CloseLoadingDialog();
                     throw new ExcetionInst(ExceptionType.ValidationError, $location.path(), pageTitle, strMsgs);
                 }
             }
@@ -2615,9 +2746,10 @@
         //Delete
         $scope.Delete = function (OrgID) {
             pageTitle = $sessionStorage.MultiLingualRes.LUOrganizationManage_Delete;
-            var msgBox = new MsgBoxModel();
 
+            var msgBox = new MsgBoxModel();
             msgBox.OpenLoadingDialog();
+            msgBoxTemp = msgBox;
 
             var wcfAuthInfoVM = new WCFAuthInfoVM();
             wcfAuthInfoVM.initData();
@@ -2649,6 +2781,7 @@
                     }
                 }
             }, function (resp) {
+                msgBox.CloseLoadingDialog();
                 var wcfErrorContract = new WCFErrorContract(resp.data);
                 throw new ExcetionInst(ExceptionType.RestServiceError, $location.path(), pageTitle, wcfErrorContract.StrMsg, wcfErrorContract.StrTraceMsg);
             });
@@ -2658,6 +2791,7 @@
         $scope.Edit = function () {
             var msgBox = new MsgBoxModel();
             msgBox.OpenLoadingDialog();
+            msgBoxTemp = msgBox;
 
             var wcfAuthInfoVM = new WCFAuthInfoVM();
             wcfAuthInfoVM.initData();
@@ -2688,6 +2822,7 @@
                     }
                 }
             }, function (resp) {
+                msgBox.CloseLoadingDialog();
                 var wcfErrorContract = new WCFErrorContract(resp.data);
                 throw new ExcetionInst(ExceptionType.RestServiceError, $location.path(), pageTitle, wcfErrorContract.StrMsg, wcfErrorContract.StrTraceMsg);
             });
@@ -2697,6 +2832,7 @@
         $scope.Create = function () {
             var msgBox = new MsgBoxModel();
             msgBox.OpenLoadingDialog();
+            msgBoxTemp = msgBox;
 
             var wcfAuthInfoVM = new WCFAuthInfoVM();
             wcfAuthInfoVM.initData();
@@ -2727,6 +2863,7 @@
                     }
                 }
             }, function (resp) {
+                msgBox.CloseLoadingDialog();
                 var wcfErrorContract = new WCFErrorContract(resp.data);
                 throw new ExcetionInst(ExceptionType.RestServiceError, $location.path(), pageTitle, wcfErrorContract.StrMsg, wcfErrorContract.StrTraceMsg);
             });
@@ -2789,7 +2926,11 @@
     var config = function (CustomStateProvider) {
 
         CustomStateProvider.AddState(Path.FunsPath, "LURoleManage", "", {
-            initData: ['WCFAuthInfoVM', 'RoleMgtSerClient', function (WCFAuthInfoVM, RoleMgtSerClient) {
+            initData: ['WCFAuthInfoVM', 'RoleMgtSerClient', 'MsgBoxModel', function (WCFAuthInfoVM, RoleMgtSerClient, MsgBoxModel) {
+                var msgBox = new MsgBoxModel();
+                msgBox.OpenLoadingDialog();
+                msgBoxTemp = msgBox;
+
                 var wcfAuthInfoVM = new WCFAuthInfoVM();
                 wcfAuthInfoVM.initData();
 
@@ -2878,6 +3019,8 @@
         }
 
         function init() {
+            var msgBox = msgBoxTemp;
+
             if (!angular.isUndefined($sessionStorage.MultiLingualRes) && $sessionStorage.MultiLingualRes != null) {
                 $scope.Captions = {
                     // Search and List Screen Resources
@@ -2954,6 +3097,7 @@
 
                     $scope.msgBoxTitle = pageTitle;
                 }
+                msgBox.CloseLoadingDialog();
             }
             else if ($state.includes("Main.LURoleManage.Create")) {
                 var wcfReturnResult = new WCFReturnResult(RoleMgtSerClient.GetEmptyRoleVM_Result());
@@ -2974,6 +3118,8 @@
                 $scope.SpeFunDetailList = [];
 
                 $scope.msgBoxTitle = pageTitle;
+
+                msgBox.CloseLoadingDialog();
             }
             else {
                 $scope.DisplayPageNum = $scope.SystemInfo.DisplayPageNum;
@@ -3027,6 +3173,8 @@
 
                         var strMsgs = wcfReturnResult.GetErrMsgs();
 
+                        msgBox.CloseLoadingDialog();
+
                         if (!wcfReturnResult.HasMsgs()) {
                             for (var i = 0; i < wcfReturnResult.EntityList_LUserRoleVM.length; ++i) {
                                 if (!angular.isUndefined(wcfReturnResult.EntityList_LUserRoleVM[i].CreateDate) && wcfReturnResult.EntityList_LUserRoleVM[i].CreateDate != null)
@@ -3046,11 +3194,13 @@
                             throw new ExcetionInst(ExceptionType.ValidationError, $location.path(), pageTitle, result.GetErrMsgs());
                         }
                     }, function (resp) {
+                        msgBox.CloseLoadingDialog();
                         var wcfErrorContract = new WCFErrorContract(resp.data);
                         throw new ExcetionInst(ExceptionType.RestServiceError, $location.path(), pageTitle, wcfErrorContract.StrMsg, wcfErrorContract.StrTraceMsg);
                     });
                 }
                 else {
+                    msgBox.CloseLoadingDialog();
                     throw new ExcetionInst(ExceptionType.ValidationError, $location.path(), pageTitle, strMsgs);
                 }
             }
@@ -3072,8 +3222,8 @@
         $scope.Delete = function (RoleID) {
             pageTitle = $sessionStorage.MultiLingualRes.LURoleManage_Delete;
             var msgBox = new MsgBoxModel();
-
             msgBox.OpenLoadingDialog();
+            msgBoxTemp = msgBox;
 
             var wcfAuthInfoVM = new WCFAuthInfoVM();
             wcfAuthInfoVM.initData();
@@ -3105,6 +3255,7 @@
                     }
                 }
             }, function (resp) {
+                msgBox.CloseLoadingDialog();
                 var wcfErrorContract = new WCFErrorContract(resp.data);
                 throw new ExcetionInst(ExceptionType.RestServiceError, $location.path(), pageTitle, wcfErrorContract.StrMsg, wcfErrorContract.StrTraceMsg);
             });
@@ -3114,6 +3265,7 @@
         $scope.Edit = function () {
             var msgBox = new MsgBoxModel();
             msgBox.OpenLoadingDialog();
+            msgBoxTemp = msgBox;
 
             var wcfAuthInfoVM = new WCFAuthInfoVM();
             wcfAuthInfoVM.initData();
@@ -3144,6 +3296,7 @@
                     }
                 }
             }, function (resp) {
+                msgBox.CloseLoadingDialog();
                 var wcfErrorContract = new WCFErrorContract(resp.data);
                 throw new ExcetionInst(ExceptionType.RestServiceError, $location.path(), pageTitle, wcfErrorContract.StrMsg, wcfErrorContract.StrTraceMsg);
             });
@@ -3153,6 +3306,7 @@
         $scope.Create = function () {
             var msgBox = new MsgBoxModel();
             msgBox.OpenLoadingDialog();
+            msgBoxTemp = msgBox;
 
             var wcfAuthInfoVM = new WCFAuthInfoVM();
             wcfAuthInfoVM.initData();
@@ -3183,6 +3337,7 @@
                     }
                 }
             }, function (resp) {
+                msgBox.CloseLoadingDialog();
                 var wcfErrorContract = new WCFErrorContract(resp.data);
                 throw new ExcetionInst(ExceptionType.RestServiceError, $location.path(), pageTitle, wcfErrorContract.StrMsg, wcfErrorContract.StrTraceMsg);
             });
@@ -3390,11 +3545,14 @@
             changeLang(langKey);
         };
 
-        $scope.IsEnable_DoLogin = true;
+        //$scope.IsEnable_DoLogin = true;
 
         //Login Method
         $scope.DoLogin = function () {
-            $scope.IsEnable_DoLogin = false;
+            var msgBox = new MsgBoxModel();
+            msgBox.OpenLoadingDialog();
+            msgBoxTemp = msgBox;
+            //$scope.IsEnable_DoLogin = false;
 
             var model = {
                 'entityInst': $scope.LoginUserModel,
@@ -3417,18 +3575,21 @@
 
                     var request_SetUserInfo = clientSession.SetUserInfo(SessionInfo);
 
-                    $scope.IsEnable_DoLogin = true;
+                    //$scope.IsEnable_DoLogin = true;
                     if (loginResult.PwdExpire()) {
                         //Reset Password
                         $state.go("LoginModule.Reset");
+                        msgBox.CloseLoadingDialog();
                     }
                     else {
                         $state.go('Main.Home.IndexPart1');
+                        msgBox.CloseLoadingDialog();
                     }
 
                 }
                 else {
-                    $scope.IsEnable_DoLogin = true;
+                    //$scope.IsEnable_DoLogin = true;
+                    msgBox.CloseLoadingDialog();
                     throw new ExcetionInst(ExceptionType.ValidationError, $location.path(), $sessionStorage.MultiLingualRes.LoginScreenTitle, loginResult.GetErrMsgs());
                 }
             });
@@ -3482,7 +3643,10 @@
     var config = function (CustomStateProvider) {
 
         CustomStateProvider.AddState(Path.FunsPath, "LoginUserManage", "", {
-            initData: ['WCFAuthInfoVM', 'LoginUserMgtSer', function (WCFAuthInfoVM, LoginUserMgtSer) {
+            initData: ['WCFAuthInfoVM', 'LoginUserMgtSer', 'MsgBoxModel', function (WCFAuthInfoVM, LoginUserMgtSer, MsgBoxModel) {
+                var msgBox = new MsgBoxModel();
+                msgBox.OpenLoadingDialog();
+                msgBoxTemp = msgBox;
                 var wcfAuthInfoVM = new WCFAuthInfoVM();
                 wcfAuthInfoVM.initData();
 
@@ -3646,6 +3810,7 @@
         }
 
         function init() {
+            var msgBox = msgBoxTemp;
             if (!angular.isUndefined($sessionStorage.MultiLingualRes) && $sessionStorage.MultiLingualRes != null) {
                 $scope.Captions = {
                     // Search and List Screen Resources
@@ -3811,6 +3976,7 @@
 
                     $scope.msgBoxTitle = pageTitle;
                 }
+                msgBox.CloseLoadingDialog();
             }
             else if ($state.includes("Main.LoginUserManage.Create")) {
                 var wcfReturnResult = new WCFReturnResult(LoginUserMgtSer.GetEmptyLoginUserVM_Result());
@@ -3855,6 +4021,8 @@
                 $scope.OrgDetailList = OrgDetailMgtSerClient.GetAll_Result();
 
                 $scope.msgBoxTitle = pageTitle;
+
+                msgBox.CloseLoadingDialog();
             }
             else {
                 $scope.DisplayPageNum = $scope.SystemInfo.DisplayPageNum;
@@ -3867,12 +4035,18 @@
 
                 $scope.reverse = $scope.SortDir == "desc" ? true : false;
 
+                var result_SessionWUserInfo = LoginUserMgtSer.GetAuthInfo_Result();
+
+                $scope.UserType = result_SessionWUserInfo.UserType;
+
                 var wcfReturnResult = new WCFReturnResult(LoginUserMgtSer.GetEmptyLoginUserVM_Result());
                 var strMsgs = wcfReturnResult.GetErrMsgs();
 
                 if (!wcfReturnResult.HasMsgs()) {
                     $scope.EntityLoginUser = wcfReturnResult;
-
+                    if ($scope.UserType == 3) {
+                        $scope.EntityLoginUser.UserType = result_SessionWUserInfo.UserType;
+                    }
                     $scope.Sort = $scope.Sort || $scope.EntityLoginUser.DefaultSortColumn;
                     $scope.SortDir = $scope.SortDir || $scope.EntityLoginUser.DefaultSortDir;
                     $scope.reverse = $scope.SortDir == "desc" ? true : false;
@@ -3908,6 +4082,7 @@
 
                         var strMsgs = wcfReturnResult.GetErrMsgs();
 
+                        msgBox.CloseLoadingDialog();
                         if (!wcfReturnResult.HasMsgs()) {
                             for (var i = 0; i < wcfReturnResult.EntityList_LoginUserVM.length; ++i) {
                                 if (!angular.isUndefined(wcfReturnResult.EntityList_LoginUserVM[i].CreateDate) && wcfReturnResult.EntityList_LoginUserVM[i].CreateDate != null)
@@ -3934,11 +4109,13 @@
                             throw new ExcetionInst(ExceptionType.ValidationError, $location.path(), pageTitle, result.GetErrMsgs());
                         }
                     }, function (resp) {
+                        msgBox.CloseLoadingDialog();
                         var wcfErrorContract = new WCFErrorContract(resp.data);
                         throw new ExcetionInst(ExceptionType.RestServiceError, $location.path(), pageTitle, wcfErrorContract.StrMsg, wcfErrorContract.StrTraceMsg);
                     });
                 }
                 else {
+                    msgBox.CloseLoadingDialog();
                     throw new ExcetionInst(ExceptionType.ValidationError, $location.path(), pageTitle, strMsgs);
                 }
             }
@@ -3972,8 +4149,8 @@
             pageTitle = $sessionStorage.MultiLingualRes.LoginUserManage_Delete;
 
             var msgBox = new MsgBoxModel();
-
             msgBox.OpenLoadingDialog();
+            msgBoxTemp = msgBox;
 
             var wcfAuthInfoVM = new WCFAuthInfoVM();
             wcfAuthInfoVM.initData();
@@ -4005,6 +4182,7 @@
                     }
                 }
             }, function (resp) {
+                msgBox.CloseLoadingDialog();
                 var wcfErrorContract = new WCFErrorContract(resp.data);
                 throw new ExcetionInst(ExceptionType.RestServiceError, $location.path(), pageTitle, wcfErrorContract.StrMsg, wcfErrorContract.StrTraceMsg);
             });
@@ -4014,6 +4192,7 @@
         $scope.Edit = function () {
             var msgBox = new MsgBoxModel();
             msgBox.OpenLoadingDialog();
+            msgBoxTemp = msgBox;
 
             var wcfAuthInfoVM = new WCFAuthInfoVM();
             wcfAuthInfoVM.initData();
@@ -4060,6 +4239,7 @@
                     }
                 }
             }, function (resp) {
+                msgBox.CloseLoadingDialog();
                 var wcfErrorContract = new WCFErrorContract(resp.data);
                 throw new ExcetionInst(ExceptionType.RestServiceError, $location.path(), pageTitle, wcfErrorContract.StrMsg, wcfErrorContract.StrTraceMsg);
             });
@@ -4069,6 +4249,7 @@
         $scope.Create = function () {
             var msgBox = new MsgBoxModel();
             msgBox.OpenLoadingDialog();
+            msgBoxTemp = msgBox;
 
             var wcfAuthInfoVM = new WCFAuthInfoVM();
             wcfAuthInfoVM.initData();
@@ -4113,6 +4294,7 @@
                     }
                 }
             }, function (resp) {
+                msgBox.CloseLoadingDialog();
                 var wcfErrorContract = new WCFErrorContract(resp.data);
                 throw new ExcetionInst(ExceptionType.RestServiceError, $location.path(), pageTitle, wcfErrorContract.StrMsg, wcfErrorContract.StrTraceMsg);
             });
@@ -4194,15 +4376,14 @@
                     }]
                 }
             });
-        CustomStateProvider.AddState(Path.FunsPath, "SystemInfoManage", "", null);
     }
     config_Main.$inject = injectParams_Config;
 
     angular.module("MainModule").config(config_Main);
 
-    var injectParams_MainController = ['$scope', '$state', '$sessionStorage', 'CustomState', 'FunMgtSerClient', 'WCFAuthInfoVM', 'LoginUserMgtSer', 'WCFReturnResult', 'ClientSessionMgt', 'MsgBoxModel'];
+    var injectParams_MainController = ['$scope', '$state', '$sessionStorage', '$location', 'CustomState', 'FunMgtSerClient', 'WCFAuthInfoVM', 'LoginUserMgtSer', 'WCFReturnResult', 'ClientSessionMgt', 'MsgBoxModel'];
 
-    var MainController = function ($scope, $state, $sessionStorage, CustomState, FunMgtSerClient, WCFAuthInfoVM, LoginUserMgtSer, WCFReturnResult, ClientSessionMgt, MsgBoxModel) {
+    var MainController = function ($scope, $state, $sessionStorage, $location, CustomState, FunMgtSerClient, WCFAuthInfoVM, LoginUserMgtSer, WCFReturnResult, ClientSessionMgt, MsgBoxModel) {
         init();
 
         var info_Result = {
@@ -4219,8 +4400,8 @@
 
         $scope.Logout = function () {
             var msgBox = new MsgBoxModel();
-
             msgBox.OpenLoadingDialog();
+            msgBoxTemp = msgBox;
 
             var wcfAuthInfoVM = new WCFAuthInfoVM();
             wcfAuthInfoVM.initData();
@@ -4253,12 +4434,25 @@
 (function () {
     'use strict';
 
+    var injectParams_Config = ['CustomStateProvider'];
+
+    var config = function (CustomStateProvider) {
+        CustomStateProvider.AddState(Path.FunsPath, "SystemInfoManage", "", null);
+    }
+    config.$inject = injectParams_Config;
+
+    angular.module("MainModule").config(config);
+
     var injectParams = ['$scope', '$cookies', '$state', '$sessionStorage', '$location', 'WCFAuthInfoVM', 'StaticContentModel', 'SystemInfoRestfulSer', 'ClientSessionMgt', 'SystemInfoVM', 'WCFReturnResult', 'MsgBoxModel'];
 
     var SystemInfoManageController = function ($scope, $cookies, $state, $sessionStorage, $location, WCFAuthInfoVM, StaticContentModel, SystemInfoRestfulSer, ClientSessionMgt, SystemInfoVM, WCFReturnResult, MsgBoxModel) {
         init();
 
         function init() {
+            var msgBox = new MsgBoxModel();
+            msgBox.OpenLoadingDialog();
+            msgBoxTemp = msgBox;
+
             var pageTitle = "";
             if (!angular.isUndefined($sessionStorage.MultiLingualRes) && $sessionStorage.MultiLingualRes != null) {
                 $scope.Captions = {
@@ -4291,12 +4485,14 @@
             //Binding Spinner
             $(".input-group.spinner").spinner('step', function (dir) {
             });
+
+            msgBox.CloseLoadingDialog();
         }
 
         $scope.Save = function () {
             var msgBox = new MsgBoxModel();
-
             msgBox.OpenLoadingDialog();
+            msgBoxTemp = msgBox;
 
             var wcfAuthInfoVM = new WCFAuthInfoVM();
             wcfAuthInfoVM.initData();
@@ -4837,9 +5033,6 @@
             link: link,
             restrict: 'E',
             replace: true,
-            //scope: {
-            //    pagetitle: '=',
-            //},
             templateUrl: 'NavBar.html'
         };
         return directive;
@@ -7052,6 +7245,8 @@ var RoleType = {
     Role: 1,
     Organization: 2
 };
+
+var msgBoxTemp;
 
 //var WCFPath = "http://www.wellscom.net/";
 var WCFPath = "http://localhost:7282/";

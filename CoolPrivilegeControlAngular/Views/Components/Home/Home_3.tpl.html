@@ -58,9 +58,9 @@ scripts and style sheets.
     <!-------------------------------     STEP 3      --------------------------->
     <!--  Add the article text. Please use simple formatting (<h2>, <p> etc)   -->
 
-    <ul class=download>
+    <!--<ul class=download>
         <li><a href="~/Content/HomePageResources/Program/CoolPrivilegeControl.Community.MYSQL.zip">CoolPrivilegeControl.MYSQL.zip </a></li>
-    </ul>
+    </ul>-->
 
     <h2>Introduction</h2>
 
@@ -69,7 +69,7 @@ scripts and style sheets.
     <h2>Background</h2>
 
     <p>
-        In order to increase learning interest and distinguish previous posts. I am more interested in designing Single Page Applications. In order to complete this task, I used Angular to implement UI layer, since Angular support plenty of funcitons, it provides not only two-ways binding but also pages routing. There is not doubt that you can use jQuery, Knockout or other javascript instead. About server side services, I used WCF restful methods to implement.
+        In order to increase learning interest and distinguish previous posts. I am more interested in designing Single Page Applications. In order to complete this task, I used Angular to implement UI layer, since Angular support plenty of functions, it provides not only two-ways binding but also pages routing. There is not doubt that you can use jQuery, Knockout or other javascript instead. About server side services, I used WCF restful methods to perform the purpose.
     </p>
 
     <h2>Look and Feel</h2>
@@ -111,7 +111,7 @@ public string GetMultiLingualResSer(string str_LangKey)
     return jsonSerializer.Serialize(dic_AllKey);
 }</pre>
 
-    <p>In above code snip, I completed the concrete content of the interface. This function will return all language resources as json string.</p>
+    <p>In above code snip, I completed the concrete content of the interface. This function will return all language resources as JSON string.</p>
 
     <pre lang="aspnet">
 ///&lt;reference path="../Scripts/angular.js" /&gt;
@@ -267,14 +267,14 @@ $scope.DoLogin = function () {
     </div>
     <img src="../../../Content/HomePagePart3Resources/Images/3.1 AngularJS MVC Design Pattern.jpg" alt="3.1 AngularJS MVC Design Pattern.jpg" />
     <p>
-        As previous diagram discribed, A user visit the site, <b>Controller</b> select suitable <b>View</b> to perform the request and invoke the method of <b>Angular Service or Factory</b> in order to get data, on the other hand, <b>Angular Service or Factory</b> call WCF restful service via $http request. <b>Angular Service or Factory</b> response json to the caller. <b>Controller</b> construct the <b>Model</b> and use two-ways binding to connect <b>Model</b> with the view.
+        As previous diagram described, A user visit the site, <b>Controller</b> select suitable <b>View</b> to perform the request and invoke the method of <b>Angular Service or Factory</b> in order to get data, on the other hand, <b>Angular Service or Factory</b> call WCF restful service via $http request. <b>Angular Service or Factory</b> response json to the caller. <b>Controller</b> construct the <b>Model</b> and use two-ways binding to connect <b>Model</b> with the view.
     </p>
     <p>
         Take Function Type Management as an example. Function Type Management contains three views.
         <ol>
             <li>List Function Type (FTManage.tpl.html)</li>
             <li>Edit Function Type (FTManage.Edit.tpl.html)</li>
-            <li>Create Funciton Type (FTManage.Create.tpl.html)</li>
+            <li>Create Function Type (FTManage.Create.tpl.html)</li>
         </ol>
         The corresponding route will be
         <ol>
@@ -341,8 +341,30 @@ $scope.DoLogin = function () {
 .....
     </pre>
 
+    <h2>Settings</h2>
+    <p>
+        I list my development environment for your reference.
+    </p>
+    <ol>
+        <li>AngularJS v1.5.0</li>
+        <li>Microsoft Visual Studio 2013</li>
+        <li>.NET Framework 4.5.1</li>
+        <li>MYSQL 5.6.26</li>
+        <li>Entity Framework 6.0</li>
+    </ol>
+    <h3>
+        4.1 EDIT WEB.CONFIG FILE
+    </h3>
+    <h4>
+        4.1.1 For MYSQL user
+    </h4>
+    <h5>
+        Figure 4.1.1.1 Hosting Service web.config(MySql with WCF Version)
+    </h5>
+    <img src="../../../Content/HomePagePart2Resources/Images/4.1.1.1 Hosting Service web.config(MySql with WCF Version).jpg" alt="4.1.1.1 Hosting Service web.config(MySql with WCF Version)" />
+
     <h2>Finally</h2>
-    <p>About the source code of cool privilege control written in angular, I will upload it to GIT after I completed the MSSQL version and totally testing.</p>
+    <p>About the source code of cool privilege control written in angular, I will upload it to GIT after I completed the MSSQL version and total testing.</p>
 
     <p>I place Donate button in the site and project. If you like <span style="font-weight:bold;">Cool Privilege Control</span>. I hope you can donate the project. Your donation will encourage us to continue development and keep the testing site serve. Thanks.</p>
 
